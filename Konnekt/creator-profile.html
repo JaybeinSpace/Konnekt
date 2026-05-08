@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creator Profile | Konnekt</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="profile-header">
+        <nav class="navbar" aria-label="Main navigation">
+            <a class="logo" href="index.html">Konnekt</a>
+
+            <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="nav-links">
+                <a href="explore.html">Creators</a>
+                <a href="about.html">About</a>
+                <a class="nav-submit" href="submit.html">Submit Work</a>
+                <a href="saved.html">Saved</a>
+                <a href="index.html#features">Features</a>
+                <a href="index.html#community">Community</a>
+                <a href="login.html">Log In</a>
+                <a class="nav-cta" href="signup.html">Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="profile-page">
+        <section class="profile-hero">
+            <img class="profile-banner" data-profile-banner src="" alt="">
+
+            <div class="profile-summary">
+                <img class="profile-avatar" data-profile-avatar src="" alt="">
+
+                <div class="profile-intro">
+                    <p class="eyebrow">Featured Creator</p>
+                    <h1 data-profile-name>Creator Name</h1>
+                    <p class="profile-meta" data-profile-meta>Role | Location</p>
+                </div>
+
+                <div class="profile-actions">
+                    <a class="button primary-button" href="mailto:hello@konnekt.example">Contact Creator</a>
+                    <button class="button secondary-button save-button" type="button" data-save-type="creator">Save Creator</button>
+                    <a class="button secondary-button" href="explore.html">Back to Explore</a>
+                </div>
+            </div>
+
+            <div class="profile-stat-strip" data-profile-stats aria-label="Creator profile stats"></div>
+        </section>
+
+        <section class="profile-layout">
+            <aside class="profile-panel">
+                <h2>About</h2>
+                <p data-profile-bio></p>
+
+                <div class="badge-list" data-profile-badges aria-label="Creator badges"></div>
+
+                <div class="social-links" data-profile-socials aria-label="Social media links"></div>
+            </aside>
+
+            <section class="profile-panel">
+                <div class="section-heading compact-heading">
+                    <p class="eyebrow">Featured work</p>
+                    <h2>Projects and videos</h2>
+                </div>
+
+                <div class="project-grid" data-profile-projects></div>
+            </section>
+        </section>
+
+        <section class="section profile-gallery-section">
+            <div class="section-heading">
+                <p class="eyebrow">Media gallery</p>
+                <h2>Selected frames</h2>
+                <p>Click any frame to open the full-screen viewer.</p>
+            </div>
+
+            <div class="media-gallery" data-profile-gallery></div>
+        </section>
+
+        <section class="section video-section">
+            <div class="section-heading">
+                <p class="eyebrow">Video work</p>
+                <h2>Reels and motion pieces</h2>
+            </div>
+
+            <div class="video-grid" data-profile-videos></div>
+        </section>
+
+        <section class="empty-state profile-not-found" data-profile-not-found aria-live="polite">
+            <p class="eyebrow">Creator not found</p>
+            <h2>That profile does not exist yet.</h2>
+            <p>Head back to Explore and choose one of the sample creators.</p>
+            <a class="button primary-button" href="explore.html">Explore Creators</a>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div>
+            <a class="logo" href="index.html">Konnekt</a>
+            <p>A frontend MVP for emerging filmmakers and photographers to showcase work and get discovered.</p>
+        </div>
+        <nav class="footer-links" aria-label="Footer navigation">
+            <a href="about.html">About</a>
+            <a href="explore.html">Explore</a>
+            <a href="submit.html">Submit Work</a>
+            <a href="saved.html">Saved</a>
+            <a href="login.html">Log In</a>
+            <a href="signup.html">Sign Up</a>
+        </nav>
+    </footer>
+
+    <div class="lightbox" aria-hidden="true">
+        <button class="lightbox-close" type="button" aria-label="Close media viewer">Close</button>
+        <button class="lightbox-control lightbox-prev" type="button" aria-label="Previous image">Previous</button>
+        <img class="lightbox-display" src="" alt="">
+        <button class="lightbox-control lightbox-next" type="button" aria-label="Next image">Next</button>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
