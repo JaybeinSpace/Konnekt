@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Creators | Konnekt</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="profile-header">
+        <nav class="navbar" aria-label="Main navigation">
+            <a class="logo" href="index.html">Konnekt</a>
+
+            <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="nav-links">
+                <a class="nav-active" href="explore.html" aria-current="page">Creators</a>
+                <a href="about.html">About</a>
+                <a class="nav-submit" href="submit.html">Submit Work</a>
+                <a href="saved.html">Saved</a>
+                <a href="index.html#features">Features</a>
+                <a href="index.html#community">Community</a>
+                <a href="login.html">Log In</a>
+                <a class="nav-cta" href="signup.html">Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="explore-page">
+        <section class="explore-hero">
+            <div>
+                <p class="eyebrow">Explore creators</p>
+                <h1>Discover emerging visual talent.</h1>
+                <p class="hero-copy">
+                    Browse filmmakers, photographers, and editors building fresh visual work across music videos,
+                    campaigns, portraits, short films, and social-first stories.
+                </p>
+                <div class="hero-actions">
+                    <a class="button primary-button" href="submit.html">Submit Your Work</a>
+                    <a class="button secondary-button" href="creator-profile.html?id=maya-chen">View Sample Profile</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="explore-section" aria-label="Creator discovery">
+            <div class="search-panel">
+                <label for="creator-search">Search creators</label>
+                <input id="creator-search" class="creator-search" type="search" placeholder="Search by name, role, or location">
+                <p>Try searches like Chicago, editor, Maya, or photographer.</p>
+            </div>
+
+            <div class="filter-bar" aria-label="Filter creators by role">
+                <button class="filter-button is-active" type="button" data-filter="all">All</button>
+                <button class="filter-button" type="button" data-filter="filmmaker">Filmmakers</button>
+                <button class="filter-button" type="button" data-filter="photographer">Photographers</button>
+                <button class="filter-button" type="button" data-filter="editor">Editors</button>
+            </div>
+
+            <div class="explore-grid"></div>
+
+            <div class="empty-state" aria-live="polite">
+                <p class="eyebrow">No matches</p>
+                <h2>No creators found for that search.</h2>
+                <p>Try a different name, role, or location. You can also reset the filter to All.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div>
+            <a class="logo" href="index.html">Konnekt</a>
+            <p>A frontend MVP for emerging filmmakers and photographers to showcase work and get discovered.</p>
+        </div>
+        <nav class="footer-links" aria-label="Footer navigation">
+            <a href="about.html">About</a>
+            <a href="explore.html">Explore</a>
+            <a href="submit.html">Submit Work</a>
+            <a href="saved.html">Saved</a>
+            <a href="login.html">Log In</a>
+            <a href="signup.html">Sign Up</a>
+        </nav>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
