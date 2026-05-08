@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project | Konnekt</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="profile-header">
+        <nav class="navbar" aria-label="Main navigation">
+            <a class="logo" href="index.html">Konnekt</a>
+
+            <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="nav-links">
+                <a href="explore.html">Creators</a>
+                <a href="about.html">About</a>
+                <a class="nav-submit" href="submit.html">Submit Work</a>
+                <a href="saved.html">Saved</a>
+                <a href="index.html#features">Features</a>
+                <a href="index.html#community">Community</a>
+                <a href="login.html">Log In</a>
+                <a class="nav-cta" href="signup.html">Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="project-page">
+        <section class="project-hero">
+            <div class="project-hero-copy">
+                <p class="eyebrow" data-project-category>Project</p>
+                <h1 data-project-title>Project title</h1>
+                <p class="hero-copy" data-project-description></p>
+
+                <div class="project-meta-row" aria-label="Project metadata">
+                    <span data-project-creator></span>
+                    <span data-project-year></span>
+                </div>
+
+                <div class="hero-actions">
+                    <a class="button primary-button" data-project-creator-link href="explore.html">View Creator</a>
+                    <button class="button secondary-button save-button" type="button" data-save-type="project">Save Project</button>
+                    <a class="button secondary-button" href="submit.html">Submit Your Work</a>
+                </div>
+            </div>
+
+            <div class="project-hero-media">
+                <img data-project-main-image src="" alt="">
+            </div>
+        </section>
+
+        <section class="project-detail-layout">
+            <article class="profile-panel">
+                <div class="section-heading compact-heading">
+                    <p class="eyebrow">Credits</p>
+                    <h2>People behind the work</h2>
+                </div>
+                <div class="detail-list" data-project-credits></div>
+            </article>
+
+            <article class="profile-panel">
+                <div class="section-heading compact-heading">
+                    <p class="eyebrow">Tools used</p>
+                    <h2>Production stack</h2>
+                </div>
+                <div class="detail-list" data-project-tools></div>
+            </article>
+        </section>
+
+        <section class="section profile-gallery-section">
+            <div class="section-heading">
+                <p class="eyebrow">Project media</p>
+                <h2>Frames and references</h2>
+                <p>Click any image to open the full-screen viewer.</p>
+            </div>
+
+            <div class="media-gallery" data-project-media></div>
+        </section>
+
+        <section class="community-section project-cta">
+            <div>
+                <p class="eyebrow">Creator connection</p>
+                <h2>Like this project? View the creator or submit your own work.</h2>
+            </div>
+            <div class="hero-actions">
+                <a class="button primary-button" data-project-bottom-link href="explore.html">View Creator</a>
+                <a class="button secondary-button" href="submit.html">Submit Your Work</a>
+            </div>
+        </section>
+
+        <section class="empty-state profile-not-found" data-project-not-found aria-live="polite">
+            <p class="eyebrow">Project not found</p>
+            <h2>That project does not exist yet.</h2>
+            <p>Head back to Explore and open a project from one of the sample creator profiles.</p>
+            <a class="button primary-button" href="explore.html">Explore Creators</a>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div>
+            <a class="logo" href="index.html">Konnekt</a>
+            <p>A frontend MVP for emerging filmmakers and photographers to showcase work and get discovered.</p>
+        </div>
+        <nav class="footer-links" aria-label="Footer navigation">
+            <a href="about.html">About</a>
+            <a href="explore.html">Explore</a>
+            <a href="submit.html">Submit Work</a>
+            <a href="saved.html">Saved</a>
+            <a href="login.html">Log In</a>
+            <a href="signup.html">Sign Up</a>
+        </nav>
+    </footer>
+
+    <div class="lightbox" aria-hidden="true">
+        <button class="lightbox-close" type="button" aria-label="Close media viewer">Close</button>
+        <button class="lightbox-control lightbox-prev" type="button" aria-label="Previous image">Previous</button>
+        <img class="lightbox-display" src="" alt="">
+        <button class="lightbox-control lightbox-next" type="button" aria-label="Next image">Next</button>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

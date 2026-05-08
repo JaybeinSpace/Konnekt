@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Your Work | Konnekt</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="profile-header">
+        <nav class="navbar" aria-label="Main navigation">
+            <a class="logo" href="index.html">Konnekt</a>
+
+            <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="nav-links">
+                <a href="explore.html">Creators</a>
+                <a href="about.html">About</a>
+                <a class="nav-submit nav-active" href="submit.html" aria-current="page">Submit Work</a>
+                <a href="saved.html">Saved</a>
+                <a href="index.html#features">Features</a>
+                <a href="index.html#community">Community</a>
+                <a href="login.html">Log In</a>
+                <a class="nav-cta" href="signup.html">Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="form-page">
+        <section class="form-hero">
+            <div>
+                <p class="eyebrow">Submit your work</p>
+                <h1>Put your latest project in front of the creative community.</h1>
+                <p class="hero-copy">
+                    Share a project link, tell us what you made, and preview how creator submissions will work
+                    once Konnekt adds real accounts, uploads, and review tools.
+                </p>
+                <div class="hero-proof" aria-label="Submission highlights">
+                    <span>Monthly recognition</span>
+                    <span>Film and photo friendly</span>
+                    <span>No real upload yet</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="form-layout">
+            <form class="konnekt-form frontend-form" aria-label="Submit your work form">
+                <div class="form-row">
+                    <label for="creator-name">Creator name</label>
+                    <input id="creator-name" type="text" placeholder="Your name or studio name">
+                </div>
+
+                <div class="form-row">
+                    <label for="creator-role">Role</label>
+                    <select id="creator-role">
+                        <option>Filmmaker</option>
+                        <option>Photographer</option>
+                        <option>Editor</option>
+                        <option>Director of Photography</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <label for="project-title">Project title</label>
+                    <input id="project-title" type="text" placeholder="Example: After Hours">
+                </div>
+
+                <div class="form-row">
+                    <label for="creator-location">Location</label>
+                    <input id="creator-location" type="text" placeholder="City, State or remote">
+                </div>
+
+                <div class="form-row">
+                    <label for="short-description">Short description</label>
+                    <textarea id="short-description" rows="5" placeholder="Tell us the style, story, tools, collaborators, or opportunity you want this project to attract."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <label for="social-link">Social or portfolio link</label>
+                    <input id="social-link" type="url" placeholder="https://instagram.com/yourname">
+                </div>
+
+                <div class="upload-placeholder">
+                    <p class="creator-role">Media upload placeholder</p>
+                    <h2>Uploads are coming later.</h2>
+                    <p>Add a portfolio, Vimeo, YouTube, or Instagram link for now. Real media upload and storage will be added when the backend exists.</p>
+                </div>
+
+                <button class="button primary-button" type="submit">Submit Interest</button>
+                <p class="form-message" aria-live="polite"></p>
+            </form>
+
+            <aside class="selection-panel">
+                <p class="eyebrow">Monthly selections</p>
+                <h2>How Konnekt Selects will work</h2>
+                <p>
+                    Each month, Konnekt will highlight standout emerging creators across film, photography,
+                    and editing. Selected work can appear in Featured This Month, Top Film Picks, or Weekly
+                    Photo Spotlight.
+                </p>
+                <p>
+                    For now this page is a polished frontend mockup. It helps shape the product flow before
+                    adding a database, uploads, or creator accounts.
+                </p>
+                <div class="selection-list">
+                    <span>Strong visual identity</span>
+                    <span>Clear creator profile</span>
+                    <span>Recent project activity</span>
+                    <span>Original point of view</span>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div>
+            <a class="logo" href="index.html">Konnekt</a>
+            <p>A frontend MVP for emerging filmmakers and photographers to showcase work and get discovered.</p>
+        </div>
+        <nav class="footer-links" aria-label="Footer navigation">
+            <a href="about.html">About</a>
+            <a href="explore.html">Explore</a>
+            <a href="submit.html">Submit Work</a>
+            <a href="saved.html">Saved</a>
+            <a href="login.html">Log In</a>
+            <a href="signup.html">Sign Up</a>
+        </nav>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
