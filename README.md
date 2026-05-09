@@ -4,9 +4,16 @@ Konnekt is a dark-themed portfolio and discovery platform for emerging filmmaker
 
 The goal is to help new visual creators showcase their work, get discovered, and connect with future opportunities. This project is currently a frontend-only MVP built with beginner-friendly HTML, CSS, and JavaScript.
 
+## Live Demo
+
+Vercel: `https://your-konnekt-vercel-url.vercel.app`
+
+Replace this with the active Vercel production URL from your Vercel dashboard.
+
 ## Features
 
 - Modern dark homepage for the Konnekt platform
+- Premium cinematic hero and Konnekt wordmark treatment
 - Explore Creators page with search and role filters
 - Dynamic creator profile pages powered by fake data
 - Dynamic project detail pages powered by fake data
@@ -17,6 +24,7 @@ The goal is to help new visual creators showcase their work, get discovered, and
 - About page explaining the platform mission
 - Saved Items page mockup for saved creators and projects
 - Responsive layouts for desktop and mobile
+- Lightweight hover and entrance animations
 
 ## Tech Stack
 
@@ -69,6 +77,7 @@ Then open the local URL shown in the terminal.
 - `data.js`: Fake creator and project data
 - `script.js`: Dynamic rendering, search, filters, lightbox, and UI behavior
 - `style.css`: Dark visual design and responsive layout
+- `favicon.svg`: Simple Konnekt browser icon
 - `CODE_WALKTHROUGH.md`: Beginner-friendly explanation of how the code works
 
 ## Future Roadmap

@@ -10,6 +10,16 @@ Frontend-only means the site runs in the browser with HTML, CSS, and JavaScript.
 
 The homepage introduces Konnekt, shows featured creators, highlights Konnekt Selects, and sends visitors to Explore or Submit Work.
 
+It also includes the premium homepage hero. The hero has stronger brand copy plus a cinematic visual stack:
+
+```html
+<div class="hero-visual" aria-hidden="true">
+    ...
+</div>
+```
+
+That visual stack is decorative, so it uses `aria-hidden="true"`.
+
 The featured creator cards on the homepage are generated from `data.js`. The HTML only provides an empty container:
 
 ```html
@@ -101,6 +111,25 @@ It also builds homepage featured creator cards and controls the frontend-only Sa
 ### `style.css`
 
 This file controls the dark Konnekt visual style, responsive layouts, cards, forms, buttons, nav, lightbox, and mobile behavior.
+
+The latest polish pass also added:
+
+- a text/CSS Konnekt wordmark treatment
+- cinematic hero image framing
+- richer card shadows and borders
+- smoother hover states
+- lightweight fade-up animation
+- responsive mobile adjustments for the hero and cards
+
+### `favicon.svg`
+
+The favicon is a small SVG icon used by the browser tab.
+
+Every HTML page links it like this:
+
+```html
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+```
 
 ## What `data.js` Does
 
@@ -439,6 +468,54 @@ The footer includes:
 This makes the site feel more complete and gives users a consistent way to move around.
 
 Right now the footer is repeated in each HTML file. Later, if the project moves to a framework or backend, the footer could become one reusable component.
+
+## Branding And Visual Polish
+
+The latest visual pass keeps Konnekt frontend-only, but makes it feel more like a real cinematic platform.
+
+The logo is still text, but CSS gives it a simple wordmark treatment:
+
+```css
+.logo::before {
+    content: "K";
+}
+```
+
+That creates a small branded mark before the Konnekt name without needing a design tool or image file.
+
+The homepage hero now has:
+
+- stronger emotional headline copy
+- a cinematic background image
+- a layered visual image stack
+- more polished buttons
+- small proof chips for platform signals
+
+Cards now feel more premium because CSS adds:
+
+- deeper shadows
+- sharper hover movement
+- subtle image zoom
+- better border color changes
+- stronger visual hierarchy
+
+The animation is intentionally simple:
+
+```css
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+```
+
+There is also a `prefers-reduced-motion` media query so users who prefer less motion are respected.
 
 ## Saved Page Mockup
 
