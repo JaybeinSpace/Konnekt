@@ -1,0 +1,11 @@
+{
+  "name": "konnekt",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Frontend-only static MVP for the Konnekt creator discovery platform.",
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve .",
+    "build": "node -e \"console.log('Static site: no build step required')\""
+  }
+}

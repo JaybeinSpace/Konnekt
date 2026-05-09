@@ -38,13 +38,13 @@
                 <p class="eyebrow">Saved items</p>
                 <h1>Your future shortlist for creators and projects.</h1>
                 <p class="hero-copy">
-                    This page is a frontend-only mockup. It shows how saved creators and saved projects could
-                    look once Konnekt has real accounts and a backend.
+                    Save creators and projects as you browse. For now, Konnekt stores this shortlist in your
+                    browser so you can revisit useful profiles while the full account system is still being built.
                 </p>
                 <div class="hero-proof" aria-label="Saved page status">
-                    <span>Example saved data</span>
-                    <span>No real account storage yet</span>
-                    <span>Connected to Save buttons visually</span>
+                    <span>Browser saved list</span>
+                    <span>Creators and projects</span>
+                    <span>No account required yet</span>
                 </div>
             </div>
         </section>
@@ -56,6 +56,12 @@
             </div>
 
             <div class="explore-grid" data-saved-creators></div>
+            <div class="empty-state saved-empty" data-saved-creators-empty aria-live="polite">
+                <p class="eyebrow">No saved creators</p>
+                <h2>Your creator shortlist is empty.</h2>
+                <p>Explore creators and use Save Creator to add people here.</p>
+                <a class="button primary-button" href="explore.html">Explore Creators</a>
+            </div>
         </section>
 
         <section class="section saved-section">
@@ -65,12 +71,18 @@
             </div>
 
             <div class="project-grid" data-saved-projects></div>
+            <div class="empty-state saved-empty" data-saved-projects-empty aria-live="polite">
+                <p class="eyebrow">No saved projects</p>
+                <h2>Your project list is empty.</h2>
+                <p>Open a creator profile or project page, then save projects you want to revisit.</p>
+                <a class="button primary-button" href="explore.html">Find Projects</a>
+            </div>
         </section>
 
         <section class="community-section">
             <div>
-                <p class="eyebrow">Frontend mockup</p>
-                <h2>Real saved lists will need accounts, storage, and a backend later.</h2>
+                <p class="eyebrow">Next backend step</p>
+                <h2>Account-based saved lists can replace browser storage later.</h2>
             </div>
             <a class="button primary-button" href="explore.html">Explore More</a>
         </section>

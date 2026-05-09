@@ -1,8 +1,8 @@
-const creators = window.konnektCreators || [];
+const creators = Array.isArray(window.konnektCreators) ? window.konnektCreators : [];
 
 // Projects live inside each creator in data.js. This creates one flat list for project pages.
 const projects = creators.flatMap((creator) => {
-    return creator.featuredProjects.map((project) => {
+    return (creator.featuredProjects || []).map((project) => {
         return {
             ...project,
             creatorName: creator.name,
@@ -40,8 +40,69 @@ const getCreatorSearchText = (creator) => {
         creator.category,
         creator.location,
         creator.shortDescription,
-        creator.tags.join(" ")
+        (creator.tags || []).join(" ")
     ].join(" ").toLowerCase();
+};
+
+const getRecentActivityScore = (recentActivity) => {
+    if (!recentActivity) {
+        return 0;
+    }
+
+    const activityTime = new Date(recentActivity).getTime();
+
+    if (Number.isNaN(activityTime)) {
+        return 0;
+    }
+
+    const activityTimes = creators
+        .map((creator) => new Date(creator.discovery?.recentActivity || 0).getTime())
+        .filter((time) => !Number.isNaN(time));
+    const newestActivityTime = Math.max(...activityTimes);
+
+    if (!Number.isFinite(newestActivityTime) || newestActivityTime === 0) {
+        return 0;
+    }
+
+    const daysBehindNewest = (newestActivityTime - activityTime) / (1000 * 60 * 60 * 24);
+
+    return Math.max(0, 10 - daysBehindNewest);
+};
+
+// Explore ordering is data-driven. Future creators can move up by changing discovery fields in data.js.
+const getExploreScore = (creator) => {
+    const discovery = creator.discovery || {};
+    let score = 0;
+
+    if (discovery.featured) {
+        score += 100;
+    }
+
+    if (discovery.konnektSelects) {
+        score += 20;
+    }
+
+    score += discovery.rolePriority || 0;
+    score += discovery.categoryPriority || 0;
+    score += discovery.locationPriority || 0;
+    score += getRecentActivityScore(discovery.recentActivity);
+
+    return score;
+};
+
+const getOrderedExploreCreators = () => {
+    return creators
+        .map((creator, index) => ({ creator, index }))
+        .sort((first, second) => {
+            const scoreDifference = getExploreScore(second.creator) - getExploreScore(first.creator);
+
+            if (scoreDifference !== 0) {
+                return scoreDifference;
+            }
+
+            return first.index - second.index;
+        })
+        .map((item) => item.creator);
 };
 
 // Homepage featured creators are generated from the first three creator objects in data.js.
@@ -126,13 +187,33 @@ const renderKonnektSelects = () => {
 
 // Explore cards are generated from data.js instead of repeated hardcoded HTML.
 const renderExploreCards = () => {
-    const exploreGrid = document.querySelector(".explore-grid");
+    const exploreGrid = document.querySelector("[data-explore-grid]");
+    const emptyState = document.querySelector("[data-empty-state]");
 
-    if (!exploreGrid || creators.length === 0) {
+    if (!exploreGrid) {
         return;
     }
 
-    exploreGrid.innerHTML = creators.map((creator) => `
+    if (creators.length === 0) {
+        exploreGrid.innerHTML = "";
+
+        if (emptyState) {
+            emptyState.innerHTML = `
+                <p class="eyebrow">Data unavailable</p>
+                <h2>Creator data could not load.</h2>
+                <p>Check that data.js is uploaded beside explore.html and is loaded before script.js.</p>
+            `;
+            emptyState.classList.add("is-visible");
+        }
+
+        return;
+    }
+
+    if (emptyState) {
+        emptyState.classList.remove("is-visible");
+    }
+
+    exploreGrid.innerHTML = getOrderedExploreCreators().map((creator) => `
         <article class="explore-card" data-category="${creator.category}" data-search="${getCreatorSearchText(creator)}">
             <img src="${creator.profileImage}" alt="${creator.profileAlt}">
             <div class="explore-card-body">
@@ -184,9 +265,9 @@ const renderSavedItems = () => {
 // Search and role filters work on the generated Explore cards.
 const setupExploreFilters = () => {
     const filterButtons = document.querySelectorAll(".filter-button");
-    const creatorCards = document.querySelectorAll(".explore-card");
+    const creatorCards = document.querySelectorAll("[data-explore-grid] .explore-card");
     const creatorSearch = document.querySelector(".creator-search");
-    const emptyState = document.querySelector(".empty-state");
+    const emptyState = document.querySelector("[data-empty-state]");
     let activeFilter = "all";
 
     if (filterButtons.length === 0 || creatorCards.length === 0) {

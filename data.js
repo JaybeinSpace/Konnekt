@@ -14,6 +14,13 @@ window.konnektCreators = [
         bannerImage: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=1800&q=80",
         bannerAlt: "Film crew working on a night shoot",
         tags: ["Cinematography", "Music Videos", "Low Light"],
+        discovery: {
+            featured: true,
+            konnektSelects: true,
+            recentActivity: "2026-05-07",
+            categoryPriority: 12,
+            locationPriority: 20
+        },
         stats: {
             projects: "18",
             views: "4.8k",
@@ -105,6 +112,13 @@ window.konnektCreators = [
         bannerImage: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1800&q=80",
         bannerAlt: "Warm portrait session on a city street",
         tags: ["Portraits", "Editorial", "Studio Lighting"],
+        discovery: {
+            featured: false,
+            konnektSelects: true,
+            recentActivity: "2026-04-29",
+            categoryPriority: 6,
+            locationPriority: 0
+        },
         stats: {
             projects: "24",
             views: "3.6k",
@@ -188,6 +202,14 @@ window.konnektCreators = [
         bannerImage: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1800&q=80",
         bannerAlt: "Video editing timeline on a laptop",
         tags: ["Editing", "Music Videos", "Social Campaigns"],
+        discovery: {
+            featured: false,
+            konnektSelects: true,
+            recentActivity: "2026-05-05",
+            rolePriority: 30,
+            categoryPriority: 10,
+            locationPriority: 0
+        },
         stats: {
             projects: "31",
             views: "5.1k",
@@ -268,6 +290,13 @@ window.konnektCreators = [
         bannerImage: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=1800&q=80",
         bannerAlt: "Film crew on set",
         tags: ["Production", "Brand Films", "Interviews"],
+        discovery: {
+            featured: false,
+            konnektSelects: true,
+            recentActivity: "2026-04-25",
+            categoryPriority: 8,
+            locationPriority: 0
+        },
         stats: {
             projects: "42",
             views: "6.4k",
@@ -348,6 +377,13 @@ window.konnektCreators = [
         bannerImage: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80",
         bannerAlt: "Person standing in a dramatic landscape",
         tags: ["Lifestyle", "Brand Photography", "Natural Light"],
+        discovery: {
+            featured: false,
+            konnektSelects: false,
+            recentActivity: "2026-04-20",
+            categoryPriority: 6,
+            locationPriority: 0
+        },
         stats: {
             projects: "16",
             views: "2.9k",
@@ -409,6 +445,14 @@ window.konnektCreators = [
         bannerImage: "https://images.unsplash.com/photo-1616469829581-73993eb86b02?auto=format&fit=crop&w=1800&q=80",
         bannerAlt: "Person editing video in a studio",
         tags: ["Documentary", "Interviews", "Creator Reels"],
+        discovery: {
+            featured: false,
+            konnektSelects: false,
+            recentActivity: "2026-05-03",
+            rolePriority: 30,
+            categoryPriority: 10,
+            locationPriority: 0
+        },
         stats: {
             projects: "27",
             views: "4.2k",
