@@ -12,6 +12,55 @@ const projects = creators.flatMap((creator) => {
     });
 });
 
+const savedStorageKey = "konnektSavedItems";
+
+const getSavedItems = () => {
+    const fallback = {
+        creators: [],
+        projects: []
+    };
+
+    try {
+        const savedItems = JSON.parse(localStorage.getItem(savedStorageKey));
+
+        return {
+            creators: Array.isArray(savedItems?.creators) ? savedItems.creators : [],
+            projects: Array.isArray(savedItems?.projects) ? savedItems.projects : []
+        };
+    } catch (error) {
+        return fallback;
+    }
+};
+
+const setSavedItems = (savedItems) => {
+    try {
+        localStorage.setItem(savedStorageKey, JSON.stringify(savedItems));
+    } catch (error) {
+        console.warn("Saved items could not be stored in this browser.");
+    }
+};
+
+const getSavedListName = (saveType) => {
+    return saveType === "project" ? "projects" : "creators";
+};
+
+const isItemSaved = (saveType, saveId) => {
+    const savedItems = getSavedItems();
+    const savedList = savedItems[getSavedListName(saveType)];
+
+    return savedList.includes(saveId);
+};
+
+const getSaveButtonText = (saveType, isSaved) => {
+    const saveLabel = saveType === "project" ? "Project" : "Creator";
+
+    return isSaved ? `${saveLabel} Saved` : `Save ${saveLabel}`;
+};
+
+const getSavedButtonClass = (saveType, saveId) => {
+    return isItemSaved(saveType, saveId) ? " is-saved" : "";
+};
+
 // Mobile navigation menu.
 const menuToggle = document.querySelector(".menu-toggle");
 const navLinks = document.querySelector(".nav-links");
@@ -123,7 +172,7 @@ const renderHomepageCreators = () => {
                 <p>${creator.shortDescription}</p>
                 <div class="card-actions">
                     <a class="profile-link" href="creator-profile.html?id=${creator.id}">View Profile</a>
-                    <button class="profile-link save-button" type="button" data-save-type="creator">Save Creator</button>
+                    <button class="profile-link save-button${getSavedButtonClass("creator", creator.id)}" type="button" data-save-type="creator" data-save-id="${creator.id}">${getSaveButtonText("creator", isItemSaved("creator", creator.id))}</button>
                 </div>
             </div>
         </article>
@@ -223,7 +272,7 @@ const renderExploreCards = () => {
                 <p>${creator.shortDescription}</p>
                 <div class="card-actions">
                     <a class="profile-link" href="creator-profile.html?id=${creator.id}">View Profile</a>
-                    <button class="profile-link save-button" type="button" data-save-type="creator">Save Creator</button>
+                    <button class="profile-link save-button${getSavedButtonClass("creator", creator.id)}" type="button" data-save-type="creator" data-save-id="${creator.id}">${getSaveButtonText("creator", isItemSaved("creator", creator.id))}</button>
                 </div>
             </div>
         </article>
@@ -241,7 +290,7 @@ const renderCreatorPreviewCards = (creatorList) => {
                 <p>${creator.shortDescription}</p>
                 <div class="card-actions">
                     <a class="profile-link" href="creator-profile.html?id=${creator.id}">View Profile</a>
-                    <button class="profile-link save-button is-saved" type="button" data-save-type="creator">Creator Saved</button>
+                    <button class="profile-link save-button is-saved" type="button" data-save-type="creator" data-save-id="${creator.id}">Creator Saved</button>
                 </div>
             </div>
         </article>
@@ -252,13 +301,26 @@ const renderSavedItems = () => {
     const savedCreatorsGrid = document.querySelector("[data-saved-creators]");
     const savedProjectsGrid = document.querySelector("[data-saved-projects]");
 
-    // Example saved items only. Real saved lists need accounts or storage later.
+    const savedItems = getSavedItems();
+    const savedCreatorItems = creators.filter((creator) => savedItems.creators.includes(creator.id));
+    const savedProjectItems = projects.filter((project) => savedItems.projects.includes(project.id));
+    const savedCreatorsEmpty = document.querySelector("[data-saved-creators-empty]");
+    const savedProjectsEmpty = document.querySelector("[data-saved-projects-empty]");
+
     if (savedCreatorsGrid) {
-        savedCreatorsGrid.innerHTML = renderCreatorPreviewCards(creators.slice(0, 2));
+        savedCreatorsGrid.innerHTML = renderCreatorPreviewCards(savedCreatorItems);
     }
 
     if (savedProjectsGrid) {
-        savedProjectsGrid.innerHTML = renderProjects(projects.slice(0, 2));
+        savedProjectsGrid.innerHTML = renderProjects(savedProjectItems);
+    }
+
+    if (savedCreatorsEmpty) {
+        savedCreatorsEmpty.classList.toggle("is-visible", savedCreatorItems.length === 0);
+    }
+
+    if (savedProjectsEmpty) {
+        savedProjectsEmpty.classList.toggle("is-visible", savedProjectItems.length === 0);
     }
 };
 
@@ -276,6 +338,7 @@ const setupExploreFilters = () => {
 
     const updateCreatorCards = () => {
         const searchText = creatorSearch ? creatorSearch.value.toLowerCase().trim() : "";
+        const resultCount = document.querySelector("[data-result-count]");
         let visibleCards = 0;
 
         creatorCards.forEach((card) => {
@@ -292,6 +355,10 @@ const setupExploreFilters = () => {
 
         if (emptyState) {
             emptyState.classList.toggle("is-visible", visibleCards === 0);
+        }
+
+        if (resultCount) {
+            resultCount.textContent = `${visibleCards} creator${visibleCards === 1 ? "" : "s"} showing`;
         }
     };
 
@@ -372,7 +439,7 @@ const renderProjects = (projects) => {
                 <p>${project.description}</p>
                 <div class="card-actions">
                     <a class="profile-link" href="project.html?id=${project.id}">View Project</a>
-                    <button class="profile-link save-button" type="button" data-save-type="project">Save Project</button>
+                    <button class="profile-link save-button${getSavedButtonClass("project", project.id)}" type="button" data-save-type="project" data-save-id="${project.id}">${getSaveButtonText("project", isItemSaved("project", project.id))}</button>
                 </div>
             </div>
         </article>
@@ -443,6 +510,16 @@ const renderCreatorProfile = () => {
     document.querySelector("[data-profile-projects]").innerHTML = renderProjects(creator.featuredProjects);
     document.querySelector("[data-profile-gallery]").innerHTML = renderGallery(creator.gallery);
     document.querySelector("[data-profile-videos]").innerHTML = renderVideos(creator.videos);
+
+    const profileSaveButton = document.querySelector(".profile-actions .save-button");
+
+    if (profileSaveButton) {
+        const isSaved = isItemSaved("creator", creator.id);
+
+        profileSaveButton.dataset.saveId = creator.id;
+        profileSaveButton.textContent = getSaveButtonText("creator", isSaved);
+        profileSaveButton.classList.toggle("is-saved", isSaved);
+    }
 };
 
 // The project page reads ?id=project-id and fills the template from data.js.
@@ -477,6 +554,16 @@ const renderProjectDetail = () => {
     document.querySelector("[data-project-credits]").innerHTML = renderDetailItems(project.credits);
     document.querySelector("[data-project-tools]").innerHTML = renderDetailItems(project.tools);
     document.querySelector("[data-project-media]").innerHTML = renderProjectMedia(project.media);
+
+    const projectSaveButton = document.querySelector(".project-hero .save-button");
+
+    if (projectSaveButton) {
+        const isSaved = isItemSaved("project", project.id);
+
+        projectSaveButton.dataset.saveId = project.id;
+        projectSaveButton.textContent = getSaveButtonText("project", isSaved);
+        projectSaveButton.classList.toggle("is-saved", isSaved);
+    }
 
     const topCreatorLink = document.querySelector("[data-project-creator-link]");
     const bottomCreatorLink = document.querySelector("[data-project-bottom-link]");
@@ -597,7 +684,7 @@ const setupFrontendForms = () => {
             const message = form.querySelector(".form-message");
 
             if (message) {
-                message.textContent = "Frontend preview only. No data was sent or saved.";
+                message.textContent = "Frontend-only mockup: no account, upload, or form data was sent.";
             }
         });
     });
@@ -606,16 +693,48 @@ const setupFrontendForms = () => {
 const setupSaveButtons = () => {
     const saveButtons = document.querySelectorAll(".save-button");
 
-    // This is only a UI mockup. Nothing is saved to a backend or browser storage.
+    // Frontend-only saved state. This uses browser storage, not a backend or account.
     saveButtons.forEach((button) => {
+        const saveType = button.dataset.saveType === "project" ? "project" : "creator";
+        const saveId = button.dataset.saveId;
+
+        if (saveId) {
+            const saved = isItemSaved(saveType, saveId);
+
+            button.classList.toggle("is-saved", saved);
+            button.textContent = getSaveButtonText(saveType, saved);
+        }
+
         button.setAttribute("aria-pressed", button.classList.contains("is-saved"));
 
         button.addEventListener("click", () => {
-            const isSaved = button.classList.toggle("is-saved");
-            const saveType = button.dataset.saveType === "project" ? "Project" : "Creator";
+            if (!saveId) {
+                const isSaved = button.classList.toggle("is-saved");
 
-            button.textContent = isSaved ? `${saveType} Saved` : `Save ${saveType}`;
-            button.setAttribute("aria-pressed", isSaved);
+                button.textContent = getSaveButtonText(saveType, isSaved);
+                button.setAttribute("aria-pressed", isSaved);
+                return;
+            }
+
+            const savedItems = getSavedItems();
+            const listName = getSavedListName(saveType);
+            const savedList = savedItems[listName];
+            const alreadySaved = savedList.includes(saveId);
+            const nextSavedList = alreadySaved
+                ? savedList.filter((itemId) => itemId !== saveId)
+                : [...savedList, saveId];
+
+            savedItems[listName] = nextSavedList;
+            setSavedItems(savedItems);
+
+            const isSaved = !alreadySaved;
+            const matchingButtons = document.querySelectorAll(`[data-save-type="${saveType}"][data-save-id="${saveId}"]`);
+
+            matchingButtons.forEach((matchingButton) => {
+                matchingButton.classList.toggle("is-saved", isSaved);
+                matchingButton.textContent = getSaveButtonText(saveType, isSaved);
+                matchingButton.setAttribute("aria-pressed", isSaved);
+            });
         });
     });
 };

@@ -6,9 +6,7 @@ The goal is to help new visual creators showcase their work, get discovered, and
 
 ## Live Demo
 
-Vercel: `https://your-konnekt-vercel-url.vercel.app`
-
-Replace this with the active Vercel production URL from your Vercel dashboard.
+Vercel: https://konnekt-cyan.vercel.app/
 
 ## Features
 
@@ -22,7 +20,7 @@ Replace this with the active Vercel production URL from your Vercel dashboard.
 - Submit Your Work page with a frontend-only form mockup
 - Login and signup UI mockups
 - About page explaining the platform mission
-- Saved Items page mockup for saved creators and projects
+- Saved Items page using browser-only saved creators and projects
 - Responsive layouts for desktop and mobile
 - Lightweight hover and entrance animations
 
@@ -45,9 +43,9 @@ That means there is currently:
 - No real authentication
 - No real account system
 - No real media upload or file storage
-- No real saved-item storage
+- No account-based saved-item storage
 
-All creator and project data is fake sample data stored in `data.js`.
+All creator and project data is fake sample data stored in `data.js`. Saved creators and projects use browser `localStorage` only, so they stay frontend-only and are not connected to accounts.
 
 ## How To Run Locally
 
@@ -87,7 +85,7 @@ Then open the local URL shown in the terminal.
 - Add real login and signup
 - Add real project submissions
 - Add media upload and storage
-- Add real saved creators and saved projects
+- Replace browser-only saved items with account-based saved lists
 - Add individual creator dashboard tools
 - Add richer discovery filters and sorting
 - Add creator contact or opportunity request flows

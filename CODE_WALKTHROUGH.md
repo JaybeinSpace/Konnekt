@@ -35,7 +35,7 @@ The Explore page is now a template page.
 It no longer contains repeated hardcoded creator cards. Instead, it has an empty container:
 
 ```html
-<div class="explore-grid"></div>
+<div class="explore-grid" data-explore-grid></div>
 ```
 
 JavaScript fills that grid with cards from `data.js`.
@@ -72,9 +72,9 @@ It is still a frontend-only page, but it makes the MVP feel more like a real sta
 
 ### `saved.html`
 
-The Saved Items page is a frontend-only mockup for saved creators and saved projects.
+The Saved Items page is a frontend-only browser saved list for creators and projects.
 
-It uses example data from `data.js`, but it does not store anything for real yet. Real saved lists will need accounts, authentication, and a backend later.
+It uses browser `localStorage` to remember saved creator and project ids on the same device. This is still frontend-only. Real cross-device saved lists will need accounts, authentication, and a backend later.
 
 ### `README.md`
 
@@ -519,7 +519,7 @@ There is also a `prefers-reduced-motion` media query so users who prefer less mo
 
 ## Saved Page Mockup
 
-`saved.html` shows what a future saved list could look like.
+`saved.html` shows the current browser-only saved list.
 
 The page has two empty containers:
 
@@ -534,14 +534,14 @@ Then `script.js` runs:
 renderSavedItems();
 ```
 
-That function uses example items from the fake data:
+That function reads saved ids from `localStorage` and matches them with fake data from `data.js`:
 
-- The first few creators become saved creator cards.
-- The first few projects become saved project cards.
+- saved creator ids become saved creator cards.
+- saved project ids become saved project cards.
 
-Important: this is still a mockup.
+Important: this is still frontend-only.
 
-No creator or project is saved to a real account, database, or browser storage yet.
+No creator or project is saved to a real account or database yet.
 
 ## Save UI Mockups
 
@@ -552,21 +552,21 @@ Examples:
 - Save Creator
 - Save Project
 
-These buttons do not save anything for real yet.
+These buttons save ids in the current browser only.
 
-There is no database, account system, or browser storage connected.
+There is no database or account system connected.
 
-The JavaScript only toggles the button style and text:
+The JavaScript stores ids in browser storage and toggles the button style and text:
 
 ```js
-button.classList.toggle("is-saved");
+localStorage.setItem("konnektSavedItems", JSON.stringify(savedItems));
 ```
 
 Beginner translation:
 
-The button visually acts like saving works, but no data is stored anywhere.
+Saved items stay in the current browser. They are not connected to a user account and will not follow someone to another device.
 
-This is useful in an MVP because it lets you design and test the user experience before building real accounts and saved lists.
+This is useful in an MVP because it lets you test the save experience before building real accounts and backend saved lists.
 
 ## Search And Filters
 

@@ -657,6 +657,14 @@ h1 {
     transform: translateY(-2px);
 }
 
+.result-count {
+    min-height: 24px;
+    margin: -8px 0 18px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
 .explore-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -694,6 +702,10 @@ h1 {
 
 .empty-state.is-visible {
     display: block;
+}
+
+.saved-empty {
+    margin-top: 18px;
 }
 
 .empty-state h2 {
@@ -1539,6 +1551,7 @@ h1 {
 
     .nav-links.is-open {
         display: flex;
+        z-index: 20;
     }
 
     .nav-links a {
@@ -1633,6 +1646,10 @@ h1 {
         padding-bottom: 0;
     }
 
+    .profile-actions .button {
+        flex: 1 1 180px;
+    }
+
     .profile-layout,
     .project-grid,
     .media-gallery,
@@ -1694,6 +1711,11 @@ h1 {
     .footer-links {
         justify-content: flex-start;
     }
+
+    .social-links a {
+        flex: 1 1 calc(50% - 10px);
+        text-align: center;
+    }
 }
 
 @media (max-width: 520px) {
@@ -1749,6 +1771,10 @@ h1 {
         flex: 1 1 calc(50% - 8px);
     }
 
+    .result-count {
+        margin-top: -4px;
+    }
+
     .explore-card img {
         height: 220px;
     }
@@ -1789,6 +1815,10 @@ h1 {
 
     .profile-panel {
         padding: 22px;
+    }
+
+    .social-links a {
+        flex-basis: 100%;
     }
 
     .media-gallery img {
