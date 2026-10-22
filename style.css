@@ -1841,3 +1841,8 @@ h1 {
         height: 150px;
     }
 }
+
+/* NFC-ready creator profile */
+.konnekt-panel{margin:16px 24px;padding:22px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.konnekt-panel[hidden]{display:none}.konnekt-panel h2{margin-bottom:14px}.konnekt-options{display:flex;flex-wrap:wrap;gap:10px}.konnekt-options button{cursor:pointer}.profile-details section{margin:18px 0}.profile-details h3{font-size:.9rem;color:var(--accent-2)}[data-profile-availability]:empty,[data-profile-tagline]:empty{display:none}#featured-work{scroll-margin-top:25px}
+@media(max-width:520px){.konnekt-panel{margin:12px;padding:14px}.konnekt-options button{flex:1 1 40%}}
