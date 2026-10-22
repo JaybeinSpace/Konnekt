@@ -775,3 +775,6 @@ The next logical improvements are:
 - Add a real backend later with Supabase or Firebase when the frontend flow feels ready.
 
 This refactor sets up Konnekt for those next steps because creator data is now reusable instead of scattered through repeated HTML.
+
+## October 2026 creator profile upgrade
+Profiles now show a quick mobile introduction, Konnekt button, View Work shortcut, and optional creator fields: `tagline`, `availability`, `lookingFor`, `additionalRoles`, `skills`, `styles`, `equipment`, `software`, and `contactEmail`. List fields are arrays; absent sections are hidden. Hire, Collaborate, Network, and Message open an email inquiry only if a creator provides `contactEmail`; otherwise they show a frontend-only placeholder. View Socials scrolls to public links. Optional `?source=nfc`, `?source=qr`, `?source=share`, `?source=discovery` is recognized but not tracked. Existing query-string profile URLs are preserved. Permanent username routing, fair discovery ranking algorithms, backend, accounts, uploads, and analytics are not implemented.
