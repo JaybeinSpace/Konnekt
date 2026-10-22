@@ -503,13 +503,53 @@ const renderCreatorProfile = () => {
     document.querySelector("[data-profile-avatar]").alt = creator.profileAlt;
     document.querySelector("[data-profile-name]").textContent = creator.name;
     document.querySelector("[data-profile-meta]").textContent = `${creator.role} | ${creator.location}`;
-    document.querySelector("[data-profile-bio]").textContent = creator.bio;
+    document.querySelector("[data-profile-bio]").textContent = creator.bio || "";
+    document.querySelector("[data-profile-tagline]").textContent = creator.tagline || creator.shortDescription || "";
+    document.querySelector("[data-profile-availability]").textContent = creator.availability || "";
+    const details = document.querySelector("[data-profile-details]");
+    [["Looking for",creator.lookingFor],["Other roles",creator.additionalRoles],["Skills",creator.skills],["Styles",creator.styles],["Equipment",creator.equipment],["Software",creator.software]].forEach(([label,values]) => {
+        if (!Array.isArray(values) || !values.length) return;
+        const section = document.createElement("section");
+        const title = document.createElement("h3");
+        title.textContent = label;
+        const description = document.createElement("p");
+        description.textContent = values.join(" · ");
+        section.append(title,description);
+        details.append(section);
+    });
+    const panel = document.querySelector("[data-konnekt-panel]");
+    const options = document.querySelector("[data-konnekt-options]");
+    const feedback = document.querySelector("[data-konnekt-feedback]");
+    const openKonnekt = document.querySelector("[data-konnekt-open]");
+    ["Hire","Collaborate","Network","Message","View Socials"].forEach(action => {
+        const button = document.createElement("button");
+        button.className = "button secondary-button";
+        button.type = "button";
+        button.textContent = action;
+        button.addEventListener("click", () => {
+            if (action === "View Socials") {
+                document.querySelector("[data-profile-socials]").scrollIntoView({behavior:"smooth"});
+            } else if (creator.contactEmail && creator.contactEmail.includes("@")) {
+                window.location.href = "mailto:" + creator.contactEmail + "?subject=" + encodeURIComponent(action + " inquiry via Konnekt");
+            } else {
+                feedback.textContent = action + " inquiries are coming soon. Check the creator's social links.";
+            }
+        });
+        options.append(button);
+    });
+    openKonnekt.addEventListener("click", () => {
+        panel.hidden = !panel.hidden;
+        openKonnekt.setAttribute("aria-expanded",String(!panel.hidden));
+    });
+    const visitSource = new URLSearchParams(window.location.search).get("source");
+    if (["nfc","qr","share","discovery"].includes(visitSource)) document.documentElement.dataset.profileSource = visitSource;
+
     document.querySelector("[data-profile-stats]").innerHTML = renderStats(creator);
-    document.querySelector("[data-profile-badges]").innerHTML = renderBadges(creator.badges);
-    document.querySelector("[data-profile-socials]").innerHTML = renderSocialLinks(creator.socialLinks);
-    document.querySelector("[data-profile-projects]").innerHTML = renderProjects(creator.featuredProjects);
-    document.querySelector("[data-profile-gallery]").innerHTML = renderGallery(creator.gallery);
-    document.querySelector("[data-profile-videos]").innerHTML = renderVideos(creator.videos);
+    document.querySelector("[data-profile-badges]").innerHTML = renderBadges(creator.badges || []);
+    document.querySelector("[data-profile-socials]").innerHTML = renderSocialLinks(creator.socialLinks || []);
+    document.querySelector("[data-profile-projects]").innerHTML = renderProjects(creator.featuredProjects || []);
+    document.querySelector("[data-profile-gallery]").innerHTML = renderGallery(creator.gallery || []);
+    document.querySelector("[data-profile-videos]").innerHTML = renderVideos(creator.videos || []);
 
     const profileSaveButton = document.querySelector(".profile-actions .save-button");
 

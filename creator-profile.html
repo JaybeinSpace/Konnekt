@@ -43,25 +43,25 @@
                 <div class="profile-intro">
                     <p class="eyebrow">Featured Creator</p>
                     <h1 data-profile-name>Creator Name</h1>
-                    <p class="profile-meta" data-profile-meta>Role | Location</p>
+                    <p class="profile-meta" data-profile-meta>Role | Location</p><p data-profile-tagline></p><p data-profile-availability></p>
                 </div>
 
                 <div class="profile-actions">
-                    <a class="button primary-button" href="mailto:hello@konnekt.example">Contact Creator</a>
+                    <button class="button primary-button" type="button" data-konnekt-open>Konnekt</button><a class="button secondary-button" href="#featured-work">View Work</a>
                     <button class="button secondary-button save-button" type="button" data-save-type="creator">Save Creator</button>
                     <a class="button secondary-button" href="explore.html">Back to Explore</a>
                 </div>
             </div>
 
-            <div class="profile-stat-strip" data-profile-stats aria-label="Creator profile stats"></div>
+            <div class="konnekt-panel" data-konnekt-panel hidden><h2>How would you like to Konnekt?</h2><div data-konnekt-options></div><p data-konnekt-feedback aria-live="polite"></p></div><div class="profile-stat-strip" data-profile-stats aria-label="Creator profile stats"></div>
         </section>
 
-        <section class="profile-layout">
+        <section class="profile-layout" id="featured-work">
             <aside class="profile-panel">
                 <h2>About</h2>
                 <p data-profile-bio></p>
 
-                <div class="badge-list" data-profile-badges aria-label="Creator badges"></div>
+                <div data-profile-details></div><div class="badge-list" data-profile-badges aria-label="Creator badges"></div>
 
                 <div class="social-links" data-profile-socials aria-label="Social media links"></div>
             </aside>
