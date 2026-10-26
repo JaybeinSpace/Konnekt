@@ -62,8 +62,15 @@
     </header>
 
     <main>
-        <nav class="creative-categories" aria-label="Explore creative disciplines">
-            <a href="explore.html?specialty=Painting">✎ &nbsp; Painting</a><a href="explore.html?specialty=Printmaking">▱ &nbsp; Printmaking</a><a href="explore.html?specialty=Drawing">✐ &nbsp; Drawing</a><a href="explore.html?category=photographer">◎ &nbsp; Photography</a><a href="explore.html?category=filmmaker">▣ &nbsp; Filmmaking</a><a href="explore.html?category=design">▤ &nbsp; Design</a><a href="explore.html">••• &nbsp; And more</a>
+        <nav class="creative-categories" aria-label="Filter featured creators">
+            <button type="button" data-home-filter="all" aria-pressed="true">All Creators</button>
+            <button type="button" data-home-filter="painting" aria-pressed="false">✎ &nbsp; Painting</button>
+            <button type="button" data-home-filter="printmaking" aria-pressed="false">▱ &nbsp; Printmaking</button>
+            <button type="button" data-home-filter="drawing" aria-pressed="false">✐ &nbsp; Drawing</button>
+            <button type="button" data-home-filter="photography" aria-pressed="false">◎ &nbsp; Photography</button>
+            <button type="button" data-home-filter="filmmaking" aria-pressed="false">▣ &nbsp; Filmmaking</button>
+            <button type="button" data-home-filter="design" aria-pressed="false">▤ &nbsp; Design</button>
+            <a href="explore.html">And More →</a>
         </nav>
         <section class="section" id="creators">
             <div class="section-heading">
@@ -71,6 +78,7 @@
                 <h2>Meet the artists behind the work.</h2>
             </div>
 
+            <p class="home-filter-status" data-home-filter-status role="status" aria-live="polite"></p>
             <div class="creator-grid" data-featured-creators></div>
         </section>
 
