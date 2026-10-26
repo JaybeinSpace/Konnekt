@@ -1904,3 +1904,8 @@ body:has(.creative-categories) #creators .creator-info { padding:18px; }
  .hero-art-note { display:none; }
  .creative-categories { justify-content:flex-start; flex-wrap:nowrap; overflow-x:auto; }
 }
+
+.creative-categories button { background:none; border:0; color:#e9eef5; padding:10px 12px; white-space:nowrap; font:inherit; font-size:.9rem; cursor:pointer; border-radius:6px; }
+.creative-categories button:hover,.creative-categories button[aria-pressed="true"] { color:#a8c6ff; background:rgba(168,198,255,.12); }
+.home-filter-status { color:#b8c6d6; margin: -12px 0 20px; }
+.home-empty-state { grid-column:1/-1; padding:36px 20px; border:1px solid #34404d; border-radius:10px; }
