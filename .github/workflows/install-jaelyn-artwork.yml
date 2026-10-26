@@ -1,0 +1,30 @@
+name: Install Jaelyn artwork
+on:
+  push:
+    branches:
+      - feature/creator-profile-upgrade
+    paths:
+      - .github/workflows/install-jaelyn-artwork.yml
+permissions:
+  contents: write
+jobs:
+  install-artwork:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Extract uploaded artwork ZIP from main
+        run: |
+          git show origin/main:jaelyn-ramos-paintings.zip > /tmp/jaelyn-ramos-paintings.zip
+          unzip -o /tmp/jaelyn-ramos-paintings.zip 'assets/jaelyn-ramos/*.jpg' -d .
+          test "$(find assets/jaelyn-ramos -maxdepth 1 -name '*.jpg' | wc -l)" -eq 9
+      - name: Commit images to feature branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/jaelyn-ramos/
+          if ! git diff --cached --quiet; then
+            git commit -m "Install Jaelyn Ramos artwork images"
+            git push
+          fi
