@@ -278,7 +278,7 @@ const renderExploreCards = () => {
         <article class="explore-card" data-creator-id="${creator.id}" data-category="${(window.getCreatorCategories?.(creator) || [creator.category]).join(" ")}" data-search="${getCreatorSearchText(creator)}">
             <img src="${creator.profileImage}" alt="${creator.profileAlt}">
             <div class="explore-card-body">
-                <p class="creator-role">${creator.role}</p>
+                <p class="creator-role">${creator.role}${creator.isDemo ? " · Demo Profile" : ""}</p>
                 <h2>${creator.name}</h2>
                 <p class="creator-location">${creator.location}</p>
                 <p>${creator.shortDescription}</p>
