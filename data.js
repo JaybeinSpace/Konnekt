@@ -841,3 +841,196 @@ window.konnektCreators.push({
   ],
   "videos": []
 });
+
+// DEMO PROFILE — fictional creator; replace with an opted-in real artist before launch.
+window.konnektCreators.push({
+  "id": "nia-brooks-demo",
+  "name": "Nia Brooks",
+  "category": "visual-artist",
+  "categories": [
+    "visual-arts"
+  ],
+  "specialties": [
+    "Painting",
+    "Mixed Media"
+  ],
+  "role": "Painter & Mixed-Media Artist",
+  "location": "Philadelphia, PA",
+  "bio": "Fictional demo creator showcasing bold abstract painting and layered mixed-media compositions.",
+  "shortDescription": "Abstract painting and layered color studies.",
+  "photo": "photo-1541961017774-22349e4a1262",
+  "tags": [
+    "Painting",
+    "Mixed Media",
+    "Abstract Art"
+  ],
+  "profileImage": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?auto=format&fit=crop&w=1200&q=80",
+  "profileAlt": "Sample visual for fictional demo creator Nia Brooks",
+  "bannerImage": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?auto=format&fit=crop&w=1200&q=80",
+  "bannerAlt": "Sample artwork imagery for Nia Brooks (demo)",
+  "discovery": {
+    "featured": true,
+    "konnektSelects": false,
+    "recentActivity": "2026-10-20",
+    "categoryPriority": 5,
+    "locationPriority": 5
+  },
+  "stats": {
+    "projects": "0",
+    "views": "—",
+    "badges": "0"
+  },
+  "badges": [
+    "Demo Profile"
+  ],
+  "socialLinks": [],
+  "gallery": [],
+  "featuredProjects": [],
+  "videos": [],
+  "isDemo": true
+});
+
+// DEMO PROFILE — fictional creator; replace with an opted-in real artist before launch.
+window.konnektCreators.push({
+  "id": "eli-porter-demo",
+  "name": "Eli Porter",
+  "category": "photographer",
+  "categories": [
+    "photography"
+  ],
+  "specialties": [
+    "Portrait",
+    "Street"
+  ],
+  "role": "Portrait & Street Photographer",
+  "location": "Atlanta, GA",
+  "bio": "Fictional demo creator exploring candid street photography and expressive portraits.",
+  "shortDescription": "Portraits, street photography, and everyday stories.",
+  "photo": "photo-1516035069371-29a1b244cc32",
+  "tags": [
+    "Photography",
+    "Portrait",
+    "Street"
+  ],
+  "profileImage": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1200&q=80",
+  "profileAlt": "Sample visual for fictional demo creator Eli Porter",
+  "bannerImage": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1200&q=80",
+  "bannerAlt": "Sample artwork imagery for Eli Porter (demo)",
+  "discovery": {
+    "featured": true,
+    "konnektSelects": false,
+    "recentActivity": "2026-10-20",
+    "categoryPriority": 5,
+    "locationPriority": 5
+  },
+  "stats": {
+    "projects": "0",
+    "views": "—",
+    "badges": "0"
+  },
+  "badges": [
+    "Demo Profile"
+  ],
+  "socialLinks": [],
+  "gallery": [],
+  "featuredProjects": [],
+  "videos": [],
+  "isDemo": true
+});
+
+// DEMO PROFILE — fictional creator; replace with an opted-in real artist before launch.
+window.konnektCreators.push({
+  "id": "amara-fields-demo",
+  "name": "Amara Fields",
+  "category": "visual-artist",
+  "categories": [
+    "visual-arts",
+    "design"
+  ],
+  "specialties": [
+    "Illustration",
+    "Graphic Design"
+  ],
+  "role": "Illustrator & Graphic Designer",
+  "location": "Houston, TX",
+  "bio": "Fictional demo creator blending editorial illustration with playful graphic design.",
+  "shortDescription": "Editorial illustrations and bold visual identities.",
+  "photo": "photo-1549490349-8643362247b5",
+  "tags": [
+    "Illustration",
+    "Graphic Design",
+    "Design"
+  ],
+  "profileImage": "https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&w=1200&q=80",
+  "profileAlt": "Sample visual for fictional demo creator Amara Fields",
+  "bannerImage": "https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&w=1200&q=80",
+  "bannerAlt": "Sample artwork imagery for Amara Fields (demo)",
+  "discovery": {
+    "featured": true,
+    "konnektSelects": false,
+    "recentActivity": "2026-10-20",
+    "categoryPriority": 5,
+    "locationPriority": 5
+  },
+  "stats": {
+    "projects": "0",
+    "views": "—",
+    "badges": "0"
+  },
+  "badges": [
+    "Demo Profile"
+  ],
+  "socialLinks": [],
+  "gallery": [],
+  "featuredProjects": [],
+  "videos": [],
+  "isDemo": true
+});
+
+// DEMO PROFILE — fictional creator; replace with an opted-in real artist before launch.
+window.konnektCreators.push({
+  "id": "leo-martin-demo",
+  "name": "Leo Martin",
+  "category": "filmmaker",
+  "categories": [
+    "film-video"
+  ],
+  "specialties": [
+    "Directing",
+    "Videography"
+  ],
+  "role": "Filmmaker & Videographer",
+  "location": "New Orleans, LA",
+  "bio": "Fictional demo creator producing short films and documentary-style visual stories.",
+  "shortDescription": "Short films and documentary-style visual storytelling.",
+  "photo": "photo-1485846234645-a62644f84728",
+  "tags": [
+    "Filmmaking",
+    "Videography",
+    "Directing"
+  ],
+  "profileImage": "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=80",
+  "profileAlt": "Sample visual for fictional demo creator Leo Martin",
+  "bannerImage": "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=80",
+  "bannerAlt": "Sample artwork imagery for Leo Martin (demo)",
+  "discovery": {
+    "featured": true,
+    "konnektSelects": false,
+    "recentActivity": "2026-10-20",
+    "categoryPriority": 5,
+    "locationPriority": 5
+  },
+  "stats": {
+    "projects": "0",
+    "views": "—",
+    "badges": "0"
+  },
+  "badges": [
+    "Demo Profile"
+  ],
+  "socialLinks": [],
+  "gallery": [],
+  "featuredProjects": [],
+  "videos": [],
+  "isDemo": true
+});

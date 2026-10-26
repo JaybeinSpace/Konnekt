@@ -1864,3 +1864,67 @@ h1 {
 /* Circular creator avatars; position the portrait lower inside the frame so the forehead stays visible. */
 .profile-avatar { border-radius: 50%; object-fit: cover; object-position: center 24%; }
 @media (max-width: 600px) { .profile-avatar { object-position: center 22%; } }
+
+/* Cinematic home page, inspired by approved visual direction */
+body:has(.creative-categories) { background: #070d11; }
+body:has(.creative-categories) .site-header { overflow: hidden; background: #070d11; }
+body:has(.creative-categories) .hero { width: 100%; max-width: none; min-height: 510px; padding: 42px max(4vw,24px) 34px; gap: 0; align-items: center; isolation: isolate; }
+body:has(.creative-categories) .hero-content { width: min(660px, 54%); position: relative; z-index: 2; }
+body:has(.creative-categories) .hero h1 { font-size: clamp(3.2rem,5.3vw,5.8rem); line-height: 1.02; letter-spacing: -.045em; }
+body:has(.creative-categories) .hero h1::first-line { color: #fff; }
+body:has(.creative-categories) .hero-copy { max-width: 540px; color: #d1d9e4; line-height: 1.55; }
+body:has(.creative-categories) .hero .eyebrow { letter-spacing: .3em; color: #d8e0ee; }
+body:has(.creative-categories) .hero-proof { display: none; }
+body:has(.creative-categories) .hero-visual { width: 55%; min-height: 510px; position: absolute; right: 0; top: 0; bottom: 0; z-index: 0; }
+body:has(.creative-categories) .hero-visual::before { content:""; position:absolute; inset:0; background:linear-gradient(90deg,#070d11 0%,transparent 35%); z-index:3; pointer-events:none; }
+body:has(.creative-categories) .hero-visual::after { display:none; }
+body:has(.creative-categories) .hero-frame { border: 0; border-radius: 0; box-shadow:none; transform:skewX(-11deg); }
+body:has(.creative-categories) .hero-frame img { transform:scale(1.16) skewX(11deg); }
+body:has(.creative-categories) .hero-frame-large { inset: 0 48% 0 0; }
+body:has(.creative-categories) .hero-frame-small { left: 44%; right: 20%; top:0; bottom:0; width:auto; height:auto; }
+body:has(.creative-categories) .hero-frame-tall { left: 77%; right:-12%; top:0; bottom:0; width:auto; height:auto; }
+.hero-art-note { position:absolute; z-index:4; right:3%; bottom: 10%; font-style:italic; font-size:clamp(1rem,2vw,1.8rem); text-align:center; text-shadow:0 3px 12px #000; transform:rotate(-7deg); }
+body:has(.creative-categories) .primary-button { background:#f7f9fc; color:#101820; box-shadow:none; }
+body:has(.creative-categories) .secondary-button { background:transparent; border-color:#c6d2e0; }
+.creative-categories { display:flex; justify-content:space-around; flex-wrap:wrap; gap:8px; padding:22px 3%; border-top:1px solid #27313b; border-bottom:1px solid #27313b; }
+.creative-categories a { color:#e9eef5; padding:10px 12px; white-space:nowrap; font-size:.9rem; }
+.creative-categories a:hover { color:#a8c6ff; }
+body:has(.creative-categories) #creators { width:min(1460px,calc(100% - 56px)); padding-top:45px; }
+body:has(.creative-categories) #creators .section-heading { max-width:none; }
+body:has(.creative-categories) #creators h2 { font-size:clamp(2rem,4vw,3.7rem); }
+body:has(.creative-categories) #creators .creator-grid { grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:14px; }
+body:has(.creative-categories) #creators .creator-card { min-height:320px; }
+body:has(.creative-categories) #creators .creator-info { padding:18px; }
+@media(max-width:800px) {
+ body:has(.creative-categories) .hero { padding:65px 24px 32px; min-height:700px; align-items:flex-start; }
+ body:has(.creative-categories) .hero-content { width:100%; }
+ body:has(.creative-categories) .hero h1 { font-size:clamp(2.7rem,10vw,4rem); }
+ body:has(.creative-categories) .hero-visual { width:100%; height:330px; min-height:330px; top:auto; bottom:0; opacity:.82; }
+ body:has(.creative-categories) .hero-visual::before { background:linear-gradient(180deg,#070d11,transparent 55%); }
+ .hero-art-note { display:none; }
+ .creative-categories { justify-content:flex-start; flex-wrap:nowrap; overflow-x:auto; }
+}
+
+.creative-categories button { background:none; border:0; color:#e9eef5; padding:10px 12px; white-space:nowrap; font:inherit; font-size:.9rem; cursor:pointer; border-radius:6px; }
+.creative-categories button:hover,.creative-categories button[aria-pressed="true"] { color:#a8c6ff; background:rgba(168,198,255,.12); }
+.home-filter-status { color:#b8c6d6; margin: -12px 0 20px; }
+.home-empty-state { grid-column:1/-1; padding:36px 20px; border:1px solid #34404d; border-radius:10px; }
+
+/* In-place homepage category switching: no navigation or forced scroll. */
+.home-gallery-swap { animation: homeGallerySwap .3s ease both; }
+@keyframes homeGallerySwap { from {opacity:.25;transform:translateY(8px)} to {opacity:1;transform:translateY(0)} }
+@media(prefers-reduced-motion:reduce) { .home-gallery-swap {animation:none;} }
+
+/* Monthly Konnekt Watch — only real creator artwork, not demo picks */
+.selects-section .selects-grid { display:block; }
+.watch-feature { display:grid; grid-template-columns:1.15fr 1fr; gap:0; background:#111922; border:1px solid #35414b; border-radius:12px; overflow:hidden; min-height:370px; }
+.watch-image { display:block; min-height:370px; overflow:hidden; }
+.watch-image img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s ease; }
+.watch-image:hover img { transform:scale(1.035); }
+.watch-copy { display:flex; flex-direction:column; align-items:flex-start; justify-content:center; padding:clamp(24px,4vw,60px); }
+.watch-kicker { color:#a8c6ff; font-size:.76rem; letter-spacing:.15em; font-weight:700; }
+.watch-copy h3 { font-size:clamp(2.4rem,4.8vw,4.8rem); line-height:1.04; margin:16px 0; }
+.watch-role { color:#e8edf4; font-weight:600; }
+.watch-specialties { color:#b7c6d4; }
+.watch-copy .button { margin-top:20px; }
+@media(max-width:720px) { .watch-feature { grid-template-columns:1fr; } .watch-image { min-height:280px; max-height:350px; } .watch-copy { padding:26px; } }
