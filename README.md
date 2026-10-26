@@ -112,3 +112,20 @@ Konnekt Gallery is the visual-arts companion to Konnekt Watch. Gallery is a fron
 - `gallery.css`: isolated exhibition styling so existing Konnekt and Watch styling stays intact.
 
 Some existing artwork titles are explicitly provisional in `data.js`. Gallery shows “Untitled work” for those pieces until Jaelyn confirms official titles; no placeholder descriptions are displayed. Gallery uses the existing painting type as the available medium/category rather than inventing material specifications. This is not an upload, payment, or authentication system.
+
+
+## Discovery, KONNEKT Action, Credits and Featured In (frontend MVP)
+
+- **Explore** (`explore.html`, `script.js`): existing creator search, category, specialty, location and availability filters remain. A Creators/Projects switch now enables work-first browsing using the same `data.js` records. Creator/project searches include names, disciplines, roles, locations, titles and available credit text. Real creators appear before demo profiles, and project cards label demo content.
+- **KONNEKT Action** (`creator-profile.html`, `script.js`): creator profile contact panel with keyboard Escape close, visible close button, and options based strictly on creator-approved data. Existing public social links are shown when available. Email draft inquiries require BOTH a real `contactEmail` and an explicit `contactOptions` approval flag. No emails are sent by Konnekt and no services are assumed. For example, only with permission add `contactOptions: { hire: true, collaborate: true, network: true, general: true }` and `contactEmail` to an existing creator. Never insert unapproved contact details.
+- **Credits** (`project.html`, `script.js`): optional `credits` entries can be existing strings such as `"Artist: Jaelyn Ramos"`, or structured objects such as `{ name: "Creator Name", role: "Editor", creatorId: "existing-creator-id", approved: true }`. Structured external contributors can use `url` instead of `creatorId` when approved. Show up to five key credits and toggle full list when needed. Project owners are linked by exact existing name. Credits are project-supplied attribution, **not independently verified**. Do not insert example names into real project records.
+- **Featured In**: a creator profile lists projects belonging to *other* creators only when a structured credit explicitly references their `creatorId` and has `approved: true`. This is a display marker for pre-approved data entered by maintainers, not an independent identity verification system. Original projects are linked rather than duplicated.
+- **Future backend only**: claim credit, request credit, evidence storage, disputes, appeals, moderation, credit history, notifications, in-platform messages and account-based confirmations. Credit Standard Option C requires independent review and appeal; it is a **policy for future implementation**, not a working frontend verification flow.
+
+### Manual QA checklist
+
+1. Test Explore Creators and Projects tabs on mobile and desktop; combine search with category, location, specialty, availability and Clear filters.
+2. Open Jaelyn's profile: KONNEKT must expose her approved Instagram link, but must not claim commissions or send messages.
+3. Open an existing artwork project: the artist credit must display and link to Jaelyn; projects with no credits should not crash.
+4. Check that Featured In is hidden without approved linked contributor records and that saved items, Gallery and Watch remain unaffected.
+5. Test keyboard focus and Escape behavior in the KONNEKT panel, plus small-screen layout.
