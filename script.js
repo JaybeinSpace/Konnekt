@@ -231,16 +231,23 @@ const renderKonnektSelects = () => {
         || (creator.featuredProjects || [])[0];
     selectsGrid.innerHTML = `
         <article class="watch-feature">
-            <a class="watch-image" href="creator-profile.html?id=${encodeURIComponent(creator.id)}">
-                <img src="${artwork?.thumbnail || creator.bannerImage}" alt="${artwork?.alt || creator.bannerAlt}">
-            </a>
+            <div class="watch-art-stack">
+                <a class="watch-image" href="creator-profile.html?id=${encodeURIComponent(creator.id)}" aria-label="Explore artwork by ${creator.name}">
+                    <img src="assets/jaelyn-ramos/05-the-dancers.jpg" alt="The Dancers, artwork by Jaelyn Ramos">
+                </a>
+                <a class="watch-art-detail" href="creator-profile.html?id=${encodeURIComponent(creator.id)}" aria-label="See more artwork by ${creator.name}">
+                    <img src="assets/jaelyn-ramos/04-parrot.jpg" alt="Parrot artwork by Jaelyn Ramos">
+                </a>
+                <span class="watch-art-caption">THE WORK SPEAKS FIRST.</span>
+            </div>
             <div class="watch-copy">
                 <span class="watch-kicker">KONNEKT WATCH · OCTOBER 2026</span>
-                <h3>${creator.name}</h3>
+                <p class="watch-overline">ONE CREATOR. A CLOSER LOOK.</p>
+                <h3>Meet ${creator.name}. <em>An artist worth keeping your eye on.</em></h3>
                 <p class="watch-role">${creator.role} · ${creator.location}</p>
+                <p>From expressive figures to vivid studies of everyday subjects, Jaelyn's portfolio invites a second look. Her paintings move between different moods and subjects, giving visitors plenty to discover.</p>
                 <p class="watch-specialties">${(creator.specialties || []).join(" · ")}</p>
-                <p>Discover the artwork and creative perspective of this month's featured artist.</p>
-                <a class="button primary-button" href="creator-profile.html?id=${encodeURIComponent(creator.id)}">Explore ${creator.name}'s Work →</a>
+                <a class="button primary-button" href="creator-profile.html?id=${encodeURIComponent(creator.id)}">See Why We're Watching →</a>
             </div>
         </article>`;
 };
