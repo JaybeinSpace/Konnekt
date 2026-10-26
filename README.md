@@ -129,3 +129,12 @@ Some existing artwork titles are explicitly provisional in `data.js`. Gallery sh
 3. Open an existing artwork project: the artist credit must display and link to Jaelyn; projects with no credits should not crash.
 4. Check that Featured In is hidden without approved linked contributor records and that saved items, Gallery and Watch remain unaffected.
 5. Test keyboard focus and Escape behavior in the KONNEKT panel, plus small-screen layout.
+
+
+## Discover — immersive creative feed (frontend preview)
+
+- Open `discover.html` from the **Discover** navigation item. The vertical, mobile-friendly, scrollable feed draws project artwork from existing `window.konnektCreators[].featuredProjects` records in `data.js`; it does not invent new artists or projects.
+- **For You**, **Art & Photography**, and **Film & Motion** tabs filter by existing project type/category/tags. Real creator work is ordered before clearly marked demo content.
+- Heart buttons toggle likes and save project IDs only to the visitor's own browser `localStorage` under `konnekt-discover-likes-v1`. Likes are **not public counts**, not synced across devices, and not associated with an account. Do not advertise them as public engagement until a backend exists.
+- Each post links to its actual project and creator profile. The current feed is **reels-inspired vertical discovery**, not video playback: image projects remain still images and no fake play controls or fabricated video clips are shown. Video playback requires creator-approved video media URLs in a future update.
+- QA: test mobile scroll, category switching, keyboard button activation, toggling likes, reload persistence, and links to Gallery/project/profile. Confirm demo badges and no false public like counts.
