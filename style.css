@@ -1975,3 +1975,15 @@ body:has(.creative-categories) #creators .creator-info { padding:18px; }
   body:has(.creative-categories) .hero h1 { font-size:2.25rem; }
   body:has(.creative-categories) .hero-visual { height:230px; min-height:230px; flex-basis:230px; }
 }
+
+/* Homepage discovery entry: intentional two-column layout and no CTA wrapping. */
+.watch-home-entry { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:clamp(24px,4vw,60px); align-items:center; padding:clamp(28px,4vw,52px); margin:40px auto 0; }
+.watch-home-intro { min-width:0; max-width:720px; }
+.watch-home-entry .eyebrow { color:#55dfc4; font-size:.78rem; letter-spacing:.16em; }
+.watch-home-entry h2 { max-width:700px; font-size:clamp(1.9rem,3.1vw,3rem); line-height:1.14; letter-spacing:-.03em; }
+.watch-home-entry p:not(.eyebrow) { max-width:650px; font-size:clamp(.95rem,1.3vw,1.06rem); }
+.watch-home-actions { display:flex; flex-direction:column; gap:12px; width:220px; flex-shrink:0; }
+.watch-home-actions .button { display:inline-flex; align-items:center; justify-content:space-between; gap:18px; width:100%; min-height:52px; padding:13px 18px; white-space:nowrap; font-size:.94rem; line-height:1.2; text-align:left; }
+.watch-home-actions .button span { flex-shrink:0; font-size:1.15rem; }
+@media(max-width:850px) { .watch-home-entry { grid-template-columns:1fr; gap:20px; } .watch-home-actions { flex-direction:row; width:100%; } .watch-home-actions .button { flex:1; min-width:0; } }
+@media(max-width:520px) { .watch-home-entry { padding:25px 20px; } .watch-home-actions { flex-direction:column; } .watch-home-actions .button { width:100%; } }
