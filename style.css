@@ -1987,3 +1987,27 @@ body:has(.creative-categories) #creators .creator-info { padding:18px; }
 .watch-home-actions .button span { flex-shrink:0; font-size:1.15rem; }
 @media(max-width:850px) { .watch-home-entry { grid-template-columns:1fr; gap:20px; } .watch-home-actions { flex-direction:row; width:100%; } .watch-home-actions .button { flex:1; min-width:0; } }
 @media(max-width:520px) { .watch-home-entry { padding:25px 20px; } .watch-home-actions { flex-direction:column; } .watch-home-actions .button { width:100%; } }
+
+/* Discovery, professional contact, and credit enhancements */
+.explore-discovery-switch{display:flex;gap:12px;flex-wrap:wrap;margin:30px 0 22px}
+.explore-discovery-switch .filter-button{min-width:130px}
+[data-discovery-projects][hidden],[data-explore-grid][hidden],[data-featured-in-section][hidden],[data-konnekt-panel][hidden],[data-credits-toggle][hidden]{display:none!important}
+.discovery-work-card>a{display:block}
+.discovery-work-card>a img{width:100%;height:230px;object-fit:cover}
+.konnekt-panel{margin:20px 0;padding:clamp(20px,4vw,36px);border:1px solid #526374;border-radius:14px;background:#15212b;color:#f4f6f9}
+.konnekt-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.konnekt-panel-heading h2{margin:0}
+.konnekt-close{border:1px solid #9eaebb;background:transparent;color:inherit;border-radius:6px;font-size:1.5rem;min-width:44px;min-height:44px;cursor:pointer}
+[data-konnekt-options]{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+[data-konnekt-form]{display:flex;flex-wrap:wrap;gap:12px}
+.konnekt-inquiry-form{width:min(100%,640px);display:grid;gap:16px;margin-top:16px}
+.konnekt-inquiry-form label{display:grid;gap:8px;font-size:.95rem}
+.konnekt-inquiry-form input,.konnekt-inquiry-form textarea{width:100%;min-height:46px;padding:12px;border-radius:6px;border:1px solid #91a2af;background:#f8fafc;color:#18202a;font:inherit}
+.konnekt-inquiry-form textarea{min-height:115px;resize:vertical}
+.konnekt-inquiry-form button{justify-self:start}
+.credit-entry{display:flex;flex-direction:column;gap:5px;padding:13px 0;border-bottom:1px solid #4b5865}
+.credit-entry .credit-role{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+.credit-entry a{text-decoration:underline;text-underline-offset:4px}
+.credits-note{font-size:.8rem;opacity:.75;line-height:1.5}
+.featured-in-section{padding:55px 5%}
+@media(max-width:650px){.explore-discovery-switch .filter-button{flex:1}.konnekt-inquiry-form button{width:100%}.discovery-work-card>a img{height:200px}}
