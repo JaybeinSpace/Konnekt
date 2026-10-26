@@ -520,3 +520,321 @@ window.konnektCreators = [
         ]
     }
 ];
+
+// First real creator. Artwork files are provided separately for upload to assets/jaelyn-ramos/.
+window.konnektCreators.push({
+  "id": "jaelyn-ramos",
+  "name": "Jaelyn Ramos",
+  "category": "visual-artist",
+  "categories": [
+    "visual-arts"
+  ],
+  "specialties": [
+    "Painting"
+  ],
+  "role": "Visual Artist",
+  "location": "",
+  "bio": "",
+  "shortDescription": "Original paintings by Jaelyn Ramos.",
+  "tagline": "Painter and visual artist",
+  "profileImage": "assets/jaelyn-ramos/05-the-dancers.jpg",
+  "profileAlt": "The Dancers, a painting by Jaelyn Ramos",
+  "bannerImage": "assets/jaelyn-ramos/05-the-dancers.jpg",
+  "bannerAlt": "The Dancers, a painting by Jaelyn Ramos",
+  "tags": [
+    "Painting",
+    "Visual Arts"
+  ],
+  "discovery": {
+    "featured": false,
+    "konnektSelects": false,
+    "recentActivity": "2026-10-26"
+  },
+  "stats": {
+    "projects": "9",
+    "views": "—",
+    "badges": "0"
+  },
+  "badges": [],
+  "socialLinks": [
+    {
+      "label": "Instagram",
+      "url": "https://www.instagram.com/jaelyn._.art/"
+    }
+  ],
+  "gallery": [
+    {
+      "src": "assets/jaelyn-ramos/01-street-scene.jpg",
+      "alt": "Painting by Jaelyn Ramos — Street Scene"
+    },
+    {
+      "src": "assets/jaelyn-ramos/02-portrait-study.jpg",
+      "alt": "Painting by Jaelyn Ramos — Portrait Study"
+    },
+    {
+      "src": "assets/jaelyn-ramos/03-two-children.jpg",
+      "alt": "Painting by Jaelyn Ramos — Two Children"
+    },
+    {
+      "src": "assets/jaelyn-ramos/04-parrot.jpg",
+      "alt": "Painting by Jaelyn Ramos — Parrot"
+    },
+    {
+      "src": "assets/jaelyn-ramos/05-the-dancers.jpg",
+      "alt": "Painting by Jaelyn Ramos — The Dancers"
+    },
+    {
+      "src": "assets/jaelyn-ramos/06-teddy-bear.jpg",
+      "alt": "Painting by Jaelyn Ramos — Teddy Bear"
+    },
+    {
+      "src": "assets/jaelyn-ramos/07-still-life.jpg",
+      "alt": "Painting by Jaelyn Ramos — Still Life"
+    },
+    {
+      "src": "assets/jaelyn-ramos/08-chicken.jpg",
+      "alt": "Painting by Jaelyn Ramos — Chicken"
+    },
+    {
+      "src": "assets/jaelyn-ramos/09-architecture.jpg",
+      "alt": "Painting by Jaelyn Ramos — Architecture"
+    }
+  ],
+  "featuredProjects": [
+    {
+      "id": "the-dancers",
+      "creatorId": "jaelyn-ramos",
+      "title": "The Dancers",
+      "category": "Painting",
+      "type": "Painting",
+      "description": "Temporary artwork title; original title pending.",
+      "thumbnail": "assets/jaelyn-ramos/05-the-dancers.jpg",
+      "image": "assets/jaelyn-ramos/05-the-dancers.jpg",
+      "alt": "Painting by Jaelyn Ramos — temporary title: The Dancers",
+      "media": [
+        {
+          "src": "assets/jaelyn-ramos/05-the-dancers.jpg",
+          "alt": "Painting by Jaelyn Ramos — The Dancers"
+        }
+      ],
+      "credits": [
+        "Artist: Jaelyn Ramos"
+      ],
+      "tools": [],
+      "year": "",
+      "tags": [
+        "Painting",
+        "Visual Arts"
+      ]
+    },
+    {
+      "id": "street-scene",
+      "creatorId": "jaelyn-ramos",
+      "title": "Street Scene",
+      "category": "Painting",
+      "type": "Painting",
+      "description": "Temporary artwork title; original title pending.",
+      "thumbnail": "assets/jaelyn-ramos/01-street-scene.jpg",
+      "image": "assets/jaelyn-ramos/01-street-scene.jpg",
+      "alt": "Painting by Jaelyn Ramos — temporary title: Street Scene",
+      "media": [
+        {
+          "src": "assets/jaelyn-ramos/01-street-scene.jpg",
+          "alt": "Painting by Jaelyn Ramos — Street Scene"
+        }
+      ],
+      "credits": [
+        "Artist: Jaelyn Ramos"
+      ],
+      "tools": [],
+      "year": "",
+      "tags": [
+        "Painting",
+        "Visual Arts"
+      ]
+    },
+    {
+      "id": "portrait-study",
+      "creatorId": "jaelyn-ramos",
+      "title": "Portrait Study",
+      "category": "Painting",
+      "type": "Painting",
+      "description": "Temporary artwork title; original title pending.",
+      "thumbnail": "assets/jaelyn-ramos/02-portrait-study.jpg",
+      "image": "assets/jaelyn-ramos/02-portrait-study.jpg",
+      "alt": "Painting by Jaelyn Ramos — temporary title: Portrait Study",
+      "media": [
+        {
+          "src": "assets/jaelyn-ramos/02-portrait-study.jpg",
+          "alt": "Painting by Jaelyn Ramos — Portrait Study"
+        }
+      ],
+      "credits": [
+        "Artist: Jaelyn Ramos"
+      ],
+      "tools": [],
+      "year": "",
+      "tags": [
+        "Painting",
+        "Visual Arts"
+      ]
+    },
+    {
+      "id": "two-children",
+      "creatorId": "jaelyn-ramos",
+      "title": "Two Children",
+      "category": "Painting",
+      "type": "Painting",
+      "description": "Temporary artwork title; original title pending.",
+      "thumbnail": "assets/jaelyn-ramos/03-two-children.jpg",
+      "image": "assets/jaelyn-ramos/03-two-children.jpg",
+      "alt": "Painting by Jaelyn Ramos — temporary title: Two Children",
+      "media": [
+        {
+          "src": "assets/jaelyn-ramos/03-two-children.jpg",
+          "alt": "Painting by Jaelyn Ramos — Two Children"
+        }
+      ],
+      "credits": [
+        "Artist: Jaelyn Ramos"
+      ],
+      "tools": [],
+      "year": "",
+      "tags": [
+        "Painting",
+        "Visual Arts"
+      ]
+    },
+    {
+      "id": "parrot",
+      "creatorId": "jaelyn-ramos",
+      "title": "Parrot",
+      "category": "Painting",
+      "type": "Painting",
+      "description": "Temporary artwork title; original title pending.",
+      "thumbnail": "assets/jaelyn-ramos/04-parrot.jpg",
+      "image": "assets/jaelyn-ramos/04-parrot.jpg",
+      "alt": "Painting by Jaelyn Ramos — temporary title: Parrot",
+      "media": [
+        {
+          "src": "assets/jaelyn-ramos/04-parrot.jpg",
+          "alt": "Painting by Jaelyn Ramos — Parrot"
+        }
+      ],
+      "credits": [
+        "Artist: Jaelyn Ramos"
+      ],
+      "tools": [],
+      "year": "",
+      "tags": [
+        "Painting",
+        "Visual Arts"
+      ]
+    },
+    {
+      "id": "teddy-bear",
+      "creatorId": "jaelyn-ramos",
+      "title": "Teddy Bear",
+      "category": "Painting",
+      "type": "Painting",
+      "description": "Temporary artwork title; original title pending.",
+      "thumbnail": "assets/jaelyn-ramos/06-teddy-bear.jpg",
+      "image": "assets/jaelyn-ramos/06-teddy-bear.jpg",
+      "alt": "Painting by Jaelyn Ramos — temporary title: Teddy Bear",
+      "media": [
+        {
+          "src": "assets/jaelyn-ramos/06-teddy-bear.jpg",
+          "alt": "Painting by Jaelyn Ramos — Teddy Bear"
+        }
+      ],
+      "credits": [
+        "Artist: Jaelyn Ramos"
+      ],
+      "tools": [],
+      "year": "",
+      "tags": [
+        "Painting",
+        "Visual Arts"
+      ]
+    },
+    {
+      "id": "still-life",
+      "creatorId": "jaelyn-ramos",
+      "title": "Still Life",
+      "category": "Painting",
+      "type": "Painting",
+      "description": "Temporary artwork title; original title pending.",
+      "thumbnail": "assets/jaelyn-ramos/07-still-life.jpg",
+      "image": "assets/jaelyn-ramos/07-still-life.jpg",
+      "alt": "Painting by Jaelyn Ramos — temporary title: Still Life",
+      "media": [
+        {
+          "src": "assets/jaelyn-ramos/07-still-life.jpg",
+          "alt": "Painting by Jaelyn Ramos — Still Life"
+        }
+      ],
+      "credits": [
+        "Artist: Jaelyn Ramos"
+      ],
+      "tools": [],
+      "year": "",
+      "tags": [
+        "Painting",
+        "Visual Arts"
+      ]
+    },
+    {
+      "id": "chicken",
+      "creatorId": "jaelyn-ramos",
+      "title": "Chicken",
+      "category": "Painting",
+      "type": "Painting",
+      "description": "Temporary artwork title; original title pending.",
+      "thumbnail": "assets/jaelyn-ramos/08-chicken.jpg",
+      "image": "assets/jaelyn-ramos/08-chicken.jpg",
+      "alt": "Painting by Jaelyn Ramos — temporary title: Chicken",
+      "media": [
+        {
+          "src": "assets/jaelyn-ramos/08-chicken.jpg",
+          "alt": "Painting by Jaelyn Ramos — Chicken"
+        }
+      ],
+      "credits": [
+        "Artist: Jaelyn Ramos"
+      ],
+      "tools": [],
+      "year": "",
+      "tags": [
+        "Painting",
+        "Visual Arts"
+      ]
+    },
+    {
+      "id": "architecture",
+      "creatorId": "jaelyn-ramos",
+      "title": "Architecture",
+      "category": "Painting",
+      "type": "Painting",
+      "description": "Temporary artwork title; original title pending.",
+      "thumbnail": "assets/jaelyn-ramos/09-architecture.jpg",
+      "image": "assets/jaelyn-ramos/09-architecture.jpg",
+      "alt": "Painting by Jaelyn Ramos — temporary title: Architecture",
+      "media": [
+        {
+          "src": "assets/jaelyn-ramos/09-architecture.jpg",
+          "alt": "Painting by Jaelyn Ramos — Architecture"
+        }
+      ],
+      "credits": [
+        "Artist: Jaelyn Ramos"
+      ],
+      "tools": [],
+      "year": "",
+      "tags": [
+        "Painting",
+        "Visual Arts"
+      ]
+    }
+  ],
+  "videos": []
+});
