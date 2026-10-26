@@ -231,7 +231,7 @@ const renderKonnektSelects = () => {
         || (creator.featuredProjects || [])[0];
     selectsGrid.innerHTML = `
         <article class="watch-feature">
-            <a class="watch-image" href="creator-profile.html?id=${encodeURIComponent(creator.id)}">
+            <a class="watch-image" href="gallery.html">
                 <img src="${artwork?.thumbnail || creator.bannerImage}" alt="${artwork?.alt || creator.bannerAlt}">
             </a>
             <div class="watch-copy">
@@ -240,7 +240,7 @@ const renderKonnektSelects = () => {
                 <p class="watch-role">${creator.role} · ${creator.location}</p>
                 <p class="watch-specialties">${(creator.specialties || []).join(" · ")}</p>
                 <p>Discover the artwork and creative perspective of this month's featured artist.</p>
-                <a class="button primary-button" href="creator-profile.html?id=${encodeURIComponent(creator.id)}">Explore ${creator.name}'s Work →</a>
+                <a class="button primary-button" href="gallery.html">Explore ${creator.name}'s Work →</a>
             </div>
         </article>`;
 };
