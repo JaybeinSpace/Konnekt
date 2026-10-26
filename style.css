@@ -2162,3 +2162,22 @@ body:has(.creative-categories) #creators .creator-info .profile-link {
   body:has(.creative-categories) #creators .creator-card { min-height: 460px; }
   body:has(.creative-categories) #creators .creator-info { padding: 22px 20px; }
 }
+
+/* Make creator descriptions a prominent part of the card, not tiny captions. */
+body:has(.creative-categories) #creators .creator-card { min-height: 470px; }
+body:has(.creative-categories) #creators .creator-info { padding: 24px 21px 22px; gap: 10px; }
+body:has(.creative-categories) #creators .creator-info .creator-role { font-size: .78rem; line-height: 1.4; }
+body:has(.creative-categories) #creators .creator-info h3 { font-size: clamp(1.35rem, 1.65vw, 1.65rem); line-height: 1.18; }
+body:has(.creative-categories) #creators .creator-info .creator-location { font-size: .95rem; }
+body:has(.creative-categories) #creators .creator-info p:not(.creator-role):not(.creator-location) {
+  font-size: clamp(.98rem, 1.1vw, 1.12rem);
+  line-height: 1.55;
+  max-width: 100%;
+  flex: 0 0 auto;
+}
+body:has(.creative-categories) #creators .creator-info .profile-link { font-size: .84rem; padding: 10px 12px; }
+@media(max-width: 600px) {
+  body:has(.creative-categories) #creators .creator-card { min-height: 480px; }
+  body:has(.creative-categories) #creators .creator-info { padding: 22px; }
+  body:has(.creative-categories) #creators .creator-info p:not(.creator-role):not(.creator-location) { font-size: 1.05rem; }
+}
