@@ -2040,3 +2040,63 @@ body:has(.creative-categories) #creators .creator-info { padding:18px; }
 [data-project-credits] .credit-entry>a:focus-visible{outline:2px solid #b9d9ff;outline-offset:5px}
 .project-detail-layout .credits-note{margin:10px 0 0;color:#8393a5;font-size:.75rem;line-height:1.5;max-width:46ch}
 @media(max-width:450px){[data-project-credits] .credit-entry{align-items:flex-start;gap:8px;flex-direction:column}}
+
+/* Homepage creator cards: readable text and actions at all desktop widths. */
+body:has(.creative-categories) #creators .creator-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  align-items: stretch;
+}
+body:has(.creative-categories) #creators .creator-card {
+  min-height: 420px;
+  isolation: isolate;
+}
+body:has(.creative-categories) #creators .creator-card::after {
+  background: linear-gradient(180deg, rgba(5,10,15,.06) 0%, rgba(5,10,15,.48) 28%, rgba(5,10,15,.92) 58%, rgba(5,10,15,.98) 100%);
+}
+body:has(.creative-categories) #creators .creator-info {
+  padding: 20px 17px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  max-height: 100%;
+  overflow: visible;
+}
+body:has(.creative-categories) #creators .creator-info .creator-role,
+body:has(.creative-categories) #creators .creator-info h3,
+body:has(.creative-categories) #creators .creator-info .creator-location,
+body:has(.creative-categories) #creators .creator-info p { margin: 0; }
+body:has(.creative-categories) #creators .creator-info .creator-role {
+  line-height: 1.35;
+  font-size: .69rem;
+  overflow-wrap: anywhere;
+}
+body:has(.creative-categories) #creators .creator-info h3 {
+  font-size: clamp(1.12rem, 1.45vw, 1.35rem);
+  line-height: 1.2;
+}
+body:has(.creative-categories) #creators .creator-info .creator-location { font-size: .83rem; }
+body:has(.creative-categories) #creators .creator-info p:not(.creator-role):not(.creator-location) {
+  font-size: .85rem;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+body:has(.creative-categories) #creators .creator-info .card-actions {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-top: 5px;
+}
+body:has(.creative-categories) #creators .creator-info .profile-link {
+  margin: 0;
+  padding: 9px 11px;
+  font-size: .77rem;
+  min-height: 38px;
+}
+@media (max-width: 600px) {
+  body:has(.creative-categories) #creators .creator-card { min-height: 410px; }
+}
