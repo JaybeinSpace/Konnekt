@@ -157,14 +157,37 @@ const getOrderedExploreCreators = () => {
 };
 
 // Homepage featured creators are generated from the first three creator objects in data.js.
-const renderHomepageCreators = () => {
+const matchesHomepageDiscipline = (creator, discipline) => {
+    if (discipline === "all") return true;
+    const specialties = (creator.specialties || []).map((item) => item.toLowerCase());
+    const categories = typeof window.getCreatorCategories === "function"
+        ? window.getCreatorCategories(creator)
+        : (creator.categories || []);
+    const searchable = [creator.role, creator.category, ...(creator.tags || [])]
+        .filter(Boolean).join(" ").toLowerCase();
+    if (["painting", "printmaking", "drawing"].includes(discipline)) {
+        return specialties.some((item) => item.includes(discipline)) || searchable.includes(discipline);
+    }
+    if (discipline === "photography") return categories.includes("photography") || specialties.includes("photography") || creator.category === "photographer" || searchable.includes("photograph");
+    if (discipline === "filmmaking") return categories.includes("film-video") || creator.category === "filmmaker" || searchable.includes("film") || searchable.includes("cinematograph");
+    if (discipline === "design") return categories.includes("design") || specialties.some((item) => item.includes("design")) || searchable.includes("design");
+    return false;
+};
+
+const renderHomepageCreators = (discipline = "all") => {
     const featuredGrid = document.querySelector("[data-featured-creators]");
 
     if (!featuredGrid || creators.length === 0) {
         return;
     }
 
-    featuredGrid.innerHTML = creators.slice(0, 3).map((creator) => `
+    const matches = creators.filter((creator) => matchesHomepageDiscipline(creator, discipline));
+    const status = document.querySelector("[data-home-filter-status]");
+    if (status) status.textContent = discipline === "all"
+        ? "Discover creators across different disciplines."
+        : matches.length ? `Showing ${matches.length} creator${matches.length === 1 ? "" : "s"} in ${discipline}.`
+            : `No ${discipline} creators featured yet. Explore all creators or check back soon.`;
+    featuredGrid.innerHTML = matches.length ? matches.map((creator) => `
         <article class="creator-card">
             <img src="${creator.bannerImage}" alt="${creator.bannerAlt}">
             <div class="creator-info">
@@ -178,7 +201,18 @@ const renderHomepageCreators = () => {
                 </div>
             </div>
         </article>
-    `).join("");
+    `).join("") : `<div class="home-empty-state"><p>No creators in this category yet.</p><a class="button secondary-button" href="explore.html">Explore all creators</a></div>`;
+};
+
+const setupHomepageFilters = () => {
+    document.querySelectorAll("[data-home-filter]").forEach((button) => {
+        button.addEventListener("click", () => {
+            const discipline = button.dataset.homeFilter;
+            document.querySelectorAll("[data-home-filter]").forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+            renderHomepageCreators(discipline);
+            document.getElementById("creators")?.scrollIntoView({behavior:"smooth", block:"start"});
+        });
+    });
 };
 
 // Konnekt Selects are fake recognition picks pulled from creator/project data.
@@ -789,6 +823,7 @@ const setupSaveButtons = () => {
 };
 
 renderHomepageCreators();
+setupHomepageFilters();
 renderKonnektSelects();
 renderExploreCards();
 renderSavedItems();
