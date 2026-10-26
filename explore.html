@@ -37,23 +37,23 @@
     <main class="explore-page">
         <section class="explore-hero">
             <div>
-                <p class="eyebrow">Explore creators</p>
-                <h1>Discover creative talent across every discipline.</h1>
+                <p class="eyebrow">Discover creativity</p>
+                <h1>Find the work. Discover the creator.</h1>
                 <p class="hero-copy">
-                    Explore portfolios from filmmakers, visual artists, musicians, performers, designers, writers, and more.
+                    Discover original work and the creatives behind it. Browse real artists first, or explore clearly labeled demonstration profiles.
                 </p>
                 <div class="hero-actions">
                     <a class="button primary-button" href="submit.html">Submit Your Work</a>
-                    <a class="button secondary-button" href="creator-profile.html?id=maya-chen">View Sample Profile</a>
+                    <a class="button secondary-button" href="gallery.html">Explore the Gallery</a>
                 </div>
             </div>
         </section>
 
         <section class="explore-section" aria-label="Creator discovery">
             <div class="search-panel">
-                <label for="creator-search">Search creators</label>
-                <input id="creator-search" class="creator-search" type="search" placeholder="Search by name, role, or location">
-                <p>Try searches like Chicago, editor, Maya, or photographer.</p>
+                <label for="creator-search">Search creators and projects</label>
+                <input id="creator-search" class="creator-search" type="search" placeholder="Artist, project, role, or location">
+                <p>Try Jaelyn, painting, Brooklyn, or an artwork title.</p>
             </div>
 
             <div class="filter-bar" aria-label="Filter creators by discipline"><button class="filter-button is-active" type="button" data-filter="all">All</button><button class="filter-button" type="button" data-filter="film-video">Film & Video</button><button class="filter-button" type="button" data-filter="photography">Photography</button><button class="filter-button" type="button" data-filter="post-production">Post-Production</button><button class="filter-button" type="button" data-filter="visual-arts">Visual Arts</button><button class="filter-button" type="button" data-filter="design">Design</button><button class="filter-button" type="button" data-filter="performing-arts">Performing Arts</button><button class="filter-button" type="button" data-filter="music-audio">Music & Audio</button><button class="filter-button" type="button" data-filter="fashion-beauty">Fashion & Beauty</button><button class="filter-button" type="button" data-filter="writing-storytelling">Writing & Storytelling</button><button class="filter-button" type="button" data-filter="interactive-digital">Interactive & Digital</button></div>
@@ -65,11 +65,11 @@
   <button type="button" class="button secondary-button" id="clear-discovery">Clear filters</button>
 </div><p class="result-count" data-result-count aria-live="polite"></p>
 
-            <div class="explore-grid" data-explore-grid></div>
+            <div class="explore-discovery-switch" role="group" aria-label="Discovery results"><button class="filter-button is-active" type="button" data-discovery-view="creators" aria-pressed="true">Creators</button><button class="filter-button" type="button" data-discovery-view="projects" aria-pressed="false">Projects</button></div><div class="explore-grid" data-explore-grid></div><div class="explore-grid" data-discovery-projects hidden></div>
 
             <div class="empty-state" data-empty-state aria-live="polite">
                 <p class="eyebrow">No matches</p>
-                <h2>No creators found for that search.</h2>
+                <h2>No matching work or creators found.</h2>
                 <p>Try a different name, role, or location. You can also reset the filter to All.</p>
             </div>
         </section>
