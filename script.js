@@ -597,6 +597,13 @@ const renderProjectDetail = () => {
         return;
     }
 
+    const watchLink = document.querySelector("[data-watch-project-link]");
+    if (watchLink) {
+        const classification = [project.category, project.type, ...(project.tags || [])].join(" ").toLowerCase();
+        const watchEligible = /music video|documentary|animation|experimental|short film|narrative film|cinema|film/.test(classification);
+        watchLink.hidden = !watchEligible;
+        if (watchEligible) watchLink.href = "watch-project.html?id=" + encodeURIComponent(project.id);
+    }
     const creator = getCreatorById(project.creatorId);
     const creatorProfileUrl = `creator-profile.html?id=${project.creatorId}`;
 
