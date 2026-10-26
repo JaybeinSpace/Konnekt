@@ -145,6 +145,7 @@ const getOrderedExploreCreators = () => {
     return creators
         .map((creator, index) => ({ creator, index }))
         .sort((first, second) => {
+            if (!!first.creator.isDemo !== !!second.creator.isDemo) return first.creator.isDemo ? 1 : -1;
             const scoreDifference = getExploreScore(second.creator) - getExploreScore(first.creator);
 
             if (scoreDifference !== 0) {
@@ -507,7 +508,8 @@ const normalizeCredits = (project) => (project.credits || []).map((credit) => {
     }
     return credit && typeof credit === "object" ? credit : null;
 }).filter(credit => credit?.name && credit?.role);
-const creditUrl = (credit) => {
+const creditUrl = (credit, project) => {
+    if (!credit.creatorId && project?.creatorId && credit.name.toLowerCase() === (getCreatorById(project.creatorId)?.name || "").toLowerCase()) return "creator-profile.html?id=" + encodeURIComponent(project.creatorId);
     if (credit.creatorId && creators.some(creator => creator.id === credit.creatorId)) {
         return "creator-profile.html?id=" + encodeURIComponent(credit.creatorId);
     }
@@ -537,7 +539,7 @@ const renderCreditList = (project, expanded = false) => {
         const role = document.createElement("span");
         role.className = "credit-role";
         role.textContent = credit.role;
-        const url = creditUrl(credit);
+        const url = creditUrl(credit, project);
         const name = document.createElement(url ? "a" : "span");
         name.textContent = credit.name;
         if (url) {
