@@ -826,7 +826,7 @@ const renderProjectDetail = () => {
         });
     }
     const creditNote = document.querySelector("[data-credits-note]");
-    if (creditNote) creditNote.textContent = allCredits.length ? "Credits reflect project-supplied attribution. Independent verification is not implied." : "";
+    if (creditNote) creditNote.textContent = allCredits.length ? "Credits provided with the project; not independently verified." : "";
     document.querySelector("[data-project-tools]").innerHTML = renderDetailItems(project.tools);
     document.querySelector("[data-project-media]").innerHTML = renderProjectMedia(project.media);
 
