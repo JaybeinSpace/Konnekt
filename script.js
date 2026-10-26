@@ -209,8 +209,10 @@ const setupHomepageFilters = () => {
         button.addEventListener("click", () => {
             const discipline = button.dataset.homeFilter;
             document.querySelectorAll("[data-home-filter]").forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+            const gallery = document.querySelector("[data-featured-creators]");
+            gallery?.classList.remove("home-gallery-swap");
             renderHomepageCreators(discipline);
-            document.getElementById("creators")?.scrollIntoView({behavior:"smooth", block:"start"});
+            requestAnimationFrame(() => gallery?.classList.add("home-gallery-swap"));
         });
     });
 };
