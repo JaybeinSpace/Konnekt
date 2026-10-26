@@ -778,3 +778,10 @@ This refactor sets up Konnekt for those next steps because creator data is now r
 
 ## October 2026 creator profile upgrade
 Profiles now show a quick mobile introduction, Konnekt button, View Work shortcut, and optional creator fields: `tagline`, `availability`, `lookingFor`, `additionalRoles`, `skills`, `styles`, `equipment`, `software`, and `contactEmail`. List fields are arrays; absent sections are hidden. Hire, Collaborate, Network, and Message open an email inquiry only if a creator provides `contactEmail`; otherwise they show a frontend-only placeholder. View Socials scrolls to public links. Optional `?source=nfc`, `?source=qr`, `?source=share`, `?source=discovery` is recognized but not tracked. Existing query-string profile URLs are preserved. Permanent username routing, fair discovery ranking algorithms, backend, accounts, uploads, and analytics are not implemented.
+
+
+## Konnekt Gallery
+
+The visual-arts exhibition lives in `gallery.html`, `gallery-artwork.html`, `gallery.js`, and `gallery.css`. It is separate from motion-focused Konnekt Watch and uses existing `data.js` records rather than copying creator data. Gallery currently filters to the single real artist `jaelyn-ramos` and renders her existing `featuredProjects` and approved biography.
+
+The Gallery homepage has an artwork-led hero, artist introduction, portfolio link, and responsive artwork grid. The artwork detail page reads its project ID from the URL, shows the original artwork uncropped, lists existing category/medium and artist details, and provides previous/next navigation (including Left/Right keyboard shortcuts). Profile and original project links remain intact. Placeholder descriptions are omitted and provisional titles are shown as “Untitled work” rather than represented as verified titles. The CSS is isolated to Gallery classes. To expand later, add verified creators to `ARTIST_IDS` and build editorial selection UI when needed; no backend exists.

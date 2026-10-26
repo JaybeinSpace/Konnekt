@@ -100,3 +100,15 @@ The project is intentionally organized like a small frontend app:
 4. `style.css` controls the shared Konnekt design system.
 
 This makes Konnekt easier to scale before adding a real backend later.
+
+
+## Konnekt Gallery (Exhibition 001)
+
+Konnekt Gallery is the visual-arts companion to Konnekt Watch. Gallery is a frontend-only editorial exhibition at `gallery.html` using the **existing** `window.konnektCreators` records from `data.js`. It currently features only the real artist Jaelyn Ramos and her existing nine artwork project entries. No additional artists, titles, artist statements, or backend services are introduced.
+
+- `gallery.html`: featured artwork, artist introduction (unchanged biography), and responsive collection.
+- `gallery-artwork.html?id=<project-id>`: immersive artwork view, available medium, linked artist and original project, plus previous/next navigation (keyboard Left/Right also supported).
+- `gallery.js`: selects the featured real creator, reads `featuredProjects`, and renders the pages; expand `ARTIST_IDS` only when another real artist's content is ready.
+- `gallery.css`: isolated exhibition styling so existing Konnekt and Watch styling stays intact.
+
+Some existing artwork titles are explicitly provisional in `data.js`. Gallery shows “Untitled work” for those pieces until Jaelyn confirms official titles; no placeholder descriptions are displayed. Gallery uses the existing painting type as the available medium/category rather than inventing material specifications. This is not an upload, payment, or authentication system.
