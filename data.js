@@ -530,7 +530,10 @@ window.konnektCreators.push({
     "visual-arts"
   ],
   "specialties": [
-    "Painting"
+    "Printmaking",
+    "Painting",
+    "Drawing",
+    "Photography"
   ],
   "role": "Visual Artist",
   "location": "Brooklyn, New York",
