@@ -265,7 +265,7 @@ const renderExploreCards = () => {
     }
 
     exploreGrid.innerHTML = getOrderedExploreCreators().map((creator) => `
-        <article class="explore-card" data-category="${(window.getCreatorCategories?.(creator) || [creator.category]).join(" ")}" data-search="${getCreatorSearchText(creator)}">
+        <article class="explore-card" data-creator-id="${creator.id}" data-category="${(window.getCreatorCategories?.(creator) || [creator.category]).join(" ")}" data-search="${getCreatorSearchText(creator)}">
             <img src="${creator.profileImage}" alt="${creator.profileAlt}">
             <div class="explore-card-body">
                 <p class="creator-role">${creator.role}</p>
@@ -283,7 +283,7 @@ const renderExploreCards = () => {
 
 const renderCreatorPreviewCards = (creatorList) => {
     return creatorList.map((creator) => `
-        <article class="explore-card" data-category="${(window.getCreatorCategories?.(creator) || [creator.category]).join(" ")}" data-search="${getCreatorSearchText(creator)}">
+        <article class="explore-card" data-creator-id="${creator.id}" data-category="${(window.getCreatorCategories?.(creator) || [creator.category]).join(" ")}" data-search="${getCreatorSearchText(creator)}">
             <img src="${creator.profileImage}" alt="${creator.profileAlt}">
             <div class="explore-card-body">
                 <p class="creator-role">${creator.role}</p>
@@ -328,60 +328,67 @@ const renderSavedItems = () => {
 
 // Search and role filters work on the generated Explore cards.
 const setupExploreFilters = () => {
-    const filterButtons = document.querySelectorAll(".filter-button");
-    const creatorCards = document.querySelectorAll("[data-explore-grid] .explore-card");
-    const creatorSearch = document.querySelector(".creator-search");
-    const emptyState = document.querySelector("[data-empty-state]");
-    let activeFilter = "all";
-
-    if (filterButtons.length === 0 || creatorCards.length === 0) {
-        return;
-    }
-
-    const updateCreatorCards = () => {
-        const searchText = creatorSearch ? creatorSearch.value.toLowerCase().trim() : "";
-        const resultCount = document.querySelector("[data-result-count]");
-        let visibleCards = 0;
-
-        creatorCards.forEach((card) => {
-            const matchesFilter = activeFilter === "all" || card.dataset.category.split(" ").includes(activeFilter);
-            const matchesSearch = card.dataset.search.includes(searchText);
-            const shouldShow = matchesFilter && matchesSearch;
-
-            card.classList.toggle("is-hidden", !shouldShow);
-
-            if (shouldShow) {
-                visibleCards += 1;
-            }
-        });
-
-        if (emptyState) {
-            emptyState.classList.toggle("is-visible", visibleCards === 0);
-        }
-
-        if (resultCount) {
-            resultCount.textContent = `${visibleCards} creator${visibleCards === 1 ? "" : "s"} showing`;
-        }
+    const buttons = [...document.querySelectorAll(".filter-button")];
+    const cards = [...document.querySelectorAll("[data-explore-grid] .explore-card")];
+    const search = document.querySelector(".creator-search");
+    const specialty = document.querySelector("#specialty-filter");
+    const location = document.querySelector("#location-filter");
+    const availability = document.querySelector("#availability-filter");
+    const clear = document.querySelector("#clear-discovery");
+    const empty = document.querySelector("[data-empty-state]");
+    const count = document.querySelector("[data-result-count]");
+    if (!cards.length) return;
+    let category = "all";
+    const getCategories = creator => window.getCreatorCategories?.(creator) || [creator.category];
+    const updateSpecialties = () => {
+        if (!specialty) return;
+        const previous = specialty.value;
+        const relevant = creators.filter(creator => category === "all" || getCategories(creator).includes(category));
+        const options = [...new Set(relevant.flatMap(creator => creator.specialties || []))].sort();
+        specialty.replaceChildren(new Option("All specialties", ""), ...options.map(item => new Option(item, item)));
+        specialty.value = options.includes(previous) ? previous : "";
     };
-
-    filterButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-            activeFilter = button.dataset.filter;
-
-            filterButtons.forEach((filterButton) => {
-                filterButton.classList.remove("is-active");
-            });
-
-            button.classList.add("is-active");
-            updateCreatorCards();
+    const update = () => {
+        const query = (search?.value || "").trim().toLowerCase();
+        const place = (location?.value || "").trim().toLowerCase();
+        const niche = specialty?.value || "";
+        const status = availability?.value || "";
+        let visible = 0;
+        cards.forEach(card => {
+            const creator = creators.find(item => item.id === card.dataset.creatorId);
+            if (!creator) return;
+            const categories = getCategories(creator);
+            const specialties = creator.specialties || [];
+            const availableFor = creator.availableFor || [];
+            const match = (category === "all" || categories.includes(category))
+                && (!query || getCreatorSearchText(creator).includes(query))
+                && (!place || (creator.location || "").toLowerCase().includes(place))
+                && (!niche || specialties.includes(niche))
+                && (!status || availableFor.includes(status));
+            card.classList.toggle("is-hidden", !match);
+            if (match) visible++;
         });
+        if (empty) empty.classList.toggle("is-visible", visible === 0);
+        if (count) count.textContent = `${visible} creator${visible === 1 ? "" : "s"} showing`;
+    };
+    buttons.forEach(button => button.addEventListener("click", () => {
+        category = button.dataset.filter;
+        buttons.forEach(item => item.classList.toggle("is-active", item === button));
+        updateSpecialties();
+        update();
+    }));
+    [search, specialty, location, availability].forEach(element => element?.addEventListener("input", update));
+    clear?.addEventListener("click", () => {
+        category = "all";
+        buttons.forEach(item => item.classList.toggle("is-active", item.dataset.filter === "all"));
+        if (search) search.value = "";
+        if (location) location.value = "";
+        if (availability) availability.value = "";
+        updateSpecialties();
+        update();
     });
-
-    if (creatorSearch) {
-        creatorSearch.addEventListener("input", updateCreatorCards);
-    }
-
-    updateCreatorCards();
+    updateSpecialties();
+    update();
 };
 
 const getCreatorFromUrl = () => {

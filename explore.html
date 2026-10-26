@@ -57,7 +57,12 @@
 
             <div class="filter-bar" aria-label="Filter creators by discipline"><button class="filter-button is-active" type="button" data-filter="all">All</button><button class="filter-button" type="button" data-filter="film-video">Film & Video</button><button class="filter-button" type="button" data-filter="photography">Photography</button><button class="filter-button" type="button" data-filter="post-production">Post-Production</button><button class="filter-button" type="button" data-filter="visual-arts">Visual Arts</button><button class="filter-button" type="button" data-filter="design">Design</button><button class="filter-button" type="button" data-filter="performing-arts">Performing Arts</button><button class="filter-button" type="button" data-filter="music-audio">Music & Audio</button><button class="filter-button" type="button" data-filter="fashion-beauty">Fashion & Beauty</button><button class="filter-button" type="button" data-filter="writing-storytelling">Writing & Storytelling</button><button class="filter-button" type="button" data-filter="interactive-digital">Interactive & Digital</button></div>
 
-            <p class="result-count" data-result-count aria-live="polite"></p>
+            <div class="discovery-controls" aria-label="Refine creator results">
+  <label>Specialty <select id="specialty-filter"><option value="">All specialties</option></select></label>
+  <label>Location <input id="location-filter" type="search" placeholder="City or region"></label>
+  <label>Availability <select id="availability-filter"><option value="">Any availability</option><option value="paid">Paid work</option><option value="collaboration">Collaborations</option><option value="commissions">Commissions</option></select></label>
+  <button type="button" class="button secondary-button" id="clear-discovery">Clear filters</button>
+</div><p class="result-count" data-result-count aria-live="polite"></p>
 
             <div class="explore-grid" data-explore-grid></div>
 

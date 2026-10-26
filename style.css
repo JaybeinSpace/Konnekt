@@ -1857,3 +1857,6 @@ h1 {
 .profile-about-panel .badge-list:empty { display: none; }
 .profile-about-panel .social-links { margin-top: 14px; }
 @media (max-width: 800px) { .profile-layout { grid-template-columns: 1fr; gap: 16px; padding-top: 20px; } .profile-about-panel { padding: 14px 16px; } }
+
+/* Phase 2 discovery filters */
+.discovery-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:18px 0 22px}.discovery-controls label{display:flex;flex-direction:column;gap:7px;flex:1 1 180px;font-size:.85rem;font-weight:600}.discovery-controls input,.discovery-controls select{width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:inherit}.discovery-controls button{min-height:44px}@media(max-width:600px){.discovery-controls label{flex:1 1 100%}}
