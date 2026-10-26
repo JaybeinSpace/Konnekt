@@ -552,8 +552,8 @@ window.konnektCreators.push({
   },
   "stats": {
     "projects": "9",
-    "views": "",
-    "badges": ""
+    "views": "—",
+    "badges": "0"
   },
   "badges": [],
   "socialLinks": [
