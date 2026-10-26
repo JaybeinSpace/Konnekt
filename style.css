@@ -1928,3 +1928,16 @@ body:has(.creative-categories) #creators .creator-info { padding:18px; }
 .watch-specialties { color:#b7c6d4; }
 .watch-copy .button { margin-top:20px; }
 @media(max-width:720px) { .watch-feature { grid-template-columns:1fr; } .watch-image { min-height:280px; max-height:350px; } .watch-copy { padding:26px; } }
+
+/* Editorial Konnekt Watch treatment */
+.watch-feature { grid-template-columns:1.1fr 1fr; background:linear-gradient(130deg,#101c24,#0a1017); }
+.watch-art-stack { min-height:460px; position:relative; overflow:hidden; }
+.watch-art-stack .watch-image { position:absolute; inset:0 17% 8% 0; min-height:0; }
+.watch-art-stack .watch-art-detail { position:absolute; width:40%; height:47%; bottom:3%; right:2%; border:7px solid #101923; box-shadow:0 12px 35px #0009; transform:rotate(4deg); }
+.watch-art-stack img { width:100%; height:100%; object-fit:cover; }
+.watch-art-caption { position:absolute; top:16px; left:18px; padding:8px 12px; background:#0a1018cf; color:white; font-size:.7rem; font-weight:800; letter-spacing:.18em; }
+.watch-overline { margin:18px 0 0; font-size:.72rem; letter-spacing:.18em; font-weight:800; color:#cbd8e8; }
+.watch-copy h3 { font-size:clamp(2rem,3.5vw,3.5rem); line-height:1.09; }
+.watch-copy h3 em { display:block; font-style:normal; color:#a9c7ee; }
+.watch-copy > p:not(.watch-role):not(.watch-specialties):not(.watch-overline) { color:#d3dce7; line-height:1.7; }
+@media(max-width:720px) { .watch-art-stack {min-height:330px;} .watch-art-stack .watch-image {inset:0 16% 8% 0;} .watch-art-stack .watch-art-detail {border-width:4px;} }
