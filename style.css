@@ -1846,3 +1846,14 @@ h1 {
 .konnekt-panel{margin:16px 24px;padding:22px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
 .konnekt-panel[hidden]{display:none}.konnekt-panel h2{margin-bottom:14px}.konnekt-options{display:flex;flex-wrap:wrap;gap:10px}.konnekt-options button{cursor:pointer}.profile-details section{margin:18px 0}.profile-details h3{font-size:.9rem;color:var(--accent-2)}[data-profile-availability]:empty,[data-profile-tagline]:empty{display:none}#featured-work{scroll-margin-top:25px}
 @media(max-width:520px){.konnekt-panel{margin:12px;padding:14px}.konnekt-options button{flex:1 1 40%}}
+
+/* Creator About is a compact sidebar, not a full-height panel. */
+.profile-layout { grid-template-columns: minmax(220px, .55fr) minmax(0, 1.45fr); align-items: start; padding-top: 28px; }
+.profile-about-panel { padding: 18px 20px; align-self: start; }
+.profile-about-panel h2 { font-size: 1.15rem; margin-bottom: 8px; }
+.profile-about-panel p { line-height: 1.5; font-size: .94rem; }
+.profile-about-panel [data-profile-bio]:empty { display: none; }
+.profile-about-panel [data-profile-details]:empty { display: none; }
+.profile-about-panel .badge-list:empty { display: none; }
+.profile-about-panel .social-links { margin-top: 14px; }
+@media (max-width: 800px) { .profile-layout { grid-template-columns: 1fr; gap: 16px; padding-top: 20px; } .profile-about-panel { padding: 14px 16px; } }
