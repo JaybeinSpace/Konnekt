@@ -674,7 +674,7 @@ const renderCreatorProfile = () => {
     const closeKonnekt = document.querySelector("[data-konnekt-close]");
     const formContainer = document.querySelector("[data-konnekt-form]");
     const approved = creator.contactOptions || {};
-    const email = typeof creator.contactEmail === "string" && /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(creator.contactEmail) ? creator.contactEmail : "";
+    const email = typeof creator.contactEmail === "string" && creator.contactEmail.includes("@") && !/\s/.test(creator.contactEmail) ? creator.contactEmail : "";
     const socials = (creator.socialLinks || []).filter(link => {
         try { return ["https:", "http:"].includes(new URL(link.url).protocol); } catch { return false; }
     });
@@ -721,7 +721,7 @@ const renderCreatorProfile = () => {
         form.addEventListener("submit", event => {
             event.preventDefault();
             if (!email) return;
-            const body = fields.map(label => label + ": " + (new FormData(form).get(label) || "")).join("\\n\\n");
+            const body = fields.map(label => label + ": " + (new FormData(form).get(label) || "")).join(String.fromCharCode(10, 10));
             window.location.href = "mailto:" + email + "?subject=" + encodeURIComponent(action + " inquiry via Konnekt") + "&body=" + encodeURIComponent(body);
             feedback.textContent = "Your email app will open with a draft. Konnekt has not sent anything.";
         });
