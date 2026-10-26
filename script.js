@@ -220,56 +220,29 @@ const setupHomepageFilters = () => {
 // Konnekt Selects are fake recognition picks pulled from creator/project data.
 const renderKonnektSelects = () => {
     const selectsGrid = document.querySelector("[data-konnekt-selects]");
-    const featuredCreator = creators.find((creator) => creator.badges.includes("Featured This Month")) || creators[0];
-    const topFilmPick = projects.find((project) => project.id === "after-hours") || projects[0];
-    const photoSpotlight = projects.find((project) => project.id === "new-faces") || projects[1];
-
-    if (!selectsGrid || !featuredCreator || !topFilmPick || !photoSpotlight) {
+    if (!selectsGrid) return;
+    // Only verified real creators are eligible for this editorial spotlight.
+    const creator = creators.find((item) => item.id === "jaelyn-ramos" && !item.isDemo);
+    if (!creator) {
+        selectsGrid.innerHTML = '<p class="home-empty-state">Our next creator spotlight is coming soon.</p>';
         return;
     }
-
-    const selectItems = [
-        {
-            rank: "01",
-            label: "Featured This Month",
-            title: featuredCreator.name,
-            description: `${featuredCreator.role} from ${featuredCreator.location}, selected for a standout visual identity.`,
-            image: featuredCreator.bannerImage,
-            href: `creator-profile.html?id=${featuredCreator.id}`,
-            linkText: "View Profile",
-            large: true
-        },
-        {
-            rank: "02",
-            label: "Top Film Picks",
-            title: topFilmPick.title,
-            description: topFilmPick.description,
-            image: topFilmPick.thumbnail,
-            href: `project.html?id=${topFilmPick.id}`,
-            linkText: "View Project",
-            large: false
-        },
-        {
-            rank: "03",
-            label: "Weekly Photo Spotlight",
-            title: photoSpotlight.title,
-            description: photoSpotlight.description,
-            image: photoSpotlight.thumbnail,
-            href: `project.html?id=${photoSpotlight.id}`,
-            linkText: "View Project",
-            large: false
-        }
-    ];
-
-    selectsGrid.innerHTML = selectItems.map((item) => `
-        <article class="select-card ${item.large ? "select-card-large" : ""}" style="--select-bg: url('${item.image}')">
-            <span class="select-rank">${item.rank}</span>
-            <p class="creator-role">${item.label}</p>
-            <h3>${item.title}</h3>
-            <p>${item.description}</p>
-            <a class="profile-link" href="${item.href}">${item.linkText}</a>
-        </article>
-    `).join("");
+    const artwork = (creator.featuredProjects || []).find((project) => project.id === "the-dancers")
+        || (creator.featuredProjects || [])[0];
+    selectsGrid.innerHTML = `
+        <article class="watch-feature">
+            <a class="watch-image" href="creator-profile.html?id=${encodeURIComponent(creator.id)}">
+                <img src="${artwork?.thumbnail || creator.bannerImage}" alt="${artwork?.alt || creator.bannerAlt}">
+            </a>
+            <div class="watch-copy">
+                <span class="watch-kicker">KONNEKT WATCH · OCTOBER 2026</span>
+                <h3>${creator.name}</h3>
+                <p class="watch-role">${creator.role} · ${creator.location}</p>
+                <p class="watch-specialties">${(creator.specialties || []).join(" · ")}</p>
+                <p>Discover the artwork and creative perspective of this month's featured artist.</p>
+                <a class="button primary-button" href="creator-profile.html?id=${encodeURIComponent(creator.id)}">Explore ${creator.name}'s Work →</a>
+            </div>
+        </article>`;
 };
 
 // Explore cards are generated from data.js instead of repeated hardcoded HTML.
