@@ -145,6 +145,7 @@ const getOrderedExploreCreators = () => {
     return creators
         .map((creator, index) => ({ creator, index }))
         .sort((first, second) => {
+            if (!!first.creator.isDemo !== !!second.creator.isDemo) return first.creator.isDemo ? 1 : -1;
             const scoreDifference = getExploreScore(second.creator) - getExploreScore(first.creator);
 
             if (scoreDifference !== 0) {
@@ -277,7 +278,7 @@ const renderExploreCards = () => {
         <article class="explore-card" data-creator-id="${creator.id}" data-category="${(window.getCreatorCategories?.(creator) || [creator.category]).join(" ")}" data-search="${getCreatorSearchText(creator)}">
             <img src="${creator.profileImage}" alt="${creator.profileAlt}">
             <div class="explore-card-body">
-                <p class="creator-role">${creator.role}</p>
+                <p class="creator-role">${creator.role}${creator.isDemo ? " · Demo Profile" : ""}</p>
                 <h2>${creator.name}</h2>
                 <p class="creator-location">${creator.location}</p>
                 <p>${creator.shortDescription}</p>
@@ -497,6 +498,139 @@ const renderProjectMedia = (media) => {
 };
 
 // The profile page reads ?id=creator-id and fills the template from data.js.
+// Credits remain attached to their original project; no duplicate project records.
+const normalizeCredits = (project) => (project.credits || []).map((credit) => {
+    if (typeof credit === "string") {
+        const separator = credit.indexOf(":");
+        const role = separator >= 0 ? credit.slice(0, separator).trim() : "";
+        const name = separator >= 0 ? credit.slice(separator + 1).trim() : credit.trim();
+        return { name, role };
+    }
+    return credit && typeof credit === "object" ? credit : null;
+}).filter(credit => credit?.name && credit?.role);
+const creditUrl = (credit, project) => {
+    if (!credit.creatorId && project?.creatorId && credit.name.toLowerCase() === (getCreatorById(project.creatorId)?.name || "").toLowerCase()) return "creator-profile.html?id=" + encodeURIComponent(project.creatorId);
+    if (credit.creatorId && creators.some(creator => creator.id === credit.creatorId)) {
+        return "creator-profile.html?id=" + encodeURIComponent(credit.creatorId);
+    }
+    if (credit.url) {
+        try {
+            const parsed = new URL(credit.url);
+            if (parsed.protocol === "https:" || parsed.protocol === "http:") return parsed.href;
+        } catch (error) { /* invalid external credit URL */ }
+    }
+    return "";
+};
+const renderCreditList = (project, expanded = false) => {
+    const all = normalizeCredits(project);
+    const list = expanded ? all : all.slice(0, 5);
+    const container = document.querySelector("[data-project-credits]");
+    if (!container) return;
+    container.replaceChildren();
+    if (!all.length) {
+        const empty = document.createElement("p");
+        empty.textContent = "Credits have not been added for this project.";
+        container.append(empty);
+        return;
+    }
+    list.forEach(credit => {
+        const row = document.createElement("div");
+        row.className = "credit-entry";
+        const role = document.createElement("span");
+        role.className = "credit-role";
+        role.textContent = credit.role;
+        const url = creditUrl(credit, project);
+        const name = document.createElement(url ? "a" : "span");
+        name.textContent = credit.name;
+        if (url) {
+            name.href = url;
+            if (/^https?:/.test(url)) { name.target = "_blank"; name.rel = "noopener noreferrer"; }
+        }
+        row.append(role, name);
+        container.append(row);
+    });
+};
+const renderFeaturedIn = (creator) => {
+    const section = document.querySelector("[data-featured-in-section]");
+    const grid = document.querySelector("[data-featured-in-projects]");
+    if (!section || !grid) return;
+    const matches = projects.filter(project => project.creatorId !== creator.id &&
+        normalizeCredits(project).some(credit => credit.creatorId === creator.id && credit.approved === true));
+    section.hidden = matches.length === 0;
+    grid.replaceChildren();
+    matches.forEach(project => {
+        const roles = normalizeCredits(project).filter(credit => credit.creatorId === creator.id && credit.approved === true).map(credit => credit.role).join(" · ");
+        const card = document.createElement("article");
+        card.className = "project-card";
+        const link = document.createElement("a");
+        link.href = "project.html?id=" + encodeURIComponent(project.id);
+        const image = document.createElement("img");
+        image.src = project.thumbnail || project.image || "";
+        image.alt = project.alt || project.title;
+        const title = document.createElement("h3");
+        title.textContent = project.title;
+        const role = document.createElement("p");
+        role.textContent = roles;
+        link.append(image, title);
+        card.append(link, role);
+        grid.append(card);
+    });
+};
+const setupProjectDiscovery = () => {
+    const grid = document.querySelector("[data-discovery-projects]");
+    const creatorGrid = document.querySelector("[data-explore-grid]");
+    if (!grid || !creatorGrid) return;
+    const search = document.querySelector(".creator-search");
+    const location = document.querySelector("#location-filter");
+    const specialty = document.querySelector("#specialty-filter");
+    const availability = document.querySelector("#availability-filter");
+    const categoryButtons = [...document.querySelectorAll(".filter-button[data-filter]")];
+    const buttons = [...document.querySelectorAll("[data-discovery-view]")];
+    const empty = document.querySelector("[data-empty-state]");
+    const count = document.querySelector("[data-result-count]");
+    const realProjects = projects.filter(project => !getCreatorById(project.creatorId)?.isDemo);
+    const demoProjects = projects.filter(project => getCreatorById(project.creatorId)?.isDemo);
+    const sorted = [...realProjects, ...demoProjects];
+    const escape = value => String(value ?? "").replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
+    let view = "creators";
+    const update = () => {
+        const isProjects = view === "projects";
+        creatorGrid.hidden = isProjects;
+        grid.hidden = !isProjects;
+        buttons.forEach(button => {
+            const active = button.dataset.discoveryView === view;
+            button.classList.toggle("is-active", active);
+            button.setAttribute("aria-pressed", String(active));
+        });
+        if (!isProjects) {
+            const visible = creatorGrid.querySelectorAll(".explore-card:not(.is-hidden)").length;
+            if (count) count.textContent = visible + " creator" + (visible === 1 ? "" : "s") + " showing";
+            if (empty) empty.classList.toggle("is-visible", visible === 0);
+            return;
+        }
+        const q = (search?.value || "").trim().toLowerCase();
+        const place = (location?.value || "").trim().toLowerCase();
+        const niche = (specialty?.value || "").toLowerCase();
+        const status = availability?.value || "";
+        const category = categoryButtons.find(button => button.classList.contains("is-active"))?.dataset.filter || "all";
+        const matches = sorted.filter(project => {
+            const creator = getCreatorById(project.creatorId);
+            const text = [project.title,project.category,project.type,project.description,project.tags?.join(" "),project.credits?.map(credit => typeof credit === "string" ? credit : [credit.name,credit.role].join(" ")).join(" "),creator?.name,creator?.role,creator?.location,creator?.specialties?.join(" ")].join(" ").toLowerCase();
+            const categories = window.getCreatorCategories?.(creator) || [creator?.category];
+            return (!q || text.includes(q)) && (!place || (creator?.location || "").toLowerCase().includes(place)) &&
+                (!niche || text.includes(niche)) && (!status || (creator?.availableFor || []).includes(status)) &&
+                (category === "all" || categories.includes(category));
+        });
+        grid.innerHTML = matches.map(project => `<article class="explore-card discovery-work-card"><a href="project.html?id=${encodeURIComponent(project.id)}"><img loading="lazy" src="${escape(project.thumbnail || project.image || "")}" alt="${escape(project.alt || project.title)}"></a><div class="explore-card-body"><p class="creator-role">${escape(project.type || project.category)}${getCreatorById(project.creatorId)?.isDemo ? " · Demo" : ""}</p><h2>${escape(project.title)}</h2><p>${escape(project.creatorName)}</p><a class="profile-link" href="project.html?id=${encodeURIComponent(project.id)}">Explore Work →</a></div></article>`).join("");
+        if (count) count.textContent = matches.length + " project" + (matches.length === 1 ? "" : "s") + " showing";
+        if (empty) empty.classList.toggle("is-visible", matches.length === 0);
+    };
+    buttons.forEach(button => button.addEventListener("click", () => { view = button.dataset.discoveryView; update(); }));
+    [search, location, specialty, availability].forEach(input => input?.addEventListener("input", () => setTimeout(update, 0)));
+    categoryButtons.forEach(button => button.addEventListener("click", () => setTimeout(update, 0)));
+    document.querySelector("#clear-discovery")?.addEventListener("click", () => setTimeout(update, 0));
+    update();
+};
 const renderCreatorProfile = () => {
     const profilePage = document.querySelector(".profile-page");
 
@@ -539,25 +673,87 @@ const renderCreatorProfile = () => {
     const options = document.querySelector("[data-konnekt-options]");
     const feedback = document.querySelector("[data-konnekt-feedback]");
     const openKonnekt = document.querySelector("[data-konnekt-open]");
-    ["Hire","Collaborate","Network","Message","View Socials"].forEach(action => {
+    const closeKonnekt = document.querySelector("[data-konnekt-close]");
+    const formContainer = document.querySelector("[data-konnekt-form]");
+    const approved = creator.contactOptions || {};
+    const email = typeof creator.contactEmail === "string" && creator.contactEmail.includes("@") && !/\s/.test(creator.contactEmail) ? creator.contactEmail : "";
+    const socials = (creator.socialLinks || []).filter(link => {
+        try { return ["https:", "http:"].includes(new URL(link.url).protocol); } catch { return false; }
+    });
+    const close = () => {
+        panel.hidden = true;
+        openKonnekt.setAttribute("aria-expanded", "false");
+        formContainer.replaceChildren();
+        openKonnekt.focus();
+    };
+    const setContactAction = (action) => {
+        formContainer.replaceChildren();
+        feedback.textContent = "";
+        if (action === "Socials") {
+            socials.forEach(link => {
+                const a = document.createElement("a");
+                a.className = "button secondary-button";
+                a.href = link.url;
+                a.target = "_blank";
+                a.rel = "noopener noreferrer";
+                a.textContent = "Open " + link.label + " ↗";
+                formContainer.append(a);
+            });
+            return;
+        }
+        const fields = action === "Hire / Commission" ? ["Project type", "Budget range", "Timeline", "Project description", "Your contact information"] :
+            action === "Collaborate" ? ["Your creative role", "Project idea", "Location / remote", "Paid / unpaid / undecided", "Your contact information"] :
+            ["Your introduction", "Your contact information"];
+        const form = document.createElement("form");
+        form.className = "konnekt-inquiry-form";
+        fields.forEach(label => {
+            const wrapper = document.createElement("label");
+            wrapper.textContent = label;
+            const input = label === "Project description" || label === "Project idea" || label === "Your introduction" ? document.createElement("textarea") : document.createElement("input");
+            input.name = label;
+            input.required = true;
+            wrapper.append(input);
+            form.append(wrapper);
+        });
+        const send = document.createElement("button");
+        send.type = "submit";
+        send.className = "button primary-button";
+        send.textContent = "Open email draft ↗";
+        form.append(send);
+        form.addEventListener("submit", event => {
+            event.preventDefault();
+            if (!email) return;
+            const body = fields.map(label => label + ": " + (new FormData(form).get(label) || "")).join(String.fromCharCode(10, 10));
+            window.location.href = "mailto:" + email + "?subject=" + encodeURIComponent(action + " inquiry via Konnekt") + "&body=" + encodeURIComponent(body);
+            feedback.textContent = "Your email app will open with a draft. Konnekt has not sent anything.";
+        });
+        formContainer.append(form);
+    };
+    const actions = [
+        ["Hire / Commission", approved.hire === true && !!email],
+        ["Collaborate", approved.collaborate === true && !!email],
+        ["Network", approved.network === true && !!email],
+        ["General Inquiry", approved.general === true && !!email],
+        ["Socials", socials.length > 0]
+    ];
+    actions.filter(([,enabled]) => enabled).forEach(([action]) => {
         const button = document.createElement("button");
         button.className = "button secondary-button";
         button.type = "button";
         button.textContent = action;
-        button.addEventListener("click", () => {
-            if (action === "View Socials") {
-                document.querySelector("[data-profile-socials]").scrollIntoView({behavior:"smooth"});
-            } else if (creator.contactEmail && creator.contactEmail.includes("@")) {
-                window.location.href = "mailto:" + creator.contactEmail + "?subject=" + encodeURIComponent(action + " inquiry via Konnekt");
-            } else {
-                feedback.textContent = action + " inquiries are coming soon. Check the creator's social links.";
-            }
-        });
+        button.addEventListener("click", () => setContactAction(action));
         options.append(button);
     });
+    if (!options.children.length) feedback.textContent = "This creator has not added a public contact method yet.";
+    document.querySelector("[data-konnekt-title]").textContent = "Konnekt with " + creator.name;
     openKonnekt.addEventListener("click", () => {
         panel.hidden = !panel.hidden;
-        openKonnekt.setAttribute("aria-expanded",String(!panel.hidden));
+        openKonnekt.setAttribute("aria-expanded", String(!panel.hidden));
+        if (!panel.hidden) closeKonnekt.focus();
+    });
+    closeKonnekt?.addEventListener("click", close);
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && !panel.hidden) close();
     });
     const visitSource = new URLSearchParams(window.location.search).get("source");
     if (["nfc","qr","share","discovery"].includes(visitSource)) document.documentElement.dataset.profileSource = visitSource;
@@ -568,6 +764,7 @@ const renderCreatorProfile = () => {
     document.querySelector("[data-profile-projects]").innerHTML = renderProjects(creator.featuredProjects || []);
     document.querySelector("[data-profile-gallery]").innerHTML = renderGallery(creator.gallery || []);
     document.querySelector("[data-profile-videos]").innerHTML = renderVideos(creator.videos || []);
+    renderFeaturedIn(creator);
 
     const profileSaveButton = document.querySelector(".profile-actions .save-button");
 
@@ -616,7 +813,20 @@ const renderProjectDetail = () => {
     document.querySelector("[data-project-year]").textContent = project.year;
     document.querySelector("[data-project-main-image]").src = project.thumbnail || project.image;
     document.querySelector("[data-project-main-image]").alt = project.alt;
-    document.querySelector("[data-project-credits]").innerHTML = renderDetailItems(project.credits);
+    renderCreditList(project);
+    const creditToggle = document.querySelector("[data-credits-toggle]");
+    const allCredits = normalizeCredits(project);
+    if (creditToggle && allCredits.length > 5) {
+        creditToggle.hidden = false;
+        creditToggle.addEventListener("click", () => {
+            const expanded = creditToggle.getAttribute("aria-expanded") !== "true";
+            creditToggle.setAttribute("aria-expanded", String(expanded));
+            creditToggle.textContent = expanded ? "Show Key Credits" : "View Full Credits";
+            renderCreditList(project, expanded);
+        });
+    }
+    const creditNote = document.querySelector("[data-credits-note]");
+    if (creditNote) creditNote.textContent = allCredits.length ? "Credits provided with the project; not independently verified." : "";
     document.querySelector("[data-project-tools]").innerHTML = renderDetailItems(project.tools);
     document.querySelector("[data-project-media]").innerHTML = renderProjectMedia(project.media);
 
@@ -810,6 +1020,7 @@ renderKonnektSelects();
 renderExploreCards();
 renderSavedItems();
 setupExploreFilters();
+setupProjectDiscovery();
 renderCreatorProfile();
 renderProjectDetail();
 setupLightbox();

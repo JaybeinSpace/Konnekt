@@ -1987,3 +1987,56 @@ body:has(.creative-categories) #creators .creator-info { padding:18px; }
 .watch-home-actions .button span { flex-shrink:0; font-size:1.15rem; }
 @media(max-width:850px) { .watch-home-entry { grid-template-columns:1fr; gap:20px; } .watch-home-actions { flex-direction:row; width:100%; } .watch-home-actions .button { flex:1; min-width:0; } }
 @media(max-width:520px) { .watch-home-entry { padding:25px 20px; } .watch-home-actions { flex-direction:column; } .watch-home-actions .button { width:100%; } }
+
+/* Discovery, professional contact, and credit enhancements */
+.explore-discovery-switch{display:flex;gap:12px;flex-wrap:wrap;margin:30px 0 22px}
+.explore-discovery-switch .filter-button{min-width:130px}
+[data-discovery-projects][hidden],[data-explore-grid][hidden],[data-featured-in-section][hidden],[data-konnekt-panel][hidden],[data-credits-toggle][hidden]{display:none!important}
+.discovery-work-card>a{display:block}
+.discovery-work-card>a img{width:100%;height:230px;object-fit:cover}
+.konnekt-panel{margin:20px 0;padding:clamp(20px,4vw,36px);border:1px solid #526374;border-radius:14px;background:#15212b;color:#f4f6f9}
+.konnekt-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.konnekt-panel-heading h2{margin:0}
+.konnekt-close{border:1px solid #9eaebb;background:transparent;color:inherit;border-radius:6px;font-size:1.5rem;min-width:44px;min-height:44px;cursor:pointer}
+[data-konnekt-options]{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+[data-konnekt-form]{display:flex;flex-wrap:wrap;gap:12px}
+.konnekt-inquiry-form{width:min(100%,640px);display:grid;gap:16px;margin-top:16px}
+.konnekt-inquiry-form label{display:grid;gap:8px;font-size:.95rem}
+.konnekt-inquiry-form input,.konnekt-inquiry-form textarea{width:100%;min-height:46px;padding:12px;border-radius:6px;border:1px solid #91a2af;background:#f8fafc;color:#18202a;font:inherit}
+.konnekt-inquiry-form textarea{min-height:115px;resize:vertical}
+.konnekt-inquiry-form button{justify-self:start}
+.credit-entry{display:flex;flex-direction:column;gap:5px;padding:13px 0;border-bottom:1px solid #4b5865}
+.credit-entry .credit-role{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+.credit-entry a{text-decoration:underline;text-underline-offset:4px}
+.credits-note{font-size:.8rem;opacity:.75;line-height:1.5}
+.featured-in-section{padding:55px 5%}
+@media(max-width:650px){.explore-discovery-switch .filter-button{flex:1}.konnekt-inquiry-form button{width:100%}.discovery-work-card>a img{height:200px}}
+
+/* Homepage hero portrait: keep the artist's shoes and stray slivers out of the
+   left collage edge. Crop toward the face/upper body without changing the art. */
+@media (min-width: 701px) {
+  body:has(.creative-categories) .hero-frame-large {
+    overflow: hidden;
+    clip-path: polygon(13% 0, 100% 0, 87% 100%, 0 100%);
+    transform: none;
+    left: 2%;
+    right: 48%;
+  }
+  body:has(.creative-categories) .hero-frame-large img {
+    transform: scale(1.55);
+    transform-origin: 50% 28%;
+    object-position: center 18%;
+  }
+}
+
+/* Editorial project credits: one clean contributor row, no stacked chip styling. */
+[data-project-credits]{display:flex;flex-direction:column;gap:0}
+[data-project-credits] .credit-entry{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:16px;padding:17px 0;border-bottom:1px solid rgba(182,199,218,.14)}
+[data-project-credits] .credit-entry:first-child{padding-top:7px}
+[data-project-credits] .credit-entry:last-child{border-bottom:0}
+[data-project-credits] .credit-role{font-size:.75rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#a9b9c9;opacity:1}
+[data-project-credits] .credit-entry>a,[data-project-credits] .credit-entry>span:last-child{font-size:1.07rem;font-weight:600;color:#f3f6fa;text-decoration:none;border:0;background:none;padding:0;line-height:1.5}
+[data-project-credits] .credit-entry>a:hover{text-decoration:underline;text-underline-offset:5px}
+[data-project-credits] .credit-entry>a:focus-visible{outline:2px solid #b9d9ff;outline-offset:5px}
+.project-detail-layout .credits-note{margin:10px 0 0;color:#8393a5;font-size:.75rem;line-height:1.5;max-width:46ch}
+@media(max-width:450px){[data-project-credits] .credit-entry{align-items:flex-start;gap:8px;flex-direction:column}}
