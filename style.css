@@ -1909,3 +1909,8 @@ body:has(.creative-categories) #creators .creator-info { padding:18px; }
 .creative-categories button:hover,.creative-categories button[aria-pressed="true"] { color:#a8c6ff; background:rgba(168,198,255,.12); }
 .home-filter-status { color:#b8c6d6; margin: -12px 0 20px; }
 .home-empty-state { grid-column:1/-1; padding:36px 20px; border:1px solid #34404d; border-radius:10px; }
+
+/* In-place homepage category switching: no navigation or forced scroll. */
+.home-gallery-swap { animation: homeGallerySwap .3s ease both; }
+@keyframes homeGallerySwap { from {opacity:.25;transform:translateY(8px)} to {opacity:1;transform:translateY(0)} }
+@media(prefers-reduced-motion:reduce) { .home-gallery-swap {animation:none;} }
