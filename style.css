@@ -2181,3 +2181,16 @@ body:has(.creative-categories) #creators .creator-info .profile-link { font-size
   body:has(.creative-categories) #creators .creator-info { padding: 22px; }
   body:has(.creative-categories) #creators .creator-info p:not(.creator-role):not(.creator-location) { font-size: 1.05rem; }
 }
+
+/* Compact homepage creator cards while retaining larger, untruncated copy. */
+body:has(.creative-categories) #creators .creator-card { min-height: 365px; }
+body:has(.creative-categories) #creators .creator-info { min-height: 0; padding: 16px 17px; gap: 6px; }
+body:has(.creative-categories) #creators .creator-info h3 { font-size: clamp(1.22rem,1.45vw,1.45rem); }
+body:has(.creative-categories) #creators .creator-info p:not(.creator-role):not(.creator-location) { font-size: .96rem; line-height: 1.4; }
+body:has(.creative-categories) #creators .creator-info .profile-link { font-size: .78rem; padding: 8px 10px; min-height: 34px; }
+body:has(.creative-categories) #creators .creator-info .card-actions { margin-top: 5px; gap: 6px; }
+@media(max-width:600px) {
+  body:has(.creative-categories) #creators .creator-card { min-height: 390px; }
+  body:has(.creative-categories) #creators .creator-info { padding: 18px; }
+  body:has(.creative-categories) #creators .creator-info p:not(.creator-role):not(.creator-location) { font-size: 1rem; }
+}
