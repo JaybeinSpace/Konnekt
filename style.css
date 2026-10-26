@@ -2011,3 +2011,20 @@ body:has(.creative-categories) #creators .creator-info { padding:18px; }
 .credits-note{font-size:.8rem;opacity:.75;line-height:1.5}
 .featured-in-section{padding:55px 5%}
 @media(max-width:650px){.explore-discovery-switch .filter-button{flex:1}.konnekt-inquiry-form button{width:100%}.discovery-work-card>a img{height:200px}}
+
+/* Homepage hero portrait: keep the artist's shoes and stray slivers out of the
+   left collage edge. Crop toward the face/upper body without changing the art. */
+@media (min-width: 701px) {
+  body:has(.creative-categories) .hero-frame-large {
+    overflow: hidden;
+    clip-path: polygon(13% 0, 100% 0, 87% 100%, 0 100%);
+    transform: none;
+    left: 2%;
+    right: 48%;
+  }
+  body:has(.creative-categories) .hero-frame-large img {
+    transform: scale(1.55);
+    transform-origin: 50% 28%;
+    object-position: center 18%;
+  }
+}
