@@ -2126,3 +2126,39 @@ body:has(.creative-categories) #creators .creator-info .card-actions {
 @media (max-width: 1100px) {
   body:has(.creative-categories) #creators .creator-card { min-height: 470px; }
 }
+
+/* Give homepage creator information more visual weight without clipping copy. */
+body:has(.creative-categories) #creators .creator-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 255px), 1fr));
+}
+body:has(.creative-categories) #creators .creator-card {
+  min-height: 480px;
+}
+body:has(.creative-categories) #creators .creator-info {
+  padding: 24px 22px 22px;
+  gap: 11px;
+}
+body:has(.creative-categories) #creators .creator-info .creator-role {
+  font-size: .8rem;
+  line-height: 1.45;
+  letter-spacing: .09em;
+}
+body:has(.creative-categories) #creators .creator-info h3 {
+  font-size: clamp(1.35rem, 1.8vw, 1.65rem);
+  line-height: 1.16;
+}
+body:has(.creative-categories) #creators .creator-info .creator-location {
+  font-size: .95rem;
+}
+body:has(.creative-categories) #creators .creator-info p:not(.creator-role):not(.creator-location) {
+  font-size: 1rem;
+  line-height: 1.55;
+}
+body:has(.creative-categories) #creators .creator-info .profile-link {
+  font-size: .86rem;
+  padding: 10px 13px;
+}
+@media (max-width: 600px) {
+  body:has(.creative-categories) #creators .creator-card { min-height: 460px; }
+  body:has(.creative-categories) #creators .creator-info { padding: 22px 20px; }
+}
