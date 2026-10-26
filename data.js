@@ -537,7 +537,7 @@ window.konnektCreators.push({
   "bio": "",
   "shortDescription": "Original paintings by Jaelyn Ramos.",
   "tagline": "Painter and visual artist",
-  "profileImage": "assets/jaelyn-ramos/profile.png",
+  "profileImage": "Confident%20Artist%20with%20Colorful%20Palette.png",
   "profileAlt": "Jaelyn Ramos seated with her artist palette and both black sneakers visible",
   "bannerImage": "assets/jaelyn-ramos/05-the-dancers.jpg",
   "bannerAlt": "The Dancers, a painting by Jaelyn Ramos",
