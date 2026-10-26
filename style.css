@@ -2100,3 +2100,29 @@ body:has(.creative-categories) #creators .creator-info .profile-link {
 @media (max-width: 600px) {
   body:has(.creative-categories) #creators .creator-card { min-height: 410px; }
 }
+
+/* Full-card creator copy: show complete descriptions without truncation. */
+body:has(.creative-categories) #creators .creator-card {
+  min-height: 440px;
+  height: auto;
+}
+body:has(.creative-categories) #creators .creator-info {
+  max-height: none;
+  min-height: 100%;
+  justify-content: flex-end;
+  overflow: visible;
+}
+body:has(.creative-categories) #creators .creator-info p:not(.creator-role):not(.creator-location) {
+  display: block;
+  -webkit-line-clamp: unset;
+  -webkit-box-orient: initial;
+  overflow: visible;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+body:has(.creative-categories) #creators .creator-info .card-actions {
+  margin-top: 8px;
+}
+@media (max-width: 1100px) {
+  body:has(.creative-categories) #creators .creator-card { min-height: 470px; }
+}
