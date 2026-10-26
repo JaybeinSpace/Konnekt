@@ -87,6 +87,8 @@ const getCreatorSearchText = (creator) => {
         creator.name,
         creator.role,
         creator.category,
+        ...(creator.categories || []),
+        ...(creator.specialties || []),
         creator.location,
         creator.shortDescription,
         (creator.tags || []).join(" ")
@@ -263,7 +265,7 @@ const renderExploreCards = () => {
     }
 
     exploreGrid.innerHTML = getOrderedExploreCreators().map((creator) => `
-        <article class="explore-card" data-category="${creator.category}" data-search="${getCreatorSearchText(creator)}">
+        <article class="explore-card" data-category="${(window.getCreatorCategories?.(creator) || [creator.category]).join(" ")}" data-search="${getCreatorSearchText(creator)}">
             <img src="${creator.profileImage}" alt="${creator.profileAlt}">
             <div class="explore-card-body">
                 <p class="creator-role">${creator.role}</p>
@@ -281,7 +283,7 @@ const renderExploreCards = () => {
 
 const renderCreatorPreviewCards = (creatorList) => {
     return creatorList.map((creator) => `
-        <article class="explore-card" data-category="${creator.category}" data-search="${getCreatorSearchText(creator)}">
+        <article class="explore-card" data-category="${(window.getCreatorCategories?.(creator) || [creator.category]).join(" ")}" data-search="${getCreatorSearchText(creator)}">
             <img src="${creator.profileImage}" alt="${creator.profileAlt}">
             <div class="explore-card-body">
                 <p class="creator-role">${creator.role}</p>
@@ -342,7 +344,7 @@ const setupExploreFilters = () => {
         let visibleCards = 0;
 
         creatorCards.forEach((card) => {
-            const matchesFilter = activeFilter === "all" || card.dataset.category === activeFilter;
+            const matchesFilter = activeFilter === "all" || card.dataset.category.split(" ").includes(activeFilter);
             const matchesSearch = card.dataset.search.includes(searchText);
             const shouldShow = matchesFilter && matchesSearch;
 
@@ -502,12 +504,12 @@ const renderCreatorProfile = () => {
     document.querySelector("[data-profile-avatar]").src = creator.profileImage;
     document.querySelector("[data-profile-avatar]").alt = creator.profileAlt;
     document.querySelector("[data-profile-name]").textContent = creator.name;
-    document.querySelector("[data-profile-meta]").textContent = `${creator.role} | ${creator.location}`;
+    document.querySelector("[data-profile-meta]").textContent = [creator.role,creator.location].filter(Boolean).join(" | ");
     document.querySelector("[data-profile-bio]").textContent = creator.bio || "";
     document.querySelector("[data-profile-tagline]").textContent = creator.tagline || creator.shortDescription || "";
     document.querySelector("[data-profile-availability]").textContent = creator.availability || "";
     const details = document.querySelector("[data-profile-details]");
-    [["Looking for",creator.lookingFor],["Other roles",creator.additionalRoles],["Skills",creator.skills],["Styles",creator.styles],["Equipment",creator.equipment],["Software",creator.software]].forEach(([label,values]) => {
+    [["Specialties",creator.specialties],["Looking for",creator.lookingFor],["Other roles",creator.additionalRoles],["Skills",creator.skills],["Styles",creator.styles],["Equipment",creator.equipment],["Software",creator.software]].forEach(([label,values]) => {
         if (!Array.isArray(values) || !values.length) return;
         const section = document.createElement("section");
         const title = document.createElement("h3");
