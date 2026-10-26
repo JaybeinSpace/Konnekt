@@ -533,8 +533,8 @@ window.konnektCreators.push({
     "Painting"
   ],
   "role": "Visual Artist",
-  "location": "",
-  "bio": "",
+  "location": "Brooklyn, New York",
+  "bio": "Based in Brooklyn, New York, Jaelyn Ramos is an emerging creative with a story still unfolding. With an effortless beauty and a presence that speaks for itself, Jaelyn brings a certain charm to the creative space. Coming from one of the most culturally influential cities in the world, she represents a new generation finding its own voice and identity. There's more to Jaelyn than what meets the eye, and that's what makes her someone worth getting to know. Her story is still being written, and this is only the introduction.",
   "shortDescription": "Original paintings by Jaelyn Ramos.",
   "tagline": "Painter and visual artist",
   "profileImage": "Confident%20Artist%20with%20Colorful%20Palette.png",
