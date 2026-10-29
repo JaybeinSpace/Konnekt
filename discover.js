@@ -30,7 +30,8 @@
   const render = filter => {
     const filtered = posts.filter(post => filter === "all" || (filter === "motion" ? isMotion(post) : !isMotion(post)));
     feed.innerHTML = filtered.map(post => {
-      const active = liked.includes(post.id);\n      const saved = readSaved().projects.includes(post.id);
+      const active = liked.includes(post.id);
+      const saved = readSaved().projects.includes(post.id);
       const category = isMotion(post) ? "FILM & MOTION" : "ART & PHOTOGRAPHY";
       const label = isDemo(post) ? "DEMO · " + category : category;
       return `<article class="discover-post" data-post-id="${escape(post.id)}" data-demo="${isDemo(post)}">
