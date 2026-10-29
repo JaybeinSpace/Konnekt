@@ -39,3 +39,17 @@
   .discover-actions { right:9px; }
 }
 @media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto!important; } }
+
+/* Save and share actions alongside likes in both Discover layouts. */
+.discover-actions .discover-save,.discover-actions .discover-share { display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:57px;min-height:62px;padding:10px 8px;border:0;border-radius:14px;background:#15202bdd;color:#fff;cursor:pointer; }
+.discover-actions .discover-save span,.discover-actions .discover-share span { font-size:1.55rem;line-height:1; }
+.discover-actions .discover-save small,.discover-actions .discover-share small { font-size:.68rem; }
+.discover-actions .discover-save[aria-pressed="true"] { color:#7ce3d4;background:#183c3bdd; }
+.discover-actions button:focus-visible { outline:3px solid #7ce3d4;outline-offset:3px; }
+.discover-status { color:#8be0d4;font-size:.82rem;margin:12px 0; }
+.discover-status:empty { display:none; }
+.discover-grid-view .discover-actions { display:flex;gap:5px;right:7px;bottom:8px; }
+.discover-grid-view .discover-actions .discover-save,.discover-grid-view .discover-actions .discover-share,.discover-grid-view .discover-actions .discover-like { min-width:0;min-height:37px;padding:6px; }
+.discover-grid-view .discover-actions .discover-save span,.discover-grid-view .discover-actions .discover-share span { font-size:1.2rem; }
+.discover-grid-view .discover-actions small { display:none; }
+@media(max-width:420px){.discover-grid-view .discover-post-bottom { padding-bottom:65px; }.discover-grid-view .discover-actions { gap:3px; }}

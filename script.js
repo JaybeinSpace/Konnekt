@@ -648,28 +648,6 @@ const renderCreatorProfile = () => {
     }
 
     document.title = `${creator.name} | Konnekt Creator Profile`;
-    const shareProfileButton = document.querySelector("[data-share-creator]");
-    const shareProfileStatus = document.querySelector("[data-profile-share-status]");
-    shareProfileButton?.addEventListener("click", async () => {
-        const url = new URL("creator-profile.html?id=" + encodeURIComponent(creator.id), location.href).href;
-        if (navigator.share) {
-            try {
-                await navigator.share({ title: creator.name + " | Konnekt", url });
-                if (shareProfileStatus) shareProfileStatus.textContent = "Share options opened.";
-                return;
-            } catch (error) {
-                if (error.name === "AbortError") return;
-            }
-        }
-        try {
-            await navigator.clipboard.writeText(url);
-            if (shareProfileStatus) shareProfileStatus.textContent = "Profile link copied.";
-        } catch {
-            window.prompt("Copy profile link", url);
-            if (shareProfileStatus) shareProfileStatus.textContent = "Copy the profile link to share it.";
-        }
-    });
-
 
     document.querySelector("[data-profile-banner]").src = creator.bannerImage;
     document.querySelector("[data-profile-banner]").alt = creator.bannerAlt;
@@ -691,14 +669,6 @@ const renderCreatorProfile = () => {
         section.append(title,description);
         details.append(section);
     });
-    const featuredNav = document.querySelector("[data-profile-featured-nav]");
-    const hasFeaturedCredits = (window.konnektCreators || []).some(other =>
-        other.id !== creator.id && (other.featuredProjects || []).some(project =>
-            (project.credits || []).some(credit => typeof credit === "object" && credit &&
-                (credit.creatorId === creator.id || credit.name === creator.name))
-        )
-    );
-    if (featuredNav) featuredNav.hidden = !hasFeaturedCredits;
     const panel = document.querySelector("[data-konnekt-panel]");
     const options = document.querySelector("[data-konnekt-options]");
     const feedback = document.querySelector("[data-konnekt-feedback]");
