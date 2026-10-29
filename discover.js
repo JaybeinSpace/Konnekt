@@ -5,25 +5,17 @@
   const creators = Array.isArray(window.konnektCreators) ? window.konnektCreators : [];
   const posts = creators.flatMap(creator => (creator.featuredProjects || []).filter(project => project && project.id && (project.image || project.thumbnail)).map(project => ({...project, creator})));
   // The real featured artist is first; fictional demonstration content is clearly labeled.
-  posts.sort((a,b) => Number(!!a.creator.isDemo) - Number(!!b.creator.isDemo));
+  const confirmedRealCreatorIds = new Set(["jaelyn-ramos"]);
+  posts.sort((a,b) => Number(!confirmedRealCreatorIds.has(a.creator.id)) - Number(!confirmedRealCreatorIds.has(b.creator.id)));
   const key = "konnekt-discover-likes-v1";
   let liked = [];
   try { const stored = JSON.parse(localStorage.getItem(key) || "[]"); if (Array.isArray(stored)) liked = stored.filter(id => typeof id === "string"); } catch {}
   const escape = value => String(value ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
-  const classification = post => [post.type,post.category,...(post.tags || [])].join(" ").toLowerCase();
+  const classification = post => [post.type,post.category,...(Array.isArray(post.tags) ? post.tags : [])].join(" ").toLowerCase();
   const isMotion = post => /film|video|animation|documentary|cinema|motion/.test(classification(post));
-  const isDemo = post => !!post.creator.isDemo || (post.creator.badges || []).includes("Demo Profile");
+  const isDemo = post => !confirmedRealCreatorIds.has(post.creator.id);
   const artworkLink = post => "project.html?id=" + encodeURIComponent(post.id);
   const profileLink = post => "creator-profile.html?id=" + encodeURIComponent(post.creator.id);
-  const params = new URLSearchParams(location.search);
-  let view = params.get("view") === "grid" ? "grid" : "feed";
-  let current = ["all","art","motion"].includes(params.get("category")) ? params.get("category") : "all";
-  const updateControls = () => {
-    document.querySelectorAll("[data-feed-filter]").forEach(button => { const active = button.dataset.feedFilter === current; button.classList.toggle("is-active",active); button.setAttribute("aria-pressed",String(active)); });
-    document.querySelectorAll("[data-discover-view]").forEach(button => { const active = button.dataset.discoverView === view; button.classList.toggle("is-active",active); button.setAttribute("aria-pressed",String(active)); });
-    feed.classList.toggle("discover-grid-view",view === "grid");
-    const url = new URL(location.href); url.searchParams.set("view",view); url.searchParams.set("category",current); history.replaceState(null,"",url);
-  };
   const render = filter => {
     const filtered = posts.filter(post => filter === "all" || (filter === "motion" ? isMotion(post) : !isMotion(post)));
     feed.innerHTML = filtered.map(post => {
@@ -39,14 +31,10 @@
     }).join("");
     document.querySelector("[data-discover-empty]").hidden = filtered.length > 0;
   };
+  let current = "all";
   document.querySelectorAll("[data-feed-filter]").forEach(button => button.addEventListener("click", () => {
     current = button.dataset.feedFilter;
-    updateControls();
-    render(current);
-  }));
-  document.querySelectorAll("[data-discover-view]").forEach(button => button.addEventListener("click", () => {
-    view = button.dataset.discoverView;
-    updateControls();
+    document.querySelectorAll("[data-feed-filter]").forEach(item => { const active = item === button; item.classList.toggle("is-active", active); item.setAttribute("aria-pressed", String(active)); });
     render(current);
   }));
   feed.addEventListener("click", event => {
@@ -61,6 +49,5 @@
     button.querySelector(".heart").textContent = active ? "♥" : "♡";
     button.querySelector("small").textContent = active ? "Liked" : "Like";
   });
-  updateControls();
   render(current);
 })();

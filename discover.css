@@ -23,3 +23,19 @@
 .discover-grid-view .discover-like small { font-size:.65rem; }
 @media(max-width:780px){ .discover-view-switch { padding:0 14px; } .discover-grid-view .discover-post { border:1px solid #2b3845; } }
 @media(max-width:420px){ .discover-feed.discover-grid-view { gap:9px;padding:0 9px; } .discover-grid-view .discover-post-top { padding:8px 9px 0; } .discover-grid-view .discover-post-bottom { padding:8px 9px 65px; } .discover-grid-view .discover-post h2 { font-size:1rem; } .discover-grid-view .discover-artist { font-size:.66rem; } .discover-grid-view .discover-links { display:grid;gap:6px; } .discover-grid-view .discover-links a { font-size:.72rem; } }
+
+/* Phase 1 accessibility and narrow-mobile improvements, preserved alongside Grid/Feed. */
+.discover-tabs button:focus-visible,
+.discover-like:focus-visible,
+.discover-links a:focus-visible,
+.discover-sidebar a:focus-visible,
+.discover-header a:focus-visible { outline:3px solid #7ce3d4;outline-offset:3px; }
+.discover-post-media img { display:block; }
+@media(max-width:420px) {
+  .discover-header { gap:9px; }
+  .discover-heading { display:none; }
+  .discover-post-bottom { padding-right:78px; }
+  .discover-post-description { font-size:.88rem; }
+  .discover-actions { right:9px; }
+}
+@media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto!important; } }
