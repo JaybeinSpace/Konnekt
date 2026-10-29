@@ -5,14 +5,15 @@
   const creators = Array.isArray(window.konnektCreators) ? window.konnektCreators : [];
   const posts = creators.flatMap(creator => (creator.featuredProjects || []).filter(project => project && project.id && (project.image || project.thumbnail)).map(project => ({...project, creator})));
   // The real featured artist is first; fictional demonstration content is clearly labeled.
-  posts.sort((a,b) => Number(!!a.creator.isDemo) - Number(!!b.creator.isDemo));
+  const confirmedRealCreatorIds = new Set(["jaelyn-ramos"]);
+  posts.sort((a,b) => Number(!confirmedRealCreatorIds.has(a.creator.id)) - Number(!confirmedRealCreatorIds.has(b.creator.id)));
   const key = "konnekt-discover-likes-v1";
   let liked = [];
   try { const stored = JSON.parse(localStorage.getItem(key) || "[]"); if (Array.isArray(stored)) liked = stored.filter(id => typeof id === "string"); } catch {}
   const escape = value => String(value ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
-  const classification = post => [post.type,post.category,...(post.tags || [])].join(" ").toLowerCase();
+  const classification = post => [post.type,post.category,...(Array.isArray(post.tags) ? post.tags : [])].join(" ").toLowerCase();
   const isMotion = post => /film|video|animation|documentary|cinema|motion/.test(classification(post));
-  const isDemo = post => !!post.creator.isDemo || (post.creator.badges || []).includes("Demo Profile");
+  const isDemo = post => !confirmedRealCreatorIds.has(post.creator.id);
   const artworkLink = post => "project.html?id=" + encodeURIComponent(post.id);
   const profileLink = post => "creator-profile.html?id=" + encodeURIComponent(post.creator.id);
   const render = filter => {
