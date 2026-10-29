@@ -15,7 +15,7 @@
   const isDemo = post => !!post.creator.isDemo || (post.creator.badges || []).includes("Demo Profile");
   const artworkLink = post => "project.html?id=" + encodeURIComponent(post.id);
   const profileLink = post => "creator-profile.html?id=" + encodeURIComponent(post.creator.id);
-  const render = filter => {
+  const params = new URLSearchParams(location.search);\n  let view = params.get("view") === "grid" ? "grid" : "feed";\n  let current = ["all","art","motion"].includes(params.get("category")) ? params.get("category") : "all";\n  const updateControls = () => {\n    document.querySelectorAll("[data-feed-filter]").forEach(button => { const active = button.dataset.feedFilter === current; button.classList.toggle("is-active",active); button.setAttribute("aria-pressed",String(active)); });\n    document.querySelectorAll("[data-discover-view]").forEach(button => { const active = button.dataset.discoverView === view; button.classList.toggle("is-active",active); button.setAttribute("aria-pressed",String(active)); });\n    feed.classList.toggle("discover-grid-view",view === "grid");\n    const url = new URL(location.href); url.searchParams.set("view",view); url.searchParams.set("category",current); history.replaceState(null,"",url);\n  };\n  const render = filter => {
     const filtered = posts.filter(post => filter === "all" || (filter === "motion" ? isMotion(post) : !isMotion(post)));
     feed.innerHTML = filtered.map(post => {
       const active = liked.includes(post.id);
