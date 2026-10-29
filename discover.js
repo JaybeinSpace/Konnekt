@@ -57,5 +57,6 @@
     button.querySelector(".heart").textContent = active ? "♥" : "♡";
     button.querySelector("small").textContent = active ? "Liked" : "Like";
   });
+  updateControls();
   render(current);
 })();
