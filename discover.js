@@ -15,6 +15,15 @@
   const isDemo = post => !!post.creator.isDemo || (post.creator.badges || []).includes("Demo Profile");
   const artworkLink = post => "project.html?id=" + encodeURIComponent(post.id);
   const profileLink = post => "creator-profile.html?id=" + encodeURIComponent(post.creator.id);
+  const params = new URLSearchParams(location.search);
+  let view = params.get("view") === "grid" ? "grid" : "feed";
+  let current = ["all","art","motion"].includes(params.get("category")) ? params.get("category") : "all";
+  const updateControls = () => {
+    document.querySelectorAll("[data-feed-filter]").forEach(button => { const active = button.dataset.feedFilter === current; button.classList.toggle("is-active",active); button.setAttribute("aria-pressed",String(active)); });
+    document.querySelectorAll("[data-discover-view]").forEach(button => { const active = button.dataset.discoverView === view; button.classList.toggle("is-active",active); button.setAttribute("aria-pressed",String(active)); });
+    feed.classList.toggle("discover-grid-view",view === "grid");
+    const url = new URL(location.href); url.searchParams.set("view",view); url.searchParams.set("category",current); history.replaceState(null,"",url);
+  };
   const render = filter => {
     const filtered = posts.filter(post => filter === "all" || (filter === "motion" ? isMotion(post) : !isMotion(post)));
     feed.innerHTML = filtered.map(post => {
@@ -30,10 +39,14 @@
     }).join("");
     document.querySelector("[data-discover-empty]").hidden = filtered.length > 0;
   };
-  let current = "all";
   document.querySelectorAll("[data-feed-filter]").forEach(button => button.addEventListener("click", () => {
     current = button.dataset.feedFilter;
-    document.querySelectorAll("[data-feed-filter]").forEach(item => { const active = item === button; item.classList.toggle("is-active", active); item.setAttribute("aria-pressed", String(active)); });
+    updateControls();
+    render(current);
+  }));
+  document.querySelectorAll("[data-discover-view]").forEach(button => button.addEventListener("click", () => {
+    view = button.dataset.discoverView;
+    updateControls();
     render(current);
   }));
   feed.addEventListener("click", event => {
@@ -48,5 +61,6 @@
     button.querySelector(".heart").textContent = active ? "♥" : "♡";
     button.querySelector("small").textContent = active ? "Liked" : "Like";
   });
+  updateControls();
   render(current);
 })();
