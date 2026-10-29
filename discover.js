@@ -39,10 +39,14 @@
     }).join("");
     document.querySelector("[data-discover-empty]").hidden = filtered.length > 0;
   };
-  let current = "all";
   document.querySelectorAll("[data-feed-filter]").forEach(button => button.addEventListener("click", () => {
     current = button.dataset.feedFilter;
-    document.querySelectorAll("[data-feed-filter]").forEach(item => { const active = item === button; item.classList.toggle("is-active", active); item.setAttribute("aria-pressed", String(active)); });
+    updateControls();
+    render(current);
+  }));
+  document.querySelectorAll("[data-discover-view]").forEach(button => button.addEventListener("click", () => {
+    view = button.dataset.discoverView;
+    updateControls();
     render(current);
   }));
   feed.addEventListener("click", event => {
