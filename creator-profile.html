@@ -52,15 +52,15 @@
                 <div class="profile-actions">
                     <button class="button primary-button" type="button" data-konnekt-open aria-expanded="false" aria-controls="konnekt-contact-panel">Konnekt</button><a class="button secondary-button" href="#featured-work">View Work</a>
                     <button class="button secondary-button save-button" type="button" data-save-type="creator">Save Creator</button>
-                    <a class="button secondary-button" href="explore.html">Back to Explore</a>
+                    <button class="button secondary-button" type="button" data-share-creator>Share Profile</button><a class="button secondary-button" href="explore.html">Back to Explore</a>
                 </div>
             </div>
 
             <div class="konnekt-panel" id="konnekt-contact-panel" data-konnekt-panel hidden><div class="konnekt-panel-heading"><h2 data-konnekt-title>Connect with the creator</h2><button type="button" class="konnekt-close" data-konnekt-close aria-label="Close contact options">×</button></div><p>Use the creator’s approved external contact options. Konnekt does not send messages yet.</p><div data-konnekt-options></div><div data-konnekt-form></div><p data-konnekt-feedback role="status" aria-live="polite"></p></div><div class="profile-stat-strip" data-profile-stats aria-label="Creator profile stats"></div>
         </section>
 
-        <section class="profile-layout" id="featured-work">
-            <aside class="profile-panel profile-about-panel">
+        <nav class="profile-section-nav" aria-label="Creator profile sections"><a href="#featured-work">Work</a><a href="#profile-about">About</a><a href="#featured-in" data-profile-featured-nav hidden>Featured In</a><a href="#profile-gallery">Gallery</a></nav><p class="profile-share-status" data-profile-share-status role="status" aria-live="polite"></p><section class="profile-layout" id="featured-work">
+            <aside class="profile-panel profile-about-panel" id="profile-about">
                 <h2>About</h2>
                 <p data-profile-bio></p>
 
@@ -79,7 +79,7 @@
             </section>
         </section>
 
-        <section class="section featured-in-section" data-featured-in-section hidden><div class="section-heading"><p class="eyebrow">Credits and collaboration</p><h2>Featured In</h2><p>Projects this creator contributed to, without duplicating the original work.</p></div><div class="project-grid" data-featured-in-projects></div></section><section class="section profile-gallery-section">
+        <section class="section featured-in-section" id="featured-in" data-featured-in-section hidden><div class="section-heading"><p class="eyebrow">Credits and collaboration</p><h2>Featured In</h2><p>Projects this creator contributed to, without duplicating the original work.</p></div><div class="project-grid" data-featured-in-projects></div></section><section class="section profile-gallery-section" id="profile-gallery">
             <div class="section-heading">
                 <p class="eyebrow">Media gallery</p>
                 <h2>Selected frames</h2>
