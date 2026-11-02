@@ -24,7 +24,7 @@ const medium=p=>p.medium||p.type||p.category||"";
 const profile=artist?"creator-profile.html?id="+encodeURIComponent(artist.id):"explore.html";
 const gallery=document.querySelector("[data-gallery-grid]");
 if(gallery){if(!artist){gallery.innerHTML='<p class="gallery-empty">Our first exhibition is being prepared.</p>';return;}
-const image=document.querySelector("[data-gallery-feature-image]");if(image){const src=artist.bannerImage||artworks[0]?.image;if(src){const img=document.createElement("img");img.src=src;img.alt=artist.bannerAlt||"Featured artwork";image.appendChild(img);}}
+const image=document.querySelector("[data-gallery-feature-image]");if(image){const src=artist.profileImage||artist.bannerImage||artworks[0]?.image;if(src){const img=document.createElement("img");img.src=src;img.alt=artist.profileImage?(artist.profileAlt||"Portrait of "+artist.name):(artist.bannerAlt||"Featured artwork");image.appendChild(img);}}
 const introduction=document.querySelector("[data-gallery-artist]");if(introduction){const disciplines=(artist.specialties||[]).join(" · ");introduction.innerHTML=`<div><p class="gallery-eyebrow">01 / FEATURED ARTIST</p><h2>${safe(artist.name)}</h2><p class="gallery-location">${safe(artist.location)} · ${safe(disciplines)}</p><a class="gallery-button" href="${profile}">VIEW JAELYN'S PORTFOLIO ↗</a></div><div class="gallery-artist-bio"><p>${safe(artist.bio||"")}</p></div>`;}
 const editorial=document.querySelector("[data-gallery-editorial]");
 if(editorial){
