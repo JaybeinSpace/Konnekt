@@ -1058,7 +1058,7 @@ window.konnektCreators.push({
   "bio": "Leticia L. Mendoza is a Brooklyn-based mixed-media artist whose practice explores the intersection of her Puerto Rican and Peruvian heritage. A Spring 2026 BFA graduate of the College of Staten Island, she uses multidisciplinary techniques to archive and celebrate Puerto Rican history and cultural landscapes. Layered materials transform personal and collective memory into explorations of identity and place. Her current work also addresses body image, relationships, and her personal perception of the world. Mendoza has participated in group exhibitions at the College of Staten Island and shown work at the Powerhouse Print Fair and the College of Staten Island main gallery.",
   "shortDescription": "Mixed-media artwork exploring heritage, memory, identity, body image, and relationships.",
   "tagline": "Art as memory, culture, and connection",
-  "profileImage": "assets/leticia-mendoza/profile.jpg",
+  "profileImage": "assets/leticia-mendoza/profile-optimized.svg",
   "profileAlt": "Profile photograph supplied for Leticia L. Mendoza",
   "bannerImage": "assets/leticia-mendoza/12-boricua-culture.jpg",
   "bannerAlt": "Boricua culture by Leticia L. Mendoza",
