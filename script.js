@@ -671,10 +671,29 @@ const renderCreatorProfile = () => {
     });
 
 
-    document.querySelector("[data-profile-banner]").src = creator.bannerImage;
-    document.querySelector("[data-profile-banner]").alt = creator.bannerAlt;
-    document.querySelector("[data-profile-avatar]").src = creator.profileImage;
-    document.querySelector("[data-profile-avatar]").alt = creator.profileAlt;
+    const bannerImage = document.querySelector("[data-profile-banner]");
+    const avatarImage = document.querySelector("[data-profile-avatar]");
+    const fallbackImage = creator.gallery?.find(item => item && typeof item.src === "string")?.src || "";
+    const preferredAvatar = creator.profileImage || fallbackImage;
+    const preferredBanner = creator.bannerImage || fallbackImage;
+    const hideBrokenImage = image => {
+        image.hidden = true;
+        image.removeAttribute("src");
+    };
+    bannerImage.alt = creator.bannerAlt || (creator.name + " portfolio cover");
+    avatarImage.alt = creator.profileAlt || (creator.name + " profile photo");
+    bannerImage.addEventListener("error", () => {
+        if (fallbackImage && bannerImage.getAttribute("src") !== fallbackImage) bannerImage.src = fallbackImage;
+        else hideBrokenImage(bannerImage);
+    });
+    avatarImage.addEventListener("error", () => {
+        if (fallbackImage && avatarImage.getAttribute("src") !== fallbackImage) avatarImage.src = fallbackImage;
+        else hideBrokenImage(avatarImage);
+    });
+    if (preferredBanner) bannerImage.src = preferredBanner;
+    else hideBrokenImage(bannerImage);
+    if (preferredAvatar) avatarImage.src = preferredAvatar;
+    else hideBrokenImage(avatarImage);
     document.querySelector("[data-profile-name]").textContent = creator.name;
     document.querySelector("[data-profile-meta]").textContent = [creator.role,creator.location].filter(Boolean).join(" | ");
     document.querySelector("[data-profile-bio]").textContent = creator.bio || "";
