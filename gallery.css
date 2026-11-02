@@ -14,3 +14,13 @@
 .gallery-editorial-text-link{font:.82rem Arial,sans-serif;text-decoration:underline!important;text-underline-offset:5px}
 @media(max-width:850px){.gallery-editorial{grid-template-columns:1fr;gap:36px}.gallery-editorial-photo{min-height:350px}.gallery-editorial-photo img{max-height:460px}}
 @media(max-width:600px){.gallery-editorial{padding:65px 6%}.gallery-editorial-photo{min-height:280px;padding:15px 15px 35px}.gallery-editorial-photo img{max-height:350px}.gallery-editorial-copy h2{font-size:3.4rem}.gallery-editorial-actions{align-items:stretch;flex-direction:column}.gallery-editorial-actions .gallery-button{text-align:center}}
+
+
+/* Gallery introduction: explain the exhibition experience without competing with the art. */
+.gallery-explainer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(25px,6vw,100px);padding:clamp(56px,7vw,100px) 7%;background:#f6f4ef;border-bottom:1px solid #dddcd6}
+.gallery-explainer h2{font-size:clamp(2.1rem,4vw,4.2rem);font-weight:400;line-height:1.1;letter-spacing:-.035em;max-width:640px;margin:20px 0 0}
+.gallery-explainer-copy{max-width:590px}
+.gallery-explainer-copy p{font-size:clamp(1.03rem,1.6vw,1.18rem);line-height:1.7;color:#475456;margin:0 0 18px}
+.gallery-explainer-copy a{display:inline-block;margin-top:8px;font:700 .85rem Arial,sans-serif;text-decoration:underline;text-underline-offset:5px}
+.gallery-explainer-copy a:focus-visible{outline:3px solid #166d70;outline-offset:5px}
+@media(max-width:760px){.gallery-explainer{grid-template-columns:1fr;gap:20px;padding:55px 6%}.gallery-explainer h2{margin-top:12px}.gallery-explainer-copy p{font-size:1.03rem}}
