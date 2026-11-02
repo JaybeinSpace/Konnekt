@@ -2145,3 +2145,12 @@ body:has(.creative-categories) #creators .creator-info { padding:18px; }
   .profile-page .profile-layout { width:calc(100% - 24px);gap:16px; }
   .profile-page .profile-panel { padding:18px 16px; }
 }
+
+
+/* Discovery → Project → Creator → Contact navigation */
+.project-journey{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:24px 0 0;font-size:.9rem;color:var(--muted)}
+.project-journey a{color:inherit;text-decoration:underline;text-underline-offset:4px}
+.project-journey a:hover,.project-journey a:focus-visible{color:var(--text)}
+.project-journey a:focus-visible{outline:2px solid currentColor;outline-offset:4px}
+.project-hero .hero-actions,.project-cta .hero-actions{flex-wrap:wrap}
+@media(max-width:600px){.project-journey{padding-top:14px;font-size:.83rem}.project-hero .hero-actions .button,.project-cta .hero-actions .button{max-width:100%;white-space:normal;text-align:center}}
