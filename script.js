@@ -804,6 +804,15 @@ const renderCreatorProfile = () => {
     document.addEventListener("keydown", event => {
         if (event.key === "Escape" && !panel.hidden) close();
     });
+    // Deep links from project pages open the creator-approved contact options.
+    if (new URLSearchParams(window.location.search).get("contact") === "1") {
+        panel.hidden = false;
+        openKonnekt.setAttribute("aria-expanded", "true");
+        requestAnimationFrame(() => {
+            panel.scrollIntoView({ behavior: "smooth", block: "center" });
+            closeKonnekt?.focus({ preventScroll: true });
+        });
+    }
     const visitSource = new URLSearchParams(window.location.search).get("source");
     if (["nfc","qr","share","discovery"].includes(visitSource)) document.documentElement.dataset.profileSource = visitSource;
 
@@ -851,7 +860,8 @@ const renderProjectDetail = () => {
         if (watchEligible) watchLink.href = "watch-project.html?id=" + encodeURIComponent(project.id);
     }
     const creator = getCreatorById(project.creatorId);
-    const creatorProfileUrl = `creator-profile.html?id=${project.creatorId}`;
+    const creatorProfileUrl = `creator-profile.html?id=${encodeURIComponent(project.creatorId)}`;
+    const creatorContactUrl = `creator-profile.html?id=${encodeURIComponent(project.creatorId)}&contact=1`;
 
     document.title = `${project.title} | Konnekt Project`;
 
@@ -896,6 +906,11 @@ const renderProjectDetail = () => {
     topCreatorLink.textContent = creator ? `View ${creator.name}` : "View Creator";
     bottomCreatorLink.href = creatorProfileUrl;
     bottomCreatorLink.textContent = creator ? `View ${creator.name}` : "View Creator";
+    document.querySelectorAll("[data-project-contact-link], [data-project-bottom-contact]").forEach(link => {
+        link.href = creator ? creatorContactUrl : "explore.html";
+        link.hidden = !creator;
+        if (creator) link.setAttribute("aria-label", "Open contact options for " + creator.name);
+    });
 
     const tagContainer = document.createElement("div");
     tagContainer.className = "badge-list project-tags";
