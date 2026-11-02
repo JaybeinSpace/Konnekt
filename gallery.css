@@ -30,3 +30,22 @@
 .gallery-hero-image img{object-position:center 32%;filter:brightness(.73)}
 .gallery-hero-image:after{background:linear-gradient(90deg,rgba(10,15,20,.82) 0%,rgba(10,15,20,.44) 55%,rgba(10,15,20,.22) 100%),linear-gradient(0deg,rgba(10,15,20,.62),transparent 58%)}
 @media(max-width:700px){.gallery-hero{min-height:580px}.gallery-hero-image img{object-position:center 26%}.gallery-hero-image:after{background:linear-gradient(0deg,rgba(10,15,20,.91) 0%,rgba(10,15,20,.45) 54%,rgba(10,15,20,.15) 100%)}.gallery-hero-content{padding:64px 6%}}
+
+
+/* Fit Jaelyn's full portrait in the Gallery hero; prevent oversized headline clipping. */
+.gallery-hero{min-height:clamp(560px,64vw,760px);isolation:isolate}
+.gallery-hero-image{display:flex;align-items:center;justify-content:flex-end;background:#24272c}
+.gallery-hero-image img{width:100%;height:100%;object-fit:contain;object-position:center center;filter:brightness(.9)}
+.gallery-hero-image:after{background:linear-gradient(90deg,rgba(12,17,22,.87) 0%,rgba(12,17,22,.57) 38%,rgba(12,17,22,.12) 76%,rgba(12,17,22,.04) 100%)}
+.gallery-hero-content{box-sizing:border-box;width:min(100%,820px);max-width:100%;padding:clamp(48px,7vw,100px) clamp(24px,6vw,92px)}
+.gallery-hero h1{font-size:clamp(3rem,6.4vw,6.4rem);line-height:1.02;overflow-wrap:normal;max-width:11ch}
+.gallery-hero-content>p:not(.gallery-eyebrow){max-width:34ch}
+@media(max-width:800px){
+.gallery-hero{min-height:680px;align-items:flex-end}
+.gallery-hero-image{align-items:flex-start}
+.gallery-hero-image img{object-position:center top}
+.gallery-hero-image:after{background:linear-gradient(0deg,rgba(12,17,22,.94) 0%,rgba(12,17,22,.76) 30%,rgba(12,17,22,.05) 77%)}
+.gallery-hero-content{padding:48px 6%}
+.gallery-hero h1{font-size:clamp(2.9rem,10vw,5.1rem);max-width:100%}
+}
+@media(max-width:480px){.gallery-hero{min-height:620px}.gallery-hero h1{font-size:clamp(2.65rem,11vw,3.8rem)}}
