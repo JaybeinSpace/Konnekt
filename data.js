@@ -1034,3 +1034,495 @@ window.konnektCreators.push({
   "videos": [],
   "isDemo": true
 });
+
+
+// Real creator profile prepared from the artist's supplied portfolio document.
+// Image assets must be uploaded to assets/leticia-mendoza/ before merging.
+window.konnektCreators.push({
+  "id": "leticia-mendoza",
+  "name": "Leticia L. Mendoza",
+  "category": "visual-artist",
+  "categories": [
+    "visual-arts",
+    "photography"
+  ],
+  "specialties": [
+    "Mixed Media",
+    "Painting",
+    "Photography",
+    "Charcoal",
+    "Cyanotype"
+  ],
+  "role": "Mixed-Media Visual Artist",
+  "location": "Brooklyn, New York",
+  "bio": "Leticia L. Mendoza is a Brooklyn-based mixed-media artist whose practice explores the intersection of her Puerto Rican and Peruvian heritage. A Spring 2026 BFA graduate of the College of Staten Island, she uses multidisciplinary techniques to archive and celebrate Puerto Rican history and cultural landscapes. Layered materials transform personal and collective memory into explorations of identity and place. Her current work also addresses body image, relationships, and her personal perception of the world. Mendoza has participated in group exhibitions at the College of Staten Island and shown work at the Powerhouse Print Fair and the College of Staten Island main gallery.",
+  "shortDescription": "Mixed-media artwork exploring heritage, memory, identity, body image, and relationships.",
+  "tagline": "Art as memory, culture, and connection",
+  "profileImage": "assets/leticia-mendoza/profile-optimized.svg",
+  "profileAlt": "Profile photograph supplied for Leticia L. Mendoza",
+  "bannerImage": "assets/leticia-mendoza/12-boricua-culture.jpg",
+  "bannerAlt": "Boricua culture by Leticia L. Mendoza",
+  "tags": [
+    "Mixed Media",
+    "Puerto Rican Heritage",
+    "Peruvian Heritage",
+    "Painting",
+    "Photography"
+  ],
+  "discovery": {
+    "featured": false,
+    "konnektSelects": false,
+    "recentActivity": "2026-11-02"
+  },
+  "stats": {
+    "projects": "13",
+    "views": "—",
+    "badges": "0"
+  },
+  "badges": [],
+  "socialLinks": [
+    {
+      "label": "Art Instagram",
+      "url": "https://www.instagram.com/lettyartwork._/"
+    },
+    {
+      "label": "Instagram",
+      "url": "https://www.instagram.com/letty.mendoza_/"
+    }
+  ],
+  "gallery": [
+    {
+      "src": "assets/leticia-mendoza/01-i-didnt-know-i-needed-this.jpg",
+      "alt": "I Didn’t Know I Needed This by Leticia L. Mendoza"
+    },
+    {
+      "src": "assets/leticia-mendoza/02-with-love.jpg",
+      "alt": "With love by Leticia L. Mendoza"
+    },
+    {
+      "src": "assets/leticia-mendoza/03-intertwined-and-connected.jpg",
+      "alt": "Intertwined by Leticia L. Mendoza"
+    },
+    {
+      "src": "assets/leticia-mendoza/03-intertwined-and-connected.jpg",
+      "alt": "Connected by Leticia L. Mendoza"
+    },
+    {
+      "src": "assets/leticia-mendoza/04-no-need-to-look-back.jpg",
+      "alt": "No Need To Look Back by Leticia L. Mendoza"
+    },
+    {
+      "src": "assets/leticia-mendoza/05-plant.jpg",
+      "alt": "Plant by Leticia L. Mendoza"
+    },
+    {
+      "src": "assets/leticia-mendoza/06-the-chaos-of-emotions.jpg",
+      "alt": "The Chaos of Emotions by Leticia L. Mendoza"
+    },
+    {
+      "src": "assets/leticia-mendoza/07-the-dynamics-of-a-relationship.jpg",
+      "alt": "The Dynamics of a Relationship by Leticia L. Mendoza"
+    },
+    {
+      "src": "assets/leticia-mendoza/08-the-words-we-left-unsaid.jpg",
+      "alt": "The words we left unsaid by Leticia L. Mendoza"
+    },
+    {
+      "src": "assets/leticia-mendoza/09-untitled.jpg",
+      "alt": "Untitled by Leticia L. Mendoza"
+    },
+    {
+      "src": "assets/leticia-mendoza/10-erosion.jpg",
+      "alt": "Erosion by Leticia L. Mendoza"
+    },
+    {
+      "src": "assets/leticia-mendoza/11-we-deserve-to-live-extension.jpg",
+      "alt": "We deserve to Live (extension) by Leticia L. Mendoza"
+    },
+    {
+      "src": "assets/leticia-mendoza/12-boricua-culture.jpg",
+      "alt": "Boricua culture by Leticia L. Mendoza"
+    }
+  ],
+  "featuredProjects": [
+    {
+      "id": "leticia-i-didnt-know-i-needed-this",
+      "creatorId": "leticia-mendoza",
+      "title": "I Didn’t Know I Needed This",
+      "type": "Photograph",
+      "category": "Photograph",
+      "description": "Canon Rebel T6",
+      "year": "2025",
+      "thumbnail": "assets/leticia-mendoza/01-i-didnt-know-i-needed-this.jpg",
+      "image": "assets/leticia-mendoza/01-i-didnt-know-i-needed-this.jpg",
+      "alt": "I Didn’t Know I Needed This by Leticia L. Mendoza",
+      "media": [
+        {
+          "src": "assets/leticia-mendoza/01-i-didnt-know-i-needed-this.jpg",
+          "alt": "I Didn’t Know I Needed This by Leticia L. Mendoza"
+        }
+      ],
+      "tags": [
+        "Photograph",
+        "Visual Arts"
+      ],
+      "credits": [
+        {
+          "name": "Leticia L. Mendoza",
+          "role": "Artist",
+          "creatorId": "leticia-mendoza"
+        }
+      ]
+    },
+    {
+      "id": "leticia-with-love",
+      "creatorId": "leticia-mendoza",
+      "title": "With love",
+      "type": "Photograph",
+      "category": "Photograph",
+      "description": "Canon Rebel T6",
+      "year": "2025",
+      "thumbnail": "assets/leticia-mendoza/02-with-love.jpg",
+      "image": "assets/leticia-mendoza/02-with-love.jpg",
+      "alt": "With love by Leticia L. Mendoza",
+      "media": [
+        {
+          "src": "assets/leticia-mendoza/02-with-love.jpg",
+          "alt": "With love by Leticia L. Mendoza"
+        }
+      ],
+      "tags": [
+        "Photograph",
+        "Visual Arts"
+      ],
+      "credits": [
+        {
+          "name": "Leticia L. Mendoza",
+          "role": "Artist",
+          "creatorId": "leticia-mendoza"
+        }
+      ]
+    },
+    {
+      "id": "leticia-intertwined",
+      "creatorId": "leticia-mendoza",
+      "title": "Intertwined",
+      "type": "Mixed Media",
+      "category": "Mixed Media",
+      "description": "Air-dry clay, acrylic, and glue on wood panel · 18 × 20",
+      "year": "2025",
+      "thumbnail": "assets/leticia-mendoza/03-intertwined-and-connected.jpg",
+      "image": "assets/leticia-mendoza/03-intertwined-and-connected.jpg",
+      "alt": "Intertwined by Leticia L. Mendoza",
+      "media": [
+        {
+          "src": "assets/leticia-mendoza/03-intertwined-and-connected.jpg",
+          "alt": "Intertwined by Leticia L. Mendoza"
+        }
+      ],
+      "tags": [
+        "Mixed Media",
+        "Visual Arts"
+      ],
+      "credits": [
+        {
+          "name": "Leticia L. Mendoza",
+          "role": "Artist",
+          "creatorId": "leticia-mendoza"
+        }
+      ]
+    },
+    {
+      "id": "leticia-connected",
+      "creatorId": "leticia-mendoza",
+      "title": "Connected",
+      "type": "Mixed Media",
+      "category": "Mixed Media",
+      "description": "Oil, acrylic, and hot-melt adhesive on canvas panel · 24 × 28",
+      "year": "2025",
+      "thumbnail": "assets/leticia-mendoza/03-intertwined-and-connected.jpg",
+      "image": "assets/leticia-mendoza/03-intertwined-and-connected.jpg",
+      "alt": "Connected by Leticia L. Mendoza",
+      "media": [
+        {
+          "src": "assets/leticia-mendoza/03-intertwined-and-connected.jpg",
+          "alt": "Connected by Leticia L. Mendoza"
+        }
+      ],
+      "tags": [
+        "Mixed Media",
+        "Visual Arts"
+      ],
+      "credits": [
+        {
+          "name": "Leticia L. Mendoza",
+          "role": "Artist",
+          "creatorId": "leticia-mendoza"
+        }
+      ]
+    },
+    {
+      "id": "leticia-no-need-to-look-back",
+      "creatorId": "leticia-mendoza",
+      "title": "No Need To Look Back",
+      "type": "Photograph",
+      "category": "Photograph",
+      "description": "Canon Rebel T6",
+      "year": "2025",
+      "thumbnail": "assets/leticia-mendoza/04-no-need-to-look-back.jpg",
+      "image": "assets/leticia-mendoza/04-no-need-to-look-back.jpg",
+      "alt": "No Need To Look Back by Leticia L. Mendoza",
+      "media": [
+        {
+          "src": "assets/leticia-mendoza/04-no-need-to-look-back.jpg",
+          "alt": "No Need To Look Back by Leticia L. Mendoza"
+        }
+      ],
+      "tags": [
+        "Photograph",
+        "Visual Arts"
+      ],
+      "credits": [
+        {
+          "name": "Leticia L. Mendoza",
+          "role": "Artist",
+          "creatorId": "leticia-mendoza"
+        }
+      ]
+    },
+    {
+      "id": "leticia-plant",
+      "creatorId": "leticia-mendoza",
+      "title": "Plant",
+      "type": "Painting",
+      "category": "Painting",
+      "description": "Gouache on panel · 20 × 24",
+      "year": "2026",
+      "thumbnail": "assets/leticia-mendoza/05-plant.jpg",
+      "image": "assets/leticia-mendoza/05-plant.jpg",
+      "alt": "Plant by Leticia L. Mendoza",
+      "media": [
+        {
+          "src": "assets/leticia-mendoza/05-plant.jpg",
+          "alt": "Plant by Leticia L. Mendoza"
+        }
+      ],
+      "tags": [
+        "Painting",
+        "Visual Arts"
+      ],
+      "credits": [
+        {
+          "name": "Leticia L. Mendoza",
+          "role": "Artist",
+          "creatorId": "leticia-mendoza"
+        }
+      ]
+    },
+    {
+      "id": "leticia-the-chaos-of-emotions",
+      "creatorId": "leticia-mendoza",
+      "title": "The Chaos of Emotions",
+      "type": "Drawing",
+      "category": "Drawing",
+      "description": "Charcoal on paper · 11 × 14",
+      "year": "2026",
+      "thumbnail": "assets/leticia-mendoza/06-the-chaos-of-emotions.jpg",
+      "image": "assets/leticia-mendoza/06-the-chaos-of-emotions.jpg",
+      "alt": "The Chaos of Emotions by Leticia L. Mendoza",
+      "media": [
+        {
+          "src": "assets/leticia-mendoza/06-the-chaos-of-emotions.jpg",
+          "alt": "The Chaos of Emotions by Leticia L. Mendoza"
+        }
+      ],
+      "tags": [
+        "Drawing",
+        "Visual Arts"
+      ],
+      "credits": [
+        {
+          "name": "Leticia L. Mendoza",
+          "role": "Artist",
+          "creatorId": "leticia-mendoza"
+        }
+      ]
+    },
+    {
+      "id": "leticia-the-dynamics-of-a-relationship",
+      "creatorId": "leticia-mendoza",
+      "title": "The Dynamics of a Relationship",
+      "type": "Painting",
+      "category": "Painting",
+      "description": "Oil on canvas · 18 × 24",
+      "year": "2026",
+      "thumbnail": "assets/leticia-mendoza/07-the-dynamics-of-a-relationship.jpg",
+      "image": "assets/leticia-mendoza/07-the-dynamics-of-a-relationship.jpg",
+      "alt": "The Dynamics of a Relationship by Leticia L. Mendoza",
+      "media": [
+        {
+          "src": "assets/leticia-mendoza/07-the-dynamics-of-a-relationship.jpg",
+          "alt": "The Dynamics of a Relationship by Leticia L. Mendoza"
+        }
+      ],
+      "tags": [
+        "Painting",
+        "Visual Arts"
+      ],
+      "credits": [
+        {
+          "name": "Leticia L. Mendoza",
+          "role": "Artist",
+          "creatorId": "leticia-mendoza"
+        }
+      ]
+    },
+    {
+      "id": "leticia-the-words-we-left-unsaid",
+      "creatorId": "leticia-mendoza",
+      "title": "The words we left unsaid",
+      "type": "Painting",
+      "category": "Painting",
+      "description": "Oil on canvas · 18 × 24",
+      "year": "2026",
+      "thumbnail": "assets/leticia-mendoza/08-the-words-we-left-unsaid.jpg",
+      "image": "assets/leticia-mendoza/08-the-words-we-left-unsaid.jpg",
+      "alt": "The words we left unsaid by Leticia L. Mendoza",
+      "media": [
+        {
+          "src": "assets/leticia-mendoza/08-the-words-we-left-unsaid.jpg",
+          "alt": "The words we left unsaid by Leticia L. Mendoza"
+        }
+      ],
+      "tags": [
+        "Painting",
+        "Visual Arts"
+      ],
+      "credits": [
+        {
+          "name": "Leticia L. Mendoza",
+          "role": "Artist",
+          "creatorId": "leticia-mendoza"
+        }
+      ]
+    },
+    {
+      "id": "leticia-untitled",
+      "creatorId": "leticia-mendoza",
+      "title": "Untitled",
+      "type": "Drawing",
+      "category": "Drawing",
+      "description": "Charcoal on paper · 18 × 24",
+      "year": "2026",
+      "thumbnail": "assets/leticia-mendoza/09-untitled.jpg",
+      "image": "assets/leticia-mendoza/09-untitled.jpg",
+      "alt": "Untitled by Leticia L. Mendoza",
+      "media": [
+        {
+          "src": "assets/leticia-mendoza/09-untitled.jpg",
+          "alt": "Untitled by Leticia L. Mendoza"
+        }
+      ],
+      "tags": [
+        "Drawing",
+        "Visual Arts"
+      ],
+      "credits": [
+        {
+          "name": "Leticia L. Mendoza",
+          "role": "Artist",
+          "creatorId": "leticia-mendoza"
+        }
+      ]
+    },
+    {
+      "id": "leticia-erosion",
+      "creatorId": "leticia-mendoza",
+      "title": "Erosion",
+      "type": "Painting",
+      "category": "Painting",
+      "description": "Oil on canvas · 20 × 20",
+      "year": "2026",
+      "thumbnail": "assets/leticia-mendoza/10-erosion.jpg",
+      "image": "assets/leticia-mendoza/10-erosion.jpg",
+      "alt": "Erosion by Leticia L. Mendoza",
+      "media": [
+        {
+          "src": "assets/leticia-mendoza/10-erosion.jpg",
+          "alt": "Erosion by Leticia L. Mendoza"
+        }
+      ],
+      "tags": [
+        "Painting",
+        "Visual Arts"
+      ],
+      "credits": [
+        {
+          "name": "Leticia L. Mendoza",
+          "role": "Artist",
+          "creatorId": "leticia-mendoza"
+        }
+      ]
+    },
+    {
+      "id": "leticia-we-deserve-to-live-extension",
+      "creatorId": "leticia-mendoza",
+      "title": "We deserve to Live (extension)",
+      "type": "Painting",
+      "category": "Painting",
+      "description": "Oil on canvas · 24 × 36",
+      "year": "2026",
+      "thumbnail": "assets/leticia-mendoza/11-we-deserve-to-live-extension.jpg",
+      "image": "assets/leticia-mendoza/11-we-deserve-to-live-extension.jpg",
+      "alt": "We deserve to Live (extension) by Leticia L. Mendoza",
+      "media": [
+        {
+          "src": "assets/leticia-mendoza/11-we-deserve-to-live-extension.jpg",
+          "alt": "We deserve to Live (extension) by Leticia L. Mendoza"
+        }
+      ],
+      "tags": [
+        "Painting",
+        "Visual Arts"
+      ],
+      "credits": [
+        {
+          "name": "Leticia L. Mendoza",
+          "role": "Artist",
+          "creatorId": "leticia-mendoza"
+        }
+      ]
+    },
+    {
+      "id": "leticia-boricua-culture",
+      "creatorId": "leticia-mendoza",
+      "title": "Boricua culture",
+      "type": "Mixed Media",
+      "category": "Mixed Media",
+      "description": "Cyanotype on paper (11 × 14) and oil on canvas (16 × 20)",
+      "year": "2026",
+      "thumbnail": "assets/leticia-mendoza/12-boricua-culture.jpg",
+      "image": "assets/leticia-mendoza/12-boricua-culture.jpg",
+      "alt": "Boricua culture by Leticia L. Mendoza",
+      "media": [
+        {
+          "src": "assets/leticia-mendoza/12-boricua-culture.jpg",
+          "alt": "Boricua culture by Leticia L. Mendoza"
+        }
+      ],
+      "tags": [
+        "Mixed Media",
+        "Visual Arts"
+      ],
+      "credits": [
+        {
+          "name": "Leticia L. Mendoza",
+          "role": "Artist",
+          "creatorId": "leticia-mendoza"
+        }
+      ]
+    }
+  ],
+  "videos": [],
+  "isDemo": false
+});

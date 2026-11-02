@@ -5,7 +5,7 @@
   const creators = Array.isArray(window.konnektCreators) ? window.konnektCreators : [];
   const posts = creators.flatMap(creator => (creator.featuredProjects || []).filter(project => project && project.id && (project.image || project.thumbnail)).map(project => ({...project, creator})));
   // The real featured artist is first; fictional demonstration content is clearly labeled.
-  const confirmedRealCreatorIds = new Set(["jaelyn-ramos"]);
+  const confirmedRealCreatorIds = new Set(["jaelyn-ramos", "leticia-mendoza"]);
   posts.sort((a,b) => Number(!confirmedRealCreatorIds.has(a.creator.id)) - Number(!confirmedRealCreatorIds.has(b.creator.id)));
   const key = "konnekt-discover-likes-v1";
   let liked = [];
