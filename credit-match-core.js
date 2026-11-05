@@ -1,0 +1,9 @@
+/* Konnekt Credit Match — frontend-only, no identity verification or persistence. */
+(function(root,factory){const api=factory();if(typeof module==="object"&&module.exports)module.exports=api;if(root)root.KonnektCreditMatch=api;})(typeof window!=="undefined"?window:null,function(){
+"use strict";
+function youtubeId(raw){if(typeof raw!=="string"||!raw.trim())return null;try{const u=new URL(raw.trim());const h=u.hostname.toLowerCase().replace(/^www\./,"").replace(/^m\./,"");let id=null;if(h==="youtu.be")id=u.pathname.split("/")[1];else if(h==="youtube.com"||h==="youtube-nocookie.com"){const parts=u.pathname.split("/").filter(Boolean);if(u.pathname==="/watch")id=u.searchParams.get("v");else if(["shorts","embed","live","v"].includes(parts[0]))id=parts[1]}return id&&/^[A-Za-z0-9_-]{11}$/.test(id)?id:null}catch{return null}}
+function normalizeName(name){return String(name||"").normalize("NFKC").toLocaleLowerCase("en").replace(/[^\p{L}\p{N}]+/gu," ").trim().replace(/\s+/g," ")}
+function creditsOf(project){return (Array.isArray(project.credits)?project.credits:[]).map(c=>{if(typeof c==="string"){const pos=c.indexOf(":");return {name:pos>=0?c.slice(pos+1).trim():c.trim(),role:pos>=0?c.slice(0,pos).trim():""}}return c}).filter(c=>c&&typeof c.name==="string"&&c.name.trim()&&typeof c.role==="string"&&c.role.trim())}
+function findMatch(url,name,projects){const id=youtubeId(url);if(!id)return {kind:"invalid"};const duplicates=(Array.isArray(projects)?projects:[]).filter(p=>(p.youtubeId===id||[p.youtubeUrl,p.videoUrl,p.url,...(Array.isArray(p.videos)?p.videos.map(v=>typeof v==="string"?v:v.url):[])].some(v=>youtubeId(v)===id)));if(!duplicates.length)return {kind:"new"};const p=duplicates[0],n=normalizeName(name);const matching=n?creditsOf(p).filter(c=>normalizeName(c.name)===n):[];return {kind:matching.length?"credit-match":"duplicate",project:p,credits:matching};}
+return {youtubeId,normalizeName,creditsOf,findMatch};
+});
