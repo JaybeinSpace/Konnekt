@@ -45,5 +45,5 @@ function render(result){
 }
 function check(){const url=urlField.value.trim(),name=nameField.value.trim();if(!url){reset();showStatus("Add a YouTube project URL to check for an existing project.");return}const result=engine.findMatch(url,name,projects);if(result.kind==="invalid"){reset();showStatus("Enter a valid YouTube video URL (watch, youtu.be, Shorts, or embed).");return}if(result.kind==="new"){reset();showStatus("No existing YouTube project match found in this frontend demonstration. Nothing has been uploaded.");return}render(result);showStatus("Duplicate detected. No new project has been created.");}
 document.querySelector("[data-credit-check]").addEventListener("click",check);
-form.addEventListener("submit",event=>{event.preventDefault();if(urlField.value.trim()){check()}else showStatus("Frontend-only preview: no project or form data was sent.")},true);
+form.addEventListener("submit",event=>{event.preventDefault();event.stopImmediatePropagation();if(urlField.value.trim()){check()}else showStatus("Frontend-only preview: no project or form data was sent.")},true);
 })();
