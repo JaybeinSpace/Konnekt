@@ -2178,3 +2178,32 @@ button,input,select,textarea{max-width:100%}
   .project-page .hero-actions a,.project-page .hero-actions button{min-height:44px;white-space:normal}
   .profile-page .profile-actions button,.profile-page .profile-actions a{min-height:44px}
 }
+
+
+/* Screenshot QA: stop six-across cards and prevent creator names from breaking into letters. */
+.creator-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:20px!important}
+.creator-card{min-width:0;min-height:440px}
+.creator-card::after{background:linear-gradient(180deg,rgba(5,8,12,.12) 0%,rgba(5,8,12,.65) 40%,rgba(5,8,12,.96) 100%)}
+.creator-info{padding:22px;max-width:100%;overflow-wrap:normal}
+.creator-info h3{font-size:clamp(1.25rem,1.8vw,1.65rem);line-height:1.18;overflow-wrap:normal;word-break:normal}
+.creator-info p{overflow-wrap:break-word}
+.creator-info .card-actions{display:flex;flex-wrap:wrap;gap:8px}
+.creator-info .profile-link,.creator-info .save-button{margin-top:10px;min-height:42px;white-space:normal}
+.profile-page .profile-summary{grid-template-columns:150px minmax(0,1fr)!important;align-items:end;gap:20px;max-width:100%}
+.profile-page .profile-intro{min-width:0;grid-column:2;grid-row:1}
+.profile-page .profile-intro h1{font-size:clamp(2rem,4.4vw,4rem);line-height:1.12;overflow-wrap:normal;word-break:normal;hyphens:none;max-width:100%}
+.profile-page .profile-avatar{grid-column:1;grid-row:1}
+.profile-page .profile-actions{grid-column:1/-1;grid-row:2;justify-content:flex-start;padding:0;display:flex;gap:10px;flex-wrap:wrap}
+.profile-page .profile-actions .button{min-height:44px}
+.profile-page .profile-summary{margin-bottom:18px}
+@media(max-width:1050px){.creator-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:680px){
+.creator-grid{grid-template-columns:minmax(0,1fr)!important}
+.creator-card{min-height:420px}
+.profile-page .profile-summary{grid-template-columns:88px minmax(0,1fr)!important;gap:12px;margin:-35px 12px 0}
+.profile-page .profile-avatar{width:88px;height:88px}
+.profile-page .profile-intro h1{font-size:clamp(1.6rem,6.5vw,2.4rem);line-height:1.14}
+.profile-page .profile-actions{grid-template-columns:repeat(2,minmax(0,1fr));display:grid}
+.profile-page .profile-actions .button{width:100%;white-space:normal}
+}
+@media(max-width:360px){.profile-page .profile-summary{grid-template-columns:72px minmax(0,1fr)!important}.profile-page .profile-avatar{width:72px;height:72px}.profile-page .profile-actions{grid-template-columns:1fr}}
