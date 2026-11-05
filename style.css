@@ -2154,3 +2154,27 @@ body:has(.creative-categories) #creators .creator-info { padding:18px; }
 .project-journey a:focus-visible{outline:2px solid currentColor;outline-offset:4px}
 .project-hero .hero-actions,.project-cta .hero-actions{flex-wrap:wrap}
 @media(max-width:600px){.project-journey{padding-top:14px;font-size:.83rem}.project-hero .hero-actions .button,.project-cta .hero-actions .button{max-width:100%;white-space:normal;text-align:center}}
+
+
+/* Cross-device dimensions: avoid horizontal overflow, preserve artwork, and keep controls tappable. */
+html,body{max-width:100%}
+body{overflow-x:clip}
+img,video,iframe{max-width:100%}
+button,input,select,textarea{max-width:100%}
+.project-grid,.explore-grid,.media-gallery{min-width:0}
+.project-grid>* ,.explore-grid>* ,.media-gallery>*{min-width:0}
+.project-card img,.explore-card img{max-width:100%}
+.project-page .project-hero,.profile-page .profile-hero{min-width:0}
+.project-page .project-hero-media{min-width:0}
+.project-page .project-hero-media img{max-width:100%;object-fit:contain}
+.saved-collections-promo{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin:0 0 36px;padding:clamp(20px,4vw,34px);border:1px solid var(--line);border-radius:16px;background:var(--panel)}
+.saved-collections-promo>div{max-width:650px}
+.saved-collections-promo h2{font-size:clamp(1.5rem,3vw,2.3rem);margin:8px 0}
+.saved-collections-promo p:last-child{color:var(--muted);line-height:1.6}
+@media(max-width:600px){
+  .saved-collections-promo{align-items:stretch;flex-direction:column}
+  .saved-collections-promo .button{width:100%;text-align:center}
+  .project-page .hero-actions{gap:10px}
+  .project-page .hero-actions a,.project-page .hero-actions button{min-height:44px;white-space:normal}
+  .profile-page .profile-actions button,.profile-page .profile-actions a{min-height:44px}
+}
