@@ -2285,3 +2285,7 @@ button,input,select,textarea{max-width:100%}
 
 /* Draft social ownership disclosure uses the current Konnekt typography. */
 .profile-social-verification-note{font-size:.85rem;line-height:1.5;color:var(--muted);margin:10px 0 18px;overflow-wrap:anywhere}
+
+/* A submitted draft portrait is visible only on the draft review route. */
+.profile-page.is-draft-preview .profile-avatar[src]{display:block!important;object-fit:cover}
+.profile-page.is-draft-preview .profile-avatar[hidden]{display:none!important}
