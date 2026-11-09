@@ -10,7 +10,7 @@ test("same URL and matching contributor",()=>{const m=findMatch(url," quincy  ba
 test("same URL with nonmatching contributor prevents duplicate",()=>assert.equal(findMatch(url,"Unknown Person",[film]).kind,"duplicate"));
 test("different URL same name does not trigger credit match",()=>assert.equal(findMatch("https://youtu.be/ABCDEFGHIJK","Quincy Baker",[film]).kind,"new"));
 test("missing name never links credit",()=>assert.equal(findMatch(url,"",[film]).kind,"duplicate"));
-test("similar names do not match by substring",()=>assert.equal(findMatch(url,"Quincy B",[film]).kind,"duplicate"));
+test("similar names do not match by substring",()=>assert.equal(findMatch(url,"Quincy Ba",[film]).kind,"duplicate"));
 test("multiple credits for same person remain separate roles",()=>assert.equal(findMatch(url,"Alayna Williams",[film]).credits.length,2));
 test("normalization handles punctuation and whitespace",()=>assert.equal(normalizeName(" Alayna  Williams "),"alayna williams"));
 test("matching never mutates existing credits or creates a project",()=>{const before=JSON.stringify(film);findMatch(url,"Quincy Baker",[film]);assert.equal(JSON.stringify(film),before)});
