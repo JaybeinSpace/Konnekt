@@ -857,7 +857,14 @@ const renderCreatorProfile = () => {
 
     document.querySelector("[data-profile-stats]").innerHTML = isDraftPreview ? "" : renderStats(creator);
     document.querySelector("[data-profile-badges]").innerHTML = renderBadges(creator.badges || []);
-    document.querySelector("[data-profile-socials]").innerHTML = renderSocialLinks(creator.socialLinks || []);
+    const socialLinksContainer = document.querySelector("[data-profile-socials]");
+    socialLinksContainer.innerHTML = renderSocialLinks(creator.socialLinks || []);
+    if (isDraftPreview && (creator.socialLinks || []).some(link => link.verificationStatus === "pending")) {
+        const socialNote = document.createElement("p");
+        socialNote.className = "profile-social-verification-note";
+        socialNote.textContent = "Social account ownership is awaiting confirmation from Quincy. Draft preview only.";
+        socialLinksContainer.insertAdjacentElement("afterend", socialNote);
+    }
     document.querySelector("[data-profile-projects]").innerHTML = isDraftPreview
         ? '<p class="profile-draft-empty">No independently presented Work has been approved for this profile.</p>'
         : renderProjects(creator.featuredProjects || []);
