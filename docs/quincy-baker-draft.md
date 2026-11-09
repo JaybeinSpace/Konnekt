@@ -13,7 +13,7 @@ The short film is defined once in `window.konnektStandaloneProjects` in `data.js
 - Copyright owner: **not confirmed**; not assigned to Quincy or Alayna
 - Full 11 named cast/crew credits are stored on the film record
 
-Do not copy the film into `quincy-baker.featuredProjects` or create another project ID for another contributor. In `watch.js`, the film appears in the Short Films row and uses a privacy-enhanced official YouTube embed with a link to the original URL. The video is never downloaded or rehosted. Playback/embedding rights still need live verification by a reviewer; a standard iframe URL does not prove playback will succeed.
+Do not copy the film into `quincy-baker.featuredProjects` or create another project ID for another contributor. In `watch.js`, the film appears in the Short Films row and uses a privacy-enhanced official YouTube embed with a link to the original URL. The video is never downloaded or rehosted. The same canonical film record is also surfaced in **Discover → For You** and **Discover → Film & Motion**, in both Feed and Grid layouts. Discover credits Quincy as the **submitter and Director of Photography**, never as owner, and offers project and Watch links rather than linking to his unapproved draft profile. Its saved project ID works with Saved and Collections. Playback/embedding rights still need live verification by a reviewer; a standard iframe URL does not prove playback will succeed.
 
 ## Unpublished creator draft
 
