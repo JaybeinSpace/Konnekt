@@ -45,10 +45,83 @@
   const discoveryLinks = post => {
     const creatorUrl = profileLink(post);
     const projectUrl = artworkLink(post);
-    return `<a href="${projectUrl}">View project ↗</a>` +
+    const preview = previewConfig(post);
+    return (preview
+      ? `<button type="button" class="discover-preview-trigger" data-preview-video="${escape(post.id)}" aria-label="Play 30-second preview of ${escape(post.title)}">▶ Preview 30s</button>`
+      : "") + `<a href="${projectUrl}">View project ↗</a>` +
       (creatorUrl ? `<a href="${creatorUrl}">Meet the creator ↗</a>`
         : post.videoUrl ? `<a href="watch-project.html?id=${encodeURIComponent(post.id)}">Watch film ↗</a>` : "");
   };
+  // Preview segments reference only the original YouTube player, never media files.
+  // A future backend can store the approved start/duration on the project record.
+  const previewConfig = post => {
+    if (post.previewEnabled === false) return null;
+    let id = typeof post.youtubeId === "string" && /^[A-Za-z0-9_-]{11}$/.test(post.youtubeId)
+      ? post.youtubeId : null;
+    if (!id && typeof post.videoUrl === "string") {
+      try {
+        const url = new URL(post.videoUrl);
+        const host = url.hostname.toLowerCase().replace(/^www\\./, "").replace(/^m\\./, "");
+        if (host === "youtu.be") id = url.pathname.split("/")[1];
+        else if (host === "youtube.com" || host === "youtube-nocookie.com") {
+          const parts = url.pathname.split("/").filter(Boolean);
+          id = url.pathname === "/watch" ? url.searchParams.get("v")
+            : ["embed", "shorts", "live"].includes(parts[0]) ? parts[1] : null;
+        }
+      } catch { return null; }
+    }
+    if (!id || !/^[A-Za-z0-9_-]{11}$/.test(id)) return null;
+    const start = Number.isInteger(post.previewStartSeconds) &&
+      post.previewStartSeconds >= 0 ? post.previewStartSeconds : 0;
+    const duration = Number.isInteger(post.previewDurationSeconds) &&
+      post.previewDurationSeconds > 0 && post.previewDurationSeconds <= 30
+        ? post.previewDurationSeconds : 30;
+    return { id, start, end: start + duration };
+  };
+
+  const previewDialog = document.querySelector("[data-discover-preview]");
+  const previewPlayer = previewDialog?.querySelector("[data-preview-player]");
+  let previewTrigger = null;
+  const stopPreview = () => {
+    if (!previewDialog) return;
+    if (previewDialog.open) previewDialog.close();
+    previewPlayer?.replaceChildren(); // Unloads YouTube iframe: audio/video stop.
+    if (previewTrigger?.isConnected) previewTrigger.focus();
+    previewTrigger = null;
+  };
+  const openPreview = (post, trigger) => {
+    const config = previewConfig(post);
+    if (!previewDialog || !previewPlayer || !config) return;
+    stopPreview();
+    previewTrigger = trigger;
+    previewDialog.querySelector("[data-preview-title]").textContent = post.title + " · 30-second preview";
+    previewDialog.querySelector("[data-preview-full]").href =
+      "https://www.youtube.com/watch?v=" + encodeURIComponent(config.id);
+    previewDialog.querySelector("[data-preview-project]").href = artworkLink(post);
+    const iframe = document.createElement("iframe");
+    iframe.src = "https://www.youtube-nocookie.com/embed/" + config.id +
+      "?start=" + config.start + "&end=" + config.end +
+      "&autoplay=1&playsinline=1&controls=1";
+    iframe.title = "30-second YouTube preview of " + post.title;
+    iframe.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+    iframe.allowFullscreen = true;
+    iframe.referrerPolicy = "strict-origin-when-cross-origin";
+    previewPlayer.replaceChildren(iframe);
+    previewDialog.showModal();
+    previewDialog.querySelector("[data-preview-close]").focus();
+  };
+  previewDialog?.querySelector("[data-preview-close]")?.addEventListener("click", stopPreview);
+  previewDialog?.addEventListener("close", () => {
+    previewPlayer?.replaceChildren();
+    if (previewTrigger?.isConnected) previewTrigger.focus();
+    previewTrigger = null;
+  });
+  previewDialog?.addEventListener("click", event => {
+    if (event.target === previewDialog) stopPreview();
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stopPreview();
+  });
   const params = new URLSearchParams(location.search);
   let view = params.get("view") === "grid" ? "grid" : "feed";
   let current = ["all","art","motion"].includes(params.get("category")) ? params.get("category") : "all";
@@ -59,6 +132,7 @@
     const url = new URL(location.href); url.searchParams.set("view",view); url.searchParams.set("category",current); history.replaceState(null,"",url);
   };
   const render = filter => {
+    stopPreview();
     const filtered = posts.filter(post => filter === "all" || (filter === "motion" ? isMotion(post) : !isMotion(post)));
     feed.innerHTML = filtered.map(post => {
       const active = liked.includes(post.id);
@@ -85,6 +159,12 @@
     render(current);
   }));
   const notify = message => { const region = document.querySelector("[data-discover-status]"); if (region) region.textContent = message; };
+  feed.addEventListener("click", event => {
+    const button = event.target.closest("[data-preview-video]");
+    if (!button) return;
+    const post = posts.find(item => item.id === button.dataset.previewVideo);
+    if (post) openPreview(post, button);
+  });
   feed.addEventListener("click", async event => {
     const saveButton = event.target.closest("[data-save-project]");
     if (saveButton) {
