@@ -57,7 +57,10 @@ test("Quincy is not a public creator or owner; draft Work stays empty", () => {
   assert.equal(draft.approved, false);
   assert.equal(draft.featuredProjects.length, 0);
   assert.equal(draft.contactEmail, "");
-  assert.equal(draft.socialLinks.length, 0);
+  assert.equal(draft.socialLinks.length, 1);
+  assert.equal(draft.socialLinks[0].label, "Instagram · @takenwithqair");
+  assert.equal(draft.socialLinks[0].url, "https://www.instagram.com/takenwithqair/");
+  assert.equal(draft.socialLinks[0].verificationStatus, "pending");
   assert.equal(draft.location, "");
   assert.equal(draft.profileImage, "");
 });
