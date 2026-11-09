@@ -26,3 +26,5 @@ jobs:
           node-version: "22"
       - name: Run frontend regression tests
         run: node --test tests/*.test.cjs
+      - name: Verify Quincy draft Instagram link in mobile and desktop Chrome
+        run: node tests/quincy-profile-browser.cjs
