@@ -82,7 +82,7 @@ test("Konnekt Watch lists the film and builds official video embed without rehos
   };
   const document = { querySelector: selector => elements[selector] || null };
   vm.runInNewContext(fs.readFileSync(path.join(root, "watch.js"), "utf8"),
-    { window: data, document, location: { search: "" }, URL });
+    { window: data, document, location: { search: "" }, URL, URLSearchParams });
   assert.match(cards.innerHTML, /The Devil in My House/);
   assert.match(cards.innerHTML, /Director of Photography/);
   assert.equal((cards.innerHTML.match(/watch-project.html\?id=the-devil-in-my-house/g) || []).length, 1);
@@ -101,7 +101,7 @@ test("Konnekt Watch lists the film and builds official video embed without rehos
     createElement: name => ({ tagName: name })
   };
   vm.runInNewContext(fs.readFileSync(path.join(root, "watch.js"), "utf8"),
-    { window: data, document: detailDocument, location: { search: "?id=" + filmId }, URL });
+    { window: data, document: detailDocument, location: { search: "?id=" + filmId }, URL, URLSearchParams });
   assert.equal(viewer.element.src, "https://www.youtube-nocookie.com/embed/SJnMvchdG_E");
   assert.match(info.innerHTML, /Watch on YouTube/);
   assert.doesNotMatch(info.innerHTML, /Meet the artist/);
