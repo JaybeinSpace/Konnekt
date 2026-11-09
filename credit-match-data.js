@@ -2,8 +2,8 @@
    Never treat client-side matches as verification or authorization. */
 (function(root,factory){const api=factory();if(typeof module==="object"&&module.exports)module.exports=api;if(root)root.KonnektCreditMatchData=api;})(typeof window!=="undefined"?window:null,function(){
 "use strict";
-function createDemoRepository({creators=[],examples=[]}={}){
- const projects=[...creators.flatMap(c=>Array.isArray(c.featuredProjects)?c.featuredProjects:[]),...examples];
+function createDemoRepository({creators=[],examples=[],standaloneProjects=[]}={}){
+ const projects=[...creators.flatMap(c=>Array.isArray(c.featuredProjects)?c.featuredProjects:[]),...standaloneProjects,...examples];
  return {
   mode:"demo",
   async findExistingProject({youtubeUrl,submitterName}){
