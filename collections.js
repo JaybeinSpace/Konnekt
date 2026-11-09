@@ -2,7 +2,7 @@
 "use strict";
 const key="konnektCollectionsV1",savedKey="konnektSavedItems";
 const creators=Array.isArray(window.konnektCreators)?window.konnektCreators:[];
-const projects=creators.flatMap(c=>(c.featuredProjects||[]).map(p=>({...p,creatorName:c.name})));
+const projects=[...creators.flatMap(c=>(c.featuredProjects||[]).map(p=>({...p,creatorName:c.name}))),...(window.konnektStandaloneProjects||[])];
 const root=document.querySelector("[data-collections]"),status=document.querySelector("[data-collection-status]");
 const read=(k,fallback)=>{try{return JSON.parse(localStorage.getItem(k)||"null")??fallback}catch{return fallback}};
 const clean=items=>Array.isArray(items)?items.filter(c=>c&&typeof c.id==="string"&&typeof c.name==="string"&&Array.isArray(c.items)).slice(0,100):[];
