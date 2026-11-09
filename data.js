@@ -1549,6 +1549,7 @@ if (!window.konnektStandaloneProjects.some(project => project.id === "the-devil-
         copyrightOwner: null,
         creatorId: null,
         watchListed: true,
+        discoverListed: true,
         description: "Short film submitted to Konnekt by credited Director of Photography Quincy Baker. Directed and edited by Alayna Williams. Rights ownership is not confirmed.",
         year: "",
         thumbnail: "https://i.ytimg.com/vi/SJnMvchdG_E/hqdefault.jpg",
