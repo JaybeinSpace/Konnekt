@@ -62,7 +62,8 @@ test("Quincy is not a public creator or owner; draft Work stays empty", () => {
   assert.equal(draft.socialLinks[0].url, "https://www.instagram.com/takenwithqair/");
   assert.equal(draft.socialLinks[0].verificationStatus, "pending");
   assert.equal(draft.location, "");
-  assert.equal(draft.profileImage, "");
+  assert.equal(draft.profileImage, "assets/quincy-baker/profile.svg");
+  assert.equal(draft.profileAlt, "Quincy Baker beside a camera on a tripod");
 });
 
 test("draft Featured In links by pending credit only, never by approved account", () => {
