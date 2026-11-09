@@ -681,13 +681,16 @@ const renderCreatorProfile = () => {
         document.querySelector(".profile-section-nav a[href='#profile-gallery']")?.setAttribute("hidden", "");
         const workHeading = document.querySelector("#featured-work .compact-heading h2");
         if (workHeading) workHeading.textContent = "Work";
-        const summary = document.querySelector(".profile-summary");
-        const placeholder = document.createElement("div");
-        placeholder.className = "profile-avatar-draft";
-        placeholder.setAttribute("role", "img");
-        placeholder.setAttribute("aria-label", "Neutral avatar placeholder; no photograph supplied");
-        placeholder.textContent = "QB";
-        summary?.append(placeholder);
+        // Drafts use the submitted image when available; otherwise retain initials.
+        if (!creator.profileImage) {
+            const summary = document.querySelector(".profile-summary");
+            const placeholder = document.createElement("div");
+            placeholder.className = "profile-avatar-draft";
+            placeholder.setAttribute("role", "img");
+            placeholder.setAttribute("aria-label", "Profile photo not provided");
+            placeholder.textContent = "QB";
+            summary?.append(placeholder);
+        }
     }
     const shareProfileButton = document.querySelector("[data-share-creator]");
     const shareProfileStatus = document.querySelector("[data-profile-share-status]");
