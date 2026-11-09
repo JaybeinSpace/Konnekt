@@ -26,5 +26,7 @@ jobs:
           node-version: "22"
       - name: Run frontend regression tests
         run: node --test tests/*.test.cjs
+      - name: Install test-only browser driver
+        run: npm install --no-save --no-package-lock playwright-core@1.56.1
       - name: Verify Quincy draft Instagram link in mobile and desktop Chrome
         run: node tests/quincy-profile-browser.cjs
