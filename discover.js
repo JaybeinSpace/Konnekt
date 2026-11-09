@@ -61,7 +61,7 @@
     if (!id && typeof post.videoUrl === "string") {
       try {
         const url = new URL(post.videoUrl);
-        const host = url.hostname.toLowerCase().replace(/^www\\./, "").replace(/^m\\./, "");
+        const host = url.hostname.toLowerCase().replace(/^www\./, "").replace(/^m\./, "");
         if (host === "youtu.be") id = url.pathname.split("/")[1];
         else if (host === "youtube.com" || host === "youtube-nocookie.com") {
           const parts = url.pathname.split("/").filter(Boolean);
