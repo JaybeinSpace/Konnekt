@@ -41,3 +41,11 @@ The film's Quincy credit contains `pendingCreatorId: "quincy-baker"` and `approv
 Run `node --test tests/*.test.cjs`. New coverage checks one film record, exact supplied cast/crew, no publicly listed Quincy profile, draft-only Work and pending credit, and Watch card/embed rendering.
 
 This PR deliberately does not implement authentication, claims, secure draft review, or backend storage.
+
+## Discover 30-second preview (frontend only)
+
+- Discover displays an optional **Preview 30s** action for projects with a valid YouTube video ID. The video **never auto-plays while scrolling**, including on mobile. Clicking/tapping opens a keyboard-accessible native dialog with the official privacy-enhanced YouTube iframe.
+- `previewStartSeconds` and `previewDurationSeconds` are project fields; the film currently uses seconds **0 through 30**. The corresponding embed URL uses YouTube's `start` and `end` player parameters. Future authorized curation may choose another 30-second segment by changing the start time, without editing or hosting video bytes.
+- Clicking Close, pressing Escape, changing Discover's view/filter, or hiding the page unloads the iframe to stop playback. The preview provides a direct link to the full official YouTube video.
+- Actual video playback may be blocked by YouTube embed restrictions, network conditions or browser autoplay rules; users can open the original film. Browser CI tests validate iframe URL parameters, button visibility, modal focus/closing and size at **390px** and **1440px**, using a mocked iframe response. They **do not** prove live streaming is permitted.
+- No extra project is created; the existing film ID, credits, rights notes, and Quincy draft approval status are untouched by the preview.
