@@ -1,0 +1,6 @@
+const {test}=require("node:test");const assert=require("node:assert/strict");
+const {createDemoRepository}=require("../credit-match-data.js");
+const example={id:"p1",title:"Existing film",youtubeUrl:"https://youtu.be/SJnMvchdG_E",credits:[{name:"Quincy Baker",role:"Director of Photography"}]};
+test("adapter returns candidate match without modifying project",async()=>{const before=JSON.stringify(example);const repo=createDemoRepository({examples:[example]});const result=await repo.findExistingProject({youtubeUrl:"https://youtube.com/watch?v=SJnMvchdG_E",submitterName:"Quincy Baker"});assert.equal(result.kind,"credit-match");assert.equal(JSON.stringify(example),before)});
+test("adapter blocks duplicate even when name differs",async()=>{const repo=createDemoRepository({examples:[example]});assert.equal((await repo.findExistingProject({youtubeUrl:example.youtubeUrl,submitterName:"Other Person"})).kind,"duplicate")});
+test("demo adapter never pretends to save or request review",async()=>{const repo=createDemoRepository({examples:[example]});assert.deepEqual(await repo.requestReview(),{ok:false,reason:"backend_unavailable"});assert.deepEqual(await repo.saveDraft(),{ok:false,reason:"backend_unavailable"})});
