@@ -1598,7 +1598,13 @@ if (!window.konnektCreatorDrafts.some(creator => creator.id === "quincy-baker"))
         featuredProjects: [],
         videos: [],
         gallery: [],
-        socialLinks: [],
+        socialLinks: [
+            {
+                label: "Instagram · @takenwithqair",
+                url: "https://www.instagram.com/takenwithqair/",
+                verificationStatus: "pending"
+            }
+        ],
         contactOptions: {},
         contactEmail: "",
         badges: [],
