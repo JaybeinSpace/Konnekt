@@ -35,6 +35,42 @@ async function main() {
         assert.equal(await film.locator('a[href*="creator-profile.html"]').count(), 0,
           "Never link an unapproved creator identity from this film");
         assert.equal(await film.isVisible(), true);
+        // A YouTube player is never loaded until an explicit user action.
+        assert.equal(await page.locator('[data-discover-preview] iframe').count(), 0);
+        const teaser = film.locator('[data-preview-video="the-devil-in-my-house"]');
+        assert.equal(await teaser.count(), 1, "Preview action should be available on the film");
+        const teaserBounds = await teaser.boundingBox();
+        assert.ok(teaserBounds && teaserBounds.height >= 40,
+          "Preview button must be usable on a touch screen");
+        await context.route("https://www.youtube-nocookie.com/**", route =>
+          route.fulfill({ status: 200, contentType: "text/html",
+            body: "<!doctype html><title>Preview player test stub</title>" }));
+        await teaser.click();
+        const modal = page.locator("[data-discover-preview]");
+        assert.equal(await modal.evaluate(dialog => dialog.open), true, "Preview opens a native modal");
+        assert.equal(await page.evaluate(() => document.activeElement.hasAttribute("data-preview-close")), true,
+          "Close button receives keyboard focus");
+        const videoFrame = modal.locator("iframe");
+        assert.equal(await videoFrame.count(), 1, "Only one video player may load");
+        const source = new URL(await videoFrame.getAttribute("src"));
+        assert.equal(source.origin, "https://www.youtube-nocookie.com");
+        assert.equal(source.pathname, "/embed/SJnMvchdG_E");
+        assert.equal(source.searchParams.get("start"), "0");
+        assert.equal(source.searchParams.get("end"), "30");
+        assert.equal(source.searchParams.get("playsinline"), "1");
+        assert.equal(await modal.locator("[data-preview-full]").getAttribute("href"),
+          "https://www.youtube.com/watch?v=SJnMvchdG_E");
+        const dialogBounds = await modal.boundingBox();
+        assert.ok(dialogBounds && dialogBounds.width <= width + 1,
+          "Preview dialog must fit the viewport");
+        const frameBounds = await videoFrame.boundingBox();
+        assert.ok(frameBounds && frameBounds.width >= 200 && frameBounds.height >= 200,
+          "Embedded YouTube player must fit minimum player dimensions");
+        await page.keyboard.press("Escape");
+        assert.equal(await modal.evaluate(dialog => dialog.open), false,
+          "Escape dismisses the preview");
+        assert.equal(await modal.locator("iframe").count(), 0,
+          "Closing the preview unloads the video and stops playback");
         const bounds = await film.boundingBox();
         assert.ok(bounds && bounds.width <= width + 1, "Discover card should fit the screen");
         await page.locator('[data-feed-filter="motion"]').click();
@@ -44,6 +80,11 @@ async function main() {
         await page.locator('[data-feed-filter="all"]').click();
         await page.locator('[data-discover-view="grid"]').click();
         assert.equal(await film.count(), 1, "Film must appear once in Discover Grid");
+        await film.locator('[data-preview-video="the-devil-in-my-house"]').click();
+        assert.equal(await page.locator("[data-discover-preview]").evaluate(dialog => dialog.open), true,
+          "Preview also works in grid layout");
+        await page.locator("[data-preview-close]").click();
+        assert.equal(await page.locator("[data-discover-preview] iframe").count(), 0);
         await page.locator('[data-discover-view="feed"]').click();
         assert.equal(await film.count(), 1, "Film must remain in Discover Feed");
 
@@ -58,7 +99,7 @@ async function main() {
         await page.locator('[data-collection-form] button[type="submit"]').click();
         assert.equal(await page.locator('.collection-picker option').filter({ hasText: "The Devil in My House" }).count(), 1,
           "A saved standalone film must be available in Collections");
-        console.log("PASS " + width + "px: Discover Feed/Grid/Film & Motion; accurate attribution; Saved and Collections canonical links");
+        console.log("PASS " + width + "px: 30s YouTube preview in Feed/Grid; Escape/Close unloads player; attribution, Saved and Collections preserved");
       } finally {
         await context.close();
       }
