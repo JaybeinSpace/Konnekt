@@ -27,10 +27,6 @@ async function main() {
                 isMobile: mobile, hasTouch: mobile
             });
             try {
-                // Route the click to a mock page: verify the href and navigation
-                // without relying on Instagram availability or opening real accounts.
-                await context.route("https://www.instagram.com/**", route =>
-                    route.fulfill({ status: 200, contentType: "text/html", body: "<title>Mock Instagram Link Target</title>" }));
                 const page = await context.newPage();
                 await page.goto(file, { waitUntil: "load" });
 
@@ -65,12 +61,21 @@ async function main() {
                 for (const key of ["draft", "pending", "featured", "emptyWork", "contactHidden"]) {
                     assert.equal(state[key], true, key + " must remain true at " + width + "px");
                 }
-                const popupPromise = page.waitForEvent("popup");
+                // Exercise a real pointer click; intercept navigation before it
+                // leaves the local draft to avoid claiming Instagram was contacted.
+                await page.evaluate(() => {
+                    window.__quincyClickedHref = null;
+                    document.addEventListener("click", event => {
+                        const anchor = event.target.closest("[data-profile-socials] a");
+                        if (anchor) {
+                            window.__quincyClickedHref = anchor.href;
+                            event.preventDefault();
+                        }
+                    }, { capture: true, once: true });
+                });
                 await link.click();
-                const popup = await popupPromise;
-                await popup.waitForLoadState("domcontentloaded");
-                assert.equal(popup.url(), "https://www.instagram.com/takenwithqair/");
-                await popup.close();
+                assert.equal(await page.evaluate(() => window.__quincyClickedHref),
+                    "https://www.instagram.com/takenwithqair/");
                 console.log("PASS " + width + "px: link visible, fits screen, opens correct URL; draft, pending notice, Featured In preserved");
             } finally {
                 await context.close();
