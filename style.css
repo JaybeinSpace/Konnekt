@@ -2282,3 +2282,6 @@ button,input,select,textarea{max-width:100%}
 @media(max-width:360px) {
     .profile-page .profile-avatar-draft { width: 72px; height: 72px; font-size: 1.4rem; }
 }
+
+/* Draft social ownership disclosure uses the current Konnekt typography. */
+.profile-social-verification-note{font-size:.85rem;line-height:1.5;color:var(--muted);margin:10px 0 18px;overflow-wrap:anywhere}
