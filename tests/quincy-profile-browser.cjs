@@ -1,91 +1,83 @@
-/* Browser regression test for Quincy's unpublished profile.
- * Uses Chrome/Chromium from the CI runner; no dependency in production.
- * Tests rendering and link target, not account ownership or external Instagram uptime.
- * Run: node tests/quincy-profile-browser.cjs
+/* Browser regression test of Quincy's unapproved profile at actual mobile
+ * and desktop viewport sizes. Requires playwright-core in the CI test job.
+ * This test never authenticates or checks Instagram account ownership.
  */
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
-const os = require("node:os");
-const { spawnSync } = require("node:child_process");
+const { chromium } = require("playwright-core");
 
-function browserExecutable() {
-    const candidates = [
-        process.env.CHROME_BIN,
-        "/usr/bin/google-chrome",
-        "/usr/bin/google-chrome-stable",
-        "/usr/bin/chromium",
-        "/usr/bin/chromium-browser"
-    ].filter(Boolean);
-    for (const candidate of candidates) if (fs.existsSync(candidate)) return candidate;
-    const located = spawnSync("sh", ["-c", "command -v google-chrome || command -v chromium || command -v chromium-browser"], { encoding: "utf8" });
-    return located.status === 0 ? located.stdout.trim().split("\n")[0] : null;
+function findChrome() {
+    const paths = [process.env.CHROME_BIN, "/usr/bin/google-chrome", "/usr/bin/google-chrome-stable",
+        "/usr/bin/chromium", "/usr/bin/chromium-browser"].filter(Boolean);
+    return paths.find(p => fs.existsSync(p));
 }
 
-const chrome = browserExecutable();
-assert.ok(chrome, "Chrome/Chromium is required for browser layout tests");
-const root = path.join(__dirname, "..");
-const original = fs.readFileSync(path.join(root, "creator-profile.html"), "utf8");
-const marker = `<script>
-(function () {
-    const link = [...document.querySelectorAll("[data-profile-socials] a")]
-        .find(anchor => anchor.getAttribute("href") === "https://www.instagram.com/takenwithqair/");
-    const bounds = link ? link.getBoundingClientRect() : null;
-    const featured = document.querySelector("[data-featured-in-projects]");
-    const work = document.querySelector("[data-profile-projects]");
-    const note = document.querySelector(".profile-social-verification-note");
-    const computed = link ? getComputedStyle(link) : null;
-    const output = document.createElement("output");
-    output.id = "quincy-browser-result";
-    output.textContent = JSON.stringify({
-        viewportWidth: window.innerWidth,
-        link: link?.getAttribute("href") || null,
-        label: link?.textContent.trim() || null,
-        target: link?.target || null,
-        visible: !!bounds && bounds.width > 0 && bounds.height >= 30 &&
-            bounds.left >= -1 && bounds.right <= window.innerWidth + 1 &&
-            computed.display !== "none" && computed.visibility !== "hidden",
-        pendingNotice: !!note && note.textContent.includes("awaiting confirmation"),
-        draft: !!document.querySelector(".profile-page.is-draft-preview"),
-        featuredFilm: !!featured && featured.textContent.includes("The Devil in My House") &&
-            featured.textContent.includes("Director of Photography"),
-        emptyWork: !!work && work.textContent.includes("No independently presented Work"),
-        contactHidden: document.querySelector("[data-konnekt-open]")?.hidden === true
-    });
-    document.body.append(output);
-})();
-</script>`;
-assert.ok(original.includes("</body>"), "Profile HTML must have closing body tag");
-const temp = path.join(root, ".quincy-browser-regression-" + process.pid + ".html");
-try {
-    fs.writeFileSync(temp, original.replace("</body>", marker + "</body>"));
-    for (const [width, height] of [[390, 844], [1440, 900]]) {
-        const uri = "file://" + temp + "?id=quincy-baker&draftPreview=1";
-        const run = spawnSync(chrome, [
-            "--headless=new",
-            "--disable-gpu",
-            "--no-sandbox",
-            "--disable-dev-shm-usage",
-            "--no-first-run",
-            "--disable-background-networking",
-            "--virtual-time-budget=3000",
-            "--window-size=" + width + "," + height,
-            "--dump-dom",
-            uri
-        ], { encoding: "utf8", timeout: 45000, maxBuffer: 10 * 1024 * 1024 });
-        assert.equal(run.status, 0, "Chrome exited with error at " + width + "px: " + (run.stderr || "").slice(-1200));
-        const match = run.stdout.match(/<output id="quincy-browser-result">([^<]+)<\/output>/);
-        assert.ok(match, "Browser did not render test output at " + width + "px");
-        const json = match[1].replace(/&quot;/g, '"').replace(/&amp;/g, "&");
-        const result = JSON.parse(json);
-        assert.equal(result.link, "https://www.instagram.com/takenwithqair/");
-        assert.equal(result.label, "Instagram · @takenwithqair");
-        assert.equal(result.target, "_blank");
-        for (const name of ["visible", "pendingNotice", "draft", "featuredFilm", "emptyWork", "contactHidden"]) {
-            assert.equal(result[name], true, name + " failed at " + width + "px: " + JSON.stringify(result));
+async function main() {
+    const executablePath = findChrome();
+    assert.ok(executablePath, "Chrome or Chromium must be installed in test environment");
+    const browser = await chromium.launch({ executablePath, headless: true, args: ["--no-sandbox"] });
+    try {
+        const file = "file://" + path.join(__dirname, "..", "creator-profile.html") +
+            "?id=quincy-baker&draftPreview=1";
+        for (const [width, height] of [[390, 844], [1440, 900]]) {
+            const mobile = width <= 430;
+            const context = await browser.newContext({
+                viewport: { width, height }, deviceScaleFactor: mobile ? 2 : 1,
+                isMobile: mobile, hasTouch: mobile
+            });
+            try {
+                // Route the click to a mock page: verify the href and navigation
+                // without relying on Instagram availability or opening real accounts.
+                await context.route("https://www.instagram.com/**", route =>
+                    route.fulfill({ status: 200, contentType: "text/html", body: "<title>Mock Instagram Link Target</title>" }));
+                const page = await context.newPage();
+                await page.goto(file, { waitUntil: "load" });
+
+                const link = page.locator('[data-profile-socials] a[href="https://www.instagram.com/takenwithqair/"]');
+                assert.equal(await link.count(), 1, "Instagram must be shown exactly once");
+                assert.equal((await link.textContent()).trim(), "Instagram · @takenwithqair");
+                assert.equal(await link.getAttribute("target"), "_blank");
+                assert.equal(await link.isVisible(), true, "Instagram link must be visible");
+                await link.scrollIntoViewIfNeeded();
+                const bounds = await link.boundingBox();
+                assert.ok(bounds && bounds.width >= 44 && bounds.height >= 30,
+                    "Instagram link must be a usable touch/click target");
+
+                const state = await page.evaluate(() => {
+                    const link = document.querySelector('[data-profile-socials] a[href="https://www.instagram.com/takenwithqair/"]');
+                    const rect = link.getBoundingClientRect();
+                    return {
+                        width: window.innerWidth,
+                        left: rect.left,
+                        right: rect.right,
+                        draft: !!document.querySelector(".profile-page.is-draft-preview"),
+                        pending: !!document.querySelector(".profile-social-verification-note")?.textContent.includes("awaiting confirmation"),
+                        featured: !!document.querySelector("[data-featured-in-projects]")?.textContent.includes("The Devil in My House") &&
+                            !!document.querySelector("[data-featured-in-projects]")?.textContent.includes("Director of Photography"),
+                        emptyWork: !!document.querySelector("[data-profile-projects]")?.textContent.includes("No independently presented Work"),
+                        contactHidden: document.querySelector("[data-konnekt-open]")?.hidden === true
+                    };
+                });
+                assert.equal(state.width, width, "Browser must use exact CSS viewport width");
+                assert.ok(state.left >= -1 && state.right <= width + 1,
+                    "Instagram link must fit within viewport; " + JSON.stringify(state));
+                for (const key of ["draft", "pending", "featured", "emptyWork", "contactHidden"]) {
+                    assert.equal(state[key], true, key + " must remain true at " + width + "px");
+                }
+                const popupPromise = page.waitForEvent("popup");
+                await link.click();
+                const popup = await popupPromise;
+                await popup.waitForLoadState("domcontentloaded");
+                assert.equal(popup.url(), "https://www.instagram.com/takenwithqair/");
+                await popup.close();
+                console.log("PASS " + width + "px: link visible, fits screen, opens correct URL; draft, pending notice, Featured In preserved");
+            } finally {
+                await context.close();
+            }
         }
-        console.log("PASS " + width + "px browser: social link visible and correctly targeted; draft and Featured In retained; viewport " + result.viewportWidth + "px");
+    } finally {
+        await browser.close();
     }
-} finally {
-    try { fs.unlinkSync(temp); } catch {}
 }
+main().catch(error => { console.error(error); process.exitCode = 1; });
