@@ -3,8 +3,8 @@
 const form=document.querySelector("form.konnekt-form"),box=document.querySelector("[data-credit-match]"),status=document.querySelector("[data-credit-status]");
 if(!form||!box||!window.KonnektCreditMatch)return;
 const engine=window.KonnektCreditMatch;
-const all=(window.konnektCreators||[]).flatMap(c=>c.featuredProjects||[]);
-const projects=[...all,...(window.konnektCreditMatchExamples||[])];
+const repository=window.KonnektCreditMatchData.createDemoRepository({creators:window.konnektCreators||[],examples:window.konnektCreditMatchExamples||[]});
+let lookupVersion=0;
 const urlField=document.querySelector("#project-video-url"),nameField=document.querySelector("#creator-name");
 let active=null;
 function elem(tag,txt,cls){const n=document.createElement(tag);if(txt!==undefined)n.textContent=txt;if(cls)n.className=cls;return n}
@@ -43,7 +43,21 @@ function render(result){
  }
  box.focus();
 }
-function check(){const url=urlField.value.trim(),name=nameField.value.trim();if(!url){reset();showStatus("Add a YouTube project URL to check for an existing project.");return}const result=engine.findMatch(url,name,projects);if(result.kind==="invalid"){reset();showStatus("Enter a valid YouTube video URL (watch, youtu.be, Shorts, or embed).");return}if(result.kind==="new"){reset();showStatus("No existing YouTube project match found in this frontend demonstration. Nothing has been uploaded.");return}render(result);showStatus("Duplicate detected. No new project has been created.");}
+async function check(){
+ const version=++lookupVersion,url=urlField.value.trim(),name=nameField.value.trim();
+ if(!url){reset();showStatus("Add a YouTube project URL to check for an existing project.");return}
+ showStatus("Checking the demonstration project index…");
+ try{
+  const result=await repository.findExistingProject({youtubeUrl:url,submitterName:name});
+  if(version!==lookupVersion)return;
+  if(result.kind==="invalid"){reset();showStatus("Enter a valid YouTube video URL (watch, youtu.be, Shorts, or embed).");return}
+  if(result.kind==="new"){reset();showStatus("No existing YouTube project match found in this frontend demonstration. Nothing has been uploaded.");return}
+  render(result);showStatus("Duplicate detected. No new project has been created.");
+ }catch(error){if(version!==lookupVersion)return;reset();showStatus("Project lookup is unavailable. No project was submitted.");}
+}
+urlField.addEventListener("input",()=>{lookupVersion++;reset();showStatus("Project URL changed. Check again before submitting.")});
+nameField.addEventListener("input",()=>{lookupVersion++;reset();showStatus("Submitter name changed. Check again before submitting.")});
+
 document.querySelector("[data-credit-check]").addEventListener("click",check);
 form.addEventListener("submit",event=>{event.preventDefault();event.stopImmediatePropagation();if(urlField.value.trim()){check()}else showStatus("Frontend-only preview: no project or form data was sent.")},true);
 })();
