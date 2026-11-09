@@ -626,13 +626,13 @@ const setupProjectDiscovery = () => {
         const category = categoryButtons.find(button => button.classList.contains("is-active"))?.dataset.filter || "all";
         const matches = sorted.filter(project => {
             const creator = getCreatorById(project.creatorId);
-            const text = [project.title,project.category,project.type,project.description,project.tags?.join(" "),project.credits?.map(credit => typeof credit === "string" ? credit : [credit.name,credit.role].join(" ")).join(" "),creator?.name,creator?.role,creator?.location,creator?.specialties?.join(" ")].join(" ").toLowerCase();
+            const text = [project.title,project.category,project.type,project.description,project.tags?.join(" "),project.credits?.map(credit => typeof credit === "string" ? credit : [credit.name,credit.role].join(" ")).join(" "),project.submittedBy,project.submittedByRole,creator?.name,creator?.role,creator?.location,creator?.specialties?.join(" ")].join(" ").toLowerCase();
             const categories = window.getCreatorCategories?.(creator) || [creator?.category];
             return (!q || text.includes(q)) && (!place || (creator?.location || "").toLowerCase().includes(place)) &&
                 (!niche || text.includes(niche)) && (!status || (creator?.availableFor || []).includes(status)) &&
                 (category === "all" || categories.includes(category));
         });
-        grid.innerHTML = matches.map(project => `<article class="explore-card discovery-work-card"><a href="project.html?id=${encodeURIComponent(project.id)}"><img loading="lazy" src="${escape(project.thumbnail || project.image || "")}" alt="${escape(project.alt || project.title)}"></a><div class="explore-card-body"><p class="creator-role">${escape(project.type || project.category)}${getCreatorById(project.creatorId)?.isDemo ? " · Demo" : ""}</p><h2>${escape(project.title)}</h2><p>${escape(project.creatorName)}</p><a class="profile-link" href="project.html?id=${encodeURIComponent(project.id)}">Explore Work →</a></div></article>`).join("");
+        grid.innerHTML = matches.map(project => `<article class="explore-card discovery-work-card"><a href="project.html?id=${encodeURIComponent(project.id)}"><img loading="lazy" src="${escape(project.thumbnail || project.image || "")}" alt="${escape(project.alt || project.title)}"></a><div class="explore-card-body"><p class="creator-role">${escape(project.type || project.category)}${getCreatorById(project.creatorId)?.isDemo ? " · Demo" : ""}</p><h2>${escape(project.title)}</h2><p>${escape(project.creatorName || (project.submittedBy ? "Submitted by " + project.submittedBy + " · " + (project.submittedByRole || "Contributor") : "Full credits on project page"))}</p><a class="profile-link" href="project.html?id=${encodeURIComponent(project.id)}">Explore Work →</a></div></article>`).join("");
         if (count) count.textContent = matches.length + " project" + (matches.length === 1 ? "" : "s") + " showing";
         if (empty) empty.classList.toggle("is-visible", matches.length === 0);
     };
