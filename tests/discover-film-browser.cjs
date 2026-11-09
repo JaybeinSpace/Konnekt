@@ -23,6 +23,10 @@ async function main() {
         isMobile, hasTouch: isMobile
       });
       try {
+        // Avoid live YouTube requests: test the requested official embed URL.
+        await context.route("https://www.youtube-nocookie.com/**", route =>
+          route.fulfill({ status: 200, contentType: "text/html",
+            body: "<!doctype html><title>Preview player test stub</title>" }));
         const page = await context.newPage();
         await page.goto("file://" + path.join(root, "discover.html"), { waitUntil: "load" });
         const film = page.locator('[data-discover-feed] [data-post-id="the-devil-in-my-house"]');
@@ -35,16 +39,33 @@ async function main() {
         assert.equal(await film.locator('a[href*="creator-profile.html"]').count(), 0,
           "Never link an unapproved creator identity from this film");
         assert.equal(await film.isVisible(), true);
-        // A YouTube player is never loaded until an explicit user action.
-        assert.equal(await page.locator('[data-discover-preview] iframe').count(), 0);
+        // First substantial on-screen appearance should trigger ONE muted,
+        // inline 30-second preview without a tap or modal.
+        const autoplay = film.locator(".discover-auto-preview-player");
+        await autoplay.waitFor({ state: "attached", timeout: 8000 });
+        assert.equal(await page.locator(".discover-auto-preview-player").count(), 1);
+        const autoSrc = new URL(await autoplay.getAttribute("src"));
+        assert.equal(autoSrc.origin, "https://www.youtube-nocookie.com");
+        assert.equal(autoSrc.pathname, "/embed/SJnMvchdG_E");
+        assert.equal(autoSrc.searchParams.get("start"), "0");
+        assert.equal(autoSrc.searchParams.get("end"), "30");
+        assert.equal(autoSrc.searchParams.get("autoplay"), "1");
+        assert.equal(autoSrc.searchParams.get("mute"), "1");
+        assert.equal(autoSrc.searchParams.get("playsinline"), "1");
+        assert.equal(await page.locator('[data-discover-preview] iframe').count(), 0,
+          "Autoplay should be inline, not a popup");
+        assert.equal(await film.locator(".discover-auto-preview-label").isVisible(), true);
+        // Scrolling away must remove the player, not leave audio/video behind.
+        await page.locator(".discover-post").last().scrollIntoViewIfNeeded();
+        await autoplay.waitFor({ state: "detached", timeout: 8000 });
+        await film.scrollIntoViewIfNeeded();
+        assert.equal(await film.locator(".discover-auto-preview-player").count(), 0,
+          "Auto-preview should play only once per visit; manual replay stays available");
         const teaser = film.locator('[data-preview-video="the-devil-in-my-house"]');
         assert.equal(await teaser.count(), 1, "Preview action should be available on the film");
         const teaserBounds = await teaser.boundingBox();
         assert.ok(teaserBounds && teaserBounds.height >= 40,
           "Preview button must be usable on a touch screen");
-        await context.route("https://www.youtube-nocookie.com/**", route =>
-          route.fulfill({ status: 200, contentType: "text/html",
-            body: "<!doctype html><title>Preview player test stub</title>" }));
         await teaser.click();
         const modal = page.locator("[data-discover-preview]");
         assert.equal(await modal.evaluate(dialog => dialog.open), true, "Preview opens a native modal");
@@ -80,6 +101,8 @@ async function main() {
         await page.locator('[data-feed-filter="all"]').click();
         await page.locator('[data-discover-view="grid"]').click();
         assert.equal(await film.count(), 1, "Film must appear once in Discover Grid");
+        assert.equal(await film.locator(".discover-auto-preview-player").count(), 0,
+          "Grid should not autoplay videos");
         await film.locator('[data-preview-video="the-devil-in-my-house"]').click();
         assert.equal(await page.locator("[data-discover-preview]").evaluate(dialog => dialog.open), true,
           "Preview also works in grid layout");
