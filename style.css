@@ -2227,3 +2227,58 @@ button,input,select,textarea{max-width:100%}
 .credit-match-status{min-height:24px;color:#b6e8dc;line-height:1.5}
 #credit-match-help{font-size:.85rem;color:var(--muted)}
 @media(max-width:600px){.credit-actions{flex-direction:column}.credit-actions button{width:100%}.credit-match-panel{max-width:100%}}
+
+
+/* Quincy Baker unpublished draft preview: neutral assets only, never a fabricated headshot. */
+.profile-page.is-draft-preview .profile-hero {
+    background: radial-gradient(circle at 30% 20%, #243749 0%, #101820 54%, #080d13 100%);
+}
+.profile-page.is-draft-preview .profile-banner,
+.profile-page.is-draft-preview .profile-avatar { display: none !important; }
+.profile-page .profile-avatar-draft {
+    grid-column: 1;
+    grid-row: 1;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 3px solid #8ea7b8;
+    background: linear-gradient(135deg,#283846,#121e29);
+    color: #f6f9fb;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: .08em;
+}
+.profile-page.is-draft-preview [hidden] { display: none !important; }
+.profile-page .draft-profile-notice {
+    max-width: 1040px;
+    margin: 20px auto;
+    padding: 16px 20px;
+    border-left: 4px solid #8ebfc7;
+    border-radius: 8px;
+    background: #172732;
+    color: #eff7f9;
+    font-size: .95rem;
+    line-height: 1.55;
+}
+.profile-page .profile-draft-empty {
+    margin: 18px 0;
+    padding: 22px;
+    border: 1px solid #526578;
+    border-radius: 10px;
+    color: #d3e1e8;
+    line-height: 1.6;
+}
+.watch-submission-credit,.watch-credits-note {
+    color: #bdcbd7;
+    line-height: 1.6;
+}
+@media(max-width:680px) {
+    .profile-page .profile-avatar-draft { width: 88px; height: 88px; font-size: 1.75rem; }
+    .profile-page .draft-profile-notice { margin: 15px 12px; padding: 15px; }
+}
+@media(max-width:360px) {
+    .profile-page .profile-avatar-draft { width: 72px; height: 72px; font-size: 1.4rem; }
+}
