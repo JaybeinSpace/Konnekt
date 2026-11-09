@@ -1013,7 +1013,7 @@ const setupLightbox = () => {
 };
 
 const setupFrontendForms = () => {
-    const frontendForms = document.querySelectorAll(".frontend-form");
+    const frontendForms = document.querySelectorAll(".frontend-form:not(:has([data-credit-match]))");
 
     // Frontend-only form feedback. Nothing is submitted or saved.
     frontendForms.forEach((form) => {
