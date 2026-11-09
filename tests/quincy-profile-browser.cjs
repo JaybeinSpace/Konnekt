@@ -40,6 +40,10 @@ async function main() {
                 assert.ok(bounds && bounds.width >= 44 && bounds.height >= 30,
                     "Instagram link must be a usable touch/click target");
 
+                const photo = page.locator("[data-profile-avatar]");
+                assert.equal(await photo.getAttribute("src"), "assets/quincy-baker/profile.svg");
+                await photo.evaluate(img => img.decode());
+                assert.equal(await photo.isVisible(), true, "Submitted portrait must be visible");
                 const state = await page.evaluate(() => {
                     const link = document.querySelector('[data-profile-socials] a[href="https://www.instagram.com/takenwithqair/"]');
                     const rect = link.getBoundingClientRect();
