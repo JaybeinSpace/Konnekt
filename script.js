@@ -1,7 +1,7 @@
 const creators = Array.isArray(window.konnektCreators) ? window.konnektCreators : [];
 
 // Projects live inside each creator in data.js. This creates one flat list for project pages.
-const projects = creators.flatMap((creator) => {
+const creatorProjects = creators.flatMap((creator) => {
     return (creator.featuredProjects || []).map((project) => {
         return {
             ...project,
@@ -11,6 +11,9 @@ const projects = creators.flatMap((creator) => {
         };
     });
 });
+
+// Independent projects keep copyright/manager identity separate from the submitter.
+const projects = [...creatorProjects, ...(window.konnektStandaloneProjects || [])];
 
 const savedStorageKey = "konnektSavedItems";
 
@@ -405,7 +408,11 @@ const getCreatorFromUrl = () => {
     const params = new URLSearchParams(window.location.search);
     const creatorId = params.get("id") || creators[0]?.id;
 
-    return creators.find((creator) => creator.id === creatorId);
+    if (params.get("draftPreview") === "1") {
+        const draft = (window.konnektCreatorDrafts || []).find(creator => creator.id === creatorId && creator.status === "draft");
+        if (draft) return draft;
+    }
+    return creators.find((creator) => creator.id === creatorId && creator.status !== "draft");
 };
 
 const getProjectFromUrl = () => {
@@ -554,12 +561,16 @@ const renderFeaturedIn = (creator) => {
     const section = document.querySelector("[data-featured-in-section]");
     const grid = document.querySelector("[data-featured-in-projects]");
     if (!section || !grid) return;
+    const isDraftPreview = creator.status === "draft";
+    const isCredited = credit => isDraftPreview
+        ? credit.pendingCreatorId === creator.id
+        : credit.creatorId === creator.id && credit.approved === true;
     const matches = projects.filter(project => project.creatorId !== creator.id &&
-        normalizeCredits(project).some(credit => credit.creatorId === creator.id && credit.approved === true));
+        normalizeCredits(project).some(isCredited));
     section.hidden = matches.length === 0;
     grid.replaceChildren();
     matches.forEach(project => {
-        const roles = normalizeCredits(project).filter(credit => credit.creatorId === creator.id && credit.approved === true).map(credit => credit.role).join(" · ");
+        const roles = normalizeCredits(project).filter(isCredited).map(credit => credit.role).join(" · ");
         const card = document.createElement("article");
         card.className = "project-card";
         const link = document.createElement("a");
@@ -570,7 +581,7 @@ const renderFeaturedIn = (creator) => {
         const title = document.createElement("h3");
         title.textContent = project.title;
         const role = document.createElement("p");
-        role.textContent = roles;
+        role.textContent = roles + (isDraftPreview ? " · Pending profile approval" : "");
         link.append(image, title);
         card.append(link, role);
         grid.append(card);
@@ -615,13 +626,13 @@ const setupProjectDiscovery = () => {
         const category = categoryButtons.find(button => button.classList.contains("is-active"))?.dataset.filter || "all";
         const matches = sorted.filter(project => {
             const creator = getCreatorById(project.creatorId);
-            const text = [project.title,project.category,project.type,project.description,project.tags?.join(" "),project.credits?.map(credit => typeof credit === "string" ? credit : [credit.name,credit.role].join(" ")).join(" "),creator?.name,creator?.role,creator?.location,creator?.specialties?.join(" ")].join(" ").toLowerCase();
+            const text = [project.title,project.category,project.type,project.description,project.tags?.join(" "),project.credits?.map(credit => typeof credit === "string" ? credit : [credit.name,credit.role].join(" ")).join(" "),project.submittedBy,project.submittedByRole,creator?.name,creator?.role,creator?.location,creator?.specialties?.join(" ")].join(" ").toLowerCase();
             const categories = window.getCreatorCategories?.(creator) || [creator?.category];
             return (!q || text.includes(q)) && (!place || (creator?.location || "").toLowerCase().includes(place)) &&
                 (!niche || text.includes(niche)) && (!status || (creator?.availableFor || []).includes(status)) &&
                 (category === "all" || categories.includes(category));
         });
-        grid.innerHTML = matches.map(project => `<article class="explore-card discovery-work-card"><a href="project.html?id=${encodeURIComponent(project.id)}"><img loading="lazy" src="${escape(project.thumbnail || project.image || "")}" alt="${escape(project.alt || project.title)}"></a><div class="explore-card-body"><p class="creator-role">${escape(project.type || project.category)}${getCreatorById(project.creatorId)?.isDemo ? " · Demo" : ""}</p><h2>${escape(project.title)}</h2><p>${escape(project.creatorName)}</p><a class="profile-link" href="project.html?id=${encodeURIComponent(project.id)}">Explore Work →</a></div></article>`).join("");
+        grid.innerHTML = matches.map(project => `<article class="explore-card discovery-work-card"><a href="project.html?id=${encodeURIComponent(project.id)}"><img loading="lazy" src="${escape(project.thumbnail || project.image || "")}" alt="${escape(project.alt || project.title)}"></a><div class="explore-card-body"><p class="creator-role">${escape(project.type || project.category)}${getCreatorById(project.creatorId)?.isDemo ? " · Demo" : ""}</p><h2>${escape(project.title)}</h2><p>${escape(project.creatorName || (project.submittedBy ? "Submitted by " + project.submittedBy + " · " + (project.submittedByRole || "Contributor") : "Full credits on project page"))}</p><a class="profile-link" href="project.html?id=${encodeURIComponent(project.id)}">Explore Work →</a></div></article>`).join("");
         if (count) count.textContent = matches.length + " project" + (matches.length === 1 ? "" : "s") + " showing";
         if (empty) empty.classList.toggle("is-visible", matches.length === 0);
     };
@@ -647,7 +658,40 @@ const renderCreatorProfile = () => {
         return;
     }
 
-    document.title = `${creator.name} | Konnekt Creator Profile`;
+    const isDraftPreview = creator.status === "draft";
+    document.title = `${creator.name} | ${isDraftPreview ? "Unpublished Draft" : "Konnekt Creator Profile"}`;
+    if (isDraftPreview) {
+        const robots = document.createElement("meta");
+        robots.name = "robots";
+        robots.content = "noindex,nofollow,noarchive";
+        document.head.append(robots);
+        profilePage.classList.add("is-draft-preview");
+        const note = document.createElement("p");
+        note.className = "draft-profile-notice";
+        note.setAttribute("role", "status");
+        note.textContent = "UNPUBLISHED DRAFT · Awaiting Quincy Baker’s approval. This is not a verified or creator-managed account. Profile information and credit link are shown for review only.";
+        document.querySelector(".profile-summary")?.insertAdjacentElement("afterend", note);
+        document.querySelector(".profile-intro .eyebrow").textContent = "Draft Profile · Not Public";
+        document.querySelector("[data-konnekt-open]")?.setAttribute("hidden", "");
+        document.querySelector("[data-share-creator]")?.setAttribute("hidden", "");
+        document.querySelector(".profile-actions .save-button")?.setAttribute("hidden", "");
+        document.querySelector("[data-profile-stats]")?.setAttribute("hidden", "");
+        document.querySelector(".profile-gallery-section")?.setAttribute("hidden", "");
+        document.querySelector(".video-section")?.setAttribute("hidden", "");
+        document.querySelector(".profile-section-nav a[href='#profile-gallery']")?.setAttribute("hidden", "");
+        const workHeading = document.querySelector("#featured-work .compact-heading h2");
+        if (workHeading) workHeading.textContent = "Work";
+        // Drafts use the submitted image when available; otherwise retain initials.
+        if (!creator.profileImage) {
+            const summary = document.querySelector(".profile-summary");
+            const placeholder = document.createElement("div");
+            placeholder.className = "profile-avatar-draft";
+            placeholder.setAttribute("role", "img");
+            placeholder.setAttribute("aria-label", "Profile photo not provided");
+            placeholder.textContent = "QB";
+            summary?.append(placeholder);
+        }
+    }
     const shareProfileButton = document.querySelector("[data-share-creator]");
     const shareProfileStatus = document.querySelector("[data-profile-share-status]");
     shareProfileButton?.addEventListener("click", async () => {
@@ -711,12 +755,10 @@ const renderCreatorProfile = () => {
         details.append(section);
     });
     const featuredNav = document.querySelector("[data-profile-featured-nav]");
-    const hasFeaturedCredits = (window.konnektCreators || []).some(other =>
-        other.id !== creator.id && (other.featuredProjects || []).some(project =>
-            (project.credits || []).some(credit => typeof credit === "object" && credit &&
-                (credit.creatorId === creator.id || credit.name === creator.name))
-        )
-    );
+    const hasFeaturedCredits = projects.some(project => project.creatorId !== creator.id &&
+        normalizeCredits(project).some(credit => isDraftPreview
+            ? credit.pendingCreatorId === creator.id
+            : credit.creatorId === creator.id && credit.approved === true));
     if (featuredNav) featuredNav.hidden = !hasFeaturedCredits;
     const panel = document.querySelector("[data-konnekt-panel]");
     const options = document.querySelector("[data-konnekt-options]");
@@ -805,7 +847,7 @@ const renderCreatorProfile = () => {
         if (event.key === "Escape" && !panel.hidden) close();
     });
     // Deep links from project pages open the creator-approved contact options.
-    if (new URLSearchParams(window.location.search).get("contact") === "1") {
+    if (!isDraftPreview && new URLSearchParams(window.location.search).get("contact") === "1") {
         panel.hidden = false;
         openKonnekt.setAttribute("aria-expanded", "true");
         requestAnimationFrame(() => {
@@ -816,10 +858,19 @@ const renderCreatorProfile = () => {
     const visitSource = new URLSearchParams(window.location.search).get("source");
     if (["nfc","qr","share","discovery"].includes(visitSource)) document.documentElement.dataset.profileSource = visitSource;
 
-    document.querySelector("[data-profile-stats]").innerHTML = renderStats(creator);
+    document.querySelector("[data-profile-stats]").innerHTML = isDraftPreview ? "" : renderStats(creator);
     document.querySelector("[data-profile-badges]").innerHTML = renderBadges(creator.badges || []);
-    document.querySelector("[data-profile-socials]").innerHTML = renderSocialLinks(creator.socialLinks || []);
-    document.querySelector("[data-profile-projects]").innerHTML = renderProjects(creator.featuredProjects || []);
+    const socialLinksContainer = document.querySelector("[data-profile-socials]");
+    socialLinksContainer.innerHTML = renderSocialLinks(creator.socialLinks || []);
+    if (isDraftPreview && (creator.socialLinks || []).some(link => link.verificationStatus === "pending")) {
+        const socialNote = document.createElement("p");
+        socialNote.className = "profile-social-verification-note";
+        socialNote.textContent = "Social account ownership is awaiting confirmation from Quincy. Draft preview only.";
+        socialLinksContainer.insertAdjacentElement("afterend", socialNote);
+    }
+    document.querySelector("[data-profile-projects]").innerHTML = isDraftPreview
+        ? '<p class="profile-draft-empty">No independently presented Work has been approved for this profile.</p>'
+        : renderProjects(creator.featuredProjects || []);
     document.querySelector("[data-profile-gallery]").innerHTML = renderGallery(creator.gallery || []);
     document.querySelector("[data-profile-videos]").innerHTML = renderVideos(creator.videos || []);
     renderFeaturedIn(creator);
@@ -860,7 +911,7 @@ const renderProjectDetail = () => {
         if (watchEligible) watchLink.href = "watch-project.html?id=" + encodeURIComponent(project.id);
     }
     const creator = getCreatorById(project.creatorId);
-    const creatorProfileUrl = `creator-profile.html?id=${encodeURIComponent(project.creatorId)}`;
+    const creatorProfileUrl = creator ? `creator-profile.html?id=${encodeURIComponent(creator.id)}` : "";
     const creatorContactUrl = `creator-profile.html?id=${encodeURIComponent(project.creatorId)}&contact=1`;
 
     document.title = `${project.title} | Konnekt Project`;
@@ -868,7 +919,9 @@ const renderProjectDetail = () => {
     document.querySelector("[data-project-category]").textContent = project.category;
     document.querySelector("[data-project-title]").textContent = project.title;
     document.querySelector("[data-project-description]").textContent = project.description;
-    document.querySelector("[data-project-creator]").textContent = creator ? `${creator.name} | ${creator.role}` : project.creatorName;
+    document.querySelector("[data-project-creator]").textContent = creator
+        ? `${creator.name} | ${creator.role}`
+        : project.submittedBy ? `Submitted by ${project.submittedBy} (${project.submittedByRole || "contributor"})` : (project.creatorName || "Project credits listed below");
     document.querySelector("[data-project-year]").textContent = project.year;
     document.querySelector("[data-project-main-image]").src = project.thumbnail || project.image;
     document.querySelector("[data-project-main-image]").alt = project.alt;
@@ -886,8 +939,12 @@ const renderProjectDetail = () => {
     }
     const creditNote = document.querySelector("[data-credits-note]");
     if (creditNote) creditNote.textContent = allCredits.length ? "Credits provided with the project; not independently verified." : "";
-    document.querySelector("[data-project-tools]").innerHTML = renderDetailItems(project.tools);
-    document.querySelector("[data-project-media]").innerHTML = renderProjectMedia(project.media);
+    const toolsPanel = document.querySelector("[data-project-tools]");
+    toolsPanel.innerHTML = renderDetailItems(project.tools || []);
+    if (project.submittedBy && !(project.tools || []).length) toolsPanel.closest("article")?.setAttribute("hidden", "");
+    const mediaGrid = document.querySelector("[data-project-media]");
+    mediaGrid.innerHTML = renderProjectMedia(project.media || []);
+    if (project.submittedBy && !(project.media || []).length) mediaGrid.closest("section")?.setAttribute("hidden", "");
 
     const projectSaveButton = document.querySelector(".project-hero .save-button");
 
@@ -902,10 +959,14 @@ const renderProjectDetail = () => {
     const topCreatorLink = document.querySelector("[data-project-creator-link]");
     const bottomCreatorLink = document.querySelector("[data-project-bottom-link]");
 
-    topCreatorLink.href = creatorProfileUrl;
-    topCreatorLink.textContent = creator ? `View ${creator.name}` : "View Creator";
-    bottomCreatorLink.href = creatorProfileUrl;
-    bottomCreatorLink.textContent = creator ? `View ${creator.name}` : "View Creator";
+    topCreatorLink.hidden = !creator;
+    bottomCreatorLink.hidden = !creator;
+    if (creator) {
+        topCreatorLink.href = creatorProfileUrl;
+        topCreatorLink.textContent = `View ${creator.name}`;
+        bottomCreatorLink.href = creatorProfileUrl;
+        bottomCreatorLink.textContent = `View ${creator.name}`;
+    }
     document.querySelectorAll("[data-project-contact-link], [data-project-bottom-contact]").forEach(link => {
         link.href = creator ? creatorContactUrl : "explore.html";
         link.hidden = !creator;

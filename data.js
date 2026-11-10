@@ -1526,3 +1526,92 @@ window.konnektCreators.push({
   "videos": [],
   "isDemo": false
 });
+
+
+/*
+ * One canonical, independently submitted short-film record.
+ * Project ownership and copyright ownership are NOT inferred from the submitter.
+ * Keep this outside any creator.featuredProjects array so it is never presented
+ * as Quincy's independently owned or creator-managed Work.
+ */
+window.konnektStandaloneProjects = window.konnektStandaloneProjects || [];
+if (!window.konnektStandaloneProjects.some(project => project.id === "the-devil-in-my-house")) {
+    window.konnektStandaloneProjects.push({
+        id: "the-devil-in-my-house",
+        title: "The Devil in My House",
+        type: "Short Film",
+        category: "Short Film",
+        youtubeId: "SJnMvchdG_E",
+        videoUrl: "https://www.youtube.com/watch?v=SJnMvchdG_E",
+        submittedBy: "Quincy Baker",
+        submittedByRole: "Director of Photography",
+        submissionPermission: "Contributor reports permission to feature",
+        copyrightOwner: null,
+        creatorId: null,
+        watchListed: true,
+        discoverListed: true,
+        previewStartSeconds: 0,
+        previewDurationSeconds: 30,
+        description: "Short film submitted to Konnekt by credited Director of Photography Quincy Baker. Directed and edited by Alayna Williams. Rights ownership is not confirmed.",
+        year: "",
+        thumbnail: "https://i.ytimg.com/vi/SJnMvchdG_E/hqdefault.jpg",
+        image: "https://i.ytimg.com/vi/SJnMvchdG_E/hqdefault.jpg",
+        alt: "Official YouTube video thumbnail for The Devil in My House",
+        tags: ["Short Film", "Cinematography"],
+        tools: [],
+        media: [],
+        credits: [
+            { name: "Imane Lawrence-Brooks", role: "Cast — Maia" },
+            { name: "Jassiah McAnuff", role: "Cast — Marshall" },
+            { name: "Alayna Williams", role: "Director" },
+            { name: "Quincy Baker", role: "Director of Photography", pendingCreatorId: "quincy-baker", approved: false },
+            { name: "Kayla Cain", role: "First Assistant Camera" },
+            { name: "Chelsea Chilewa", role: "Sound" },
+            { name: "Alyssa Nichols", role: "Sound" },
+            { name: "Beverly Roberts", role: "Production Assistant" },
+            { name: "Shanaiah Elam-Moore", role: "Production Assistant" },
+            { name: "Milly Pineda-Rivera", role: "Script Supervisor" },
+            { name: "Alayna Williams", role: "Editor" }
+        ]
+    });
+}
+
+/*
+ * Unpublished profile draft, separate from the public creator directory.
+ * NOT an account. NOT an approved identity link. No owner or auth ID.
+ * It may be inspected only through an explicitly marked draft preview;
+ * a query-string preview is NOT an access-control mechanism.
+ * Do not publish a preview publicly or merge for public release until approved.
+ */
+window.konnektCreatorDrafts = window.konnektCreatorDrafts || [];
+if (!window.konnektCreatorDrafts.some(creator => creator.id === "quincy-baker")) {
+    window.konnektCreatorDrafts.push({
+        id: "quincy-baker",
+        name: "Quincy Baker",
+        role: "Director of Photography / Cinematography",
+        category: "filmmaker",
+        status: "draft",
+        approved: false,
+        creatorManaged: false,
+        location: "",
+        profileImage: "assets/quincy-baker/profile.svg",
+        profileAlt: "Quincy Baker beside a camera on a tripod",
+        bannerImage: "",
+        bio: "Quincy Baker is a cinematography contributor credited as Director of Photography on the short film The Devil in My House.",
+        bioStatus: "factual-placeholder",
+        featuredProjects: [],
+        videos: [],
+        gallery: [],
+        socialLinks: [
+            {
+                label: "Instagram · @takenwithqair",
+                url: "https://www.instagram.com/takenwithqair/",
+                verificationStatus: "pending"
+            }
+        ],
+        contactOptions: {},
+        contactEmail: "",
+        badges: [],
+        isDemo: false
+    });
+}

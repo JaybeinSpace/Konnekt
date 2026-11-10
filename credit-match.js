@@ -2,7 +2,7 @@
 "use strict";
 const form=document.querySelector("form.konnekt-form"),box=document.querySelector("[data-credit-match]"),status=document.querySelector("[data-credit-status]");
 if(!form||!box||!window.KonnektCreditMatch)return;
-const repository=window.KonnektCreditMatchData.createDemoRepository({creators:window.konnektCreators||[],examples:window.konnektCreditMatchExamples||[]});
+const repository=window.KonnektCreditMatchData.createDemoRepository({creators:window.konnektCreators||[],standaloneProjects:window.konnektStandaloneProjects||[],examples:window.konnektCreditMatchExamples||[]});
 let lookupVersion=0;
 const urlField=document.querySelector("#project-video-url"),nameField=document.querySelector("#creator-name");
 function elem(tag,txt,cls){const n=document.createElement(tag);if(txt!==undefined)n.textContent=txt;if(cls)n.className=cls;return n}

@@ -3,10 +3,26 @@
   const feed = document.querySelector("[data-discover-feed]");
   if (!feed) return;
   const creators = Array.isArray(window.konnektCreators) ? window.konnektCreators : [];
-  const posts = creators.flatMap(creator => (creator.featuredProjects || []).filter(project => project && project.id && (project.image || project.thumbnail)).map(project => ({...project, creator})));
-  // The real featured artist is first; fictional demonstration content is clearly labeled.
+  // Creator Work is distinct from independently submitted films. Do not copy
+  // films into a contributor's portfolio or invent a project owner.
+  const creatorPosts = creators.flatMap(creator =>
+    (creator.featuredProjects || [])
+      .filter(project => project && project.id && (project.image || project.thumbnail))
+      .map(project => ({...project, creator}))
+  );
+  const standalonePosts = (window.konnektStandaloneProjects || [])
+    .filter(project => project && project.discoverListed === true &&
+      project.id && (project.image || project.thumbnail))
+    .map(project => ({...project, creator: null}));
+  // Put independent films first while keeping the real artists above demo cards.
   const confirmedRealCreatorIds = new Set(["jaelyn-ramos", "leticia-mendoza"]);
-  posts.sort((a,b) => Number(!confirmedRealCreatorIds.has(a.creator.id)) - Number(!confirmedRealCreatorIds.has(b.creator.id)));
+  const posts = [...standalonePosts, ...creatorPosts]
+    .filter((project, index, list) => list.findIndex(item => item.id === project.id) === index);
+  posts.sort((a, b) => {
+    const rank = item => item.creator
+      ? (confirmedRealCreatorIds.has(item.creator.id) ? 1 : 2) : 0;
+    return rank(a) - rank(b);
+  });
   const key = "konnekt-discover-likes-v1";
   let liked = [];
   try { const stored = JSON.parse(localStorage.getItem(key) || "[]"); if (Array.isArray(stored)) liked = stored.filter(id => typeof id === "string"); } catch {}
@@ -16,9 +32,97 @@
   const escape = value => String(value ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
   const classification = post => [post.type,post.category,...(Array.isArray(post.tags) ? post.tags : [])].join(" ").toLowerCase();
   const isMotion = post => /film|video|animation|documentary|cinema|motion/.test(classification(post));
-  const isDemo = post => !confirmedRealCreatorIds.has(post.creator.id);
+  const isDemo = post => post.creator
+    ? !confirmedRealCreatorIds.has(post.creator.id) : post.isDemo === true;
   const artworkLink = post => "project.html?id=" + encodeURIComponent(post.id);
-  const profileLink = post => "creator-profile.html?id=" + encodeURIComponent(post.creator.id);
+  const profileLink = post => post.creator?.id
+    ? "creator-profile.html?id=" + encodeURIComponent(post.creator.id) : null;
+  const byline = post => post.creator
+    ? [post.creator.name, post.creator.location].filter(Boolean).join(" · ")
+    : post.submittedBy
+      ? "Submitted by " + post.submittedBy + " · " + (post.submittedByRole || "Contributor")
+      : "Project credits on detail page";
+  const discoveryLinks = post => {
+    const creatorUrl = profileLink(post);
+    const projectUrl = artworkLink(post);
+    const preview = previewConfig(post);
+    return (preview
+      ? `<button type="button" class="discover-preview-trigger" data-preview-video="${escape(post.id)}" aria-label="Play 30-second preview of ${escape(post.title)}">▶ Preview 30s</button>`
+      : "") + `<a href="${projectUrl}">View project ↗</a>` +
+      (creatorUrl ? `<a href="${creatorUrl}">Meet the creator ↗</a>`
+        : post.videoUrl ? `<a href="watch-project.html?id=${encodeURIComponent(post.id)}">Watch film ↗</a>` : "");
+  };
+  // Preview segments reference only the original YouTube player, never media files.
+  // A future backend can store the approved start/duration on the project record.
+  const previewConfig = post => {
+    if (post.previewEnabled === false) return null;
+    let id = typeof post.youtubeId === "string" && /^[A-Za-z0-9_-]{11}$/.test(post.youtubeId)
+      ? post.youtubeId : null;
+    if (!id && typeof post.videoUrl === "string") {
+      try {
+        const url = new URL(post.videoUrl);
+        const host = url.hostname.toLowerCase().replace(/^www\./, "").replace(/^m\./, "");
+        if (host === "youtu.be") id = url.pathname.split("/")[1];
+        else if (host === "youtube.com" || host === "youtube-nocookie.com") {
+          const parts = url.pathname.split("/").filter(Boolean);
+          id = url.pathname === "/watch" ? url.searchParams.get("v")
+            : ["embed", "shorts", "live"].includes(parts[0]) ? parts[1] : null;
+        }
+      } catch { return null; }
+    }
+    if (!id || !/^[A-Za-z0-9_-]{11}$/.test(id)) return null;
+    const start = Number.isInteger(post.previewStartSeconds) &&
+      post.previewStartSeconds >= 0 ? post.previewStartSeconds : 0;
+    const duration = Number.isInteger(post.previewDurationSeconds) &&
+      post.previewDurationSeconds > 0 && post.previewDurationSeconds <= 30
+        ? post.previewDurationSeconds : 30;
+    return { id, start, end: start + duration };
+  };
+
+
+  const previewDialog = document.querySelector("[data-discover-preview]");
+  const previewPlayer = previewDialog?.querySelector("[data-preview-player]");
+  let previewTrigger = null;
+  const stopPreview = () => {
+    if (!previewDialog) return;
+    if (previewDialog.open) previewDialog.close();
+    previewPlayer?.replaceChildren(); // Unloads YouTube iframe: audio/video stop.
+    if (previewTrigger?.isConnected) previewTrigger.focus();
+    previewTrigger = null;
+  };
+  const openPreview = (post, trigger) => {
+    const config = previewConfig(post);
+    if (!previewDialog || !previewPlayer || !config) return;
+    stopPreview();
+    previewTrigger = trigger;
+    previewDialog.querySelector("[data-preview-title]").textContent = post.title + " · 30-second preview";
+    previewDialog.querySelector("[data-preview-full]").href =
+      "https://www.youtube.com/watch?v=" + encodeURIComponent(config.id);
+    previewDialog.querySelector("[data-preview-project]").href = artworkLink(post);
+    const iframe = document.createElement("iframe");
+    iframe.src = "https://www.youtube-nocookie.com/embed/" + config.id +
+      "?start=" + config.start + "&end=" + config.end +
+      "&autoplay=1&playsinline=1&controls=1";
+    iframe.title = "30-second YouTube preview of " + post.title;
+    iframe.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+    iframe.allowFullscreen = true;
+    iframe.referrerPolicy = "strict-origin-when-cross-origin";
+    previewPlayer.replaceChildren(iframe);
+    previewDialog.showModal();
+    previewDialog.querySelector("[data-preview-close]").focus();
+  };
+  previewDialog?.querySelector("[data-preview-close]")?.addEventListener("click", stopPreview);
+  previewDialog?.addEventListener("close", () => {
+    previewPlayer?.replaceChildren();
+    if (previewTrigger?.isConnected) previewTrigger.focus();
+    previewTrigger = null;
+  });
+  previewDialog?.addEventListener("click", event => {
+    if (event.target === previewDialog) stopPreview();
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stopPreview();
+  });
   const params = new URLSearchParams(location.search);
   let view = params.get("view") === "grid" ? "grid" : "feed";
   let current = ["all","art","motion"].includes(params.get("category")) ? params.get("category") : "all";
@@ -29,6 +133,7 @@
     const url = new URL(location.href); url.searchParams.set("view",view); url.searchParams.set("category",current); history.replaceState(null,"",url);
   };
   const render = filter => {
+    stopPreview();
     const filtered = posts.filter(post => filter === "all" || (filter === "motion" ? isMotion(post) : !isMotion(post)));
     feed.innerHTML = filtered.map(post => {
       const active = liked.includes(post.id);
@@ -38,8 +143,8 @@
       return `<article class="discover-post" data-post-id="${escape(post.id)}" data-demo="${isDemo(post)}">
         <div class="discover-post-media"><img loading="lazy" src="${escape(post.image || post.thumbnail)}" alt="${escape(post.alt || post.title)}"></div>
         <div class="discover-post-top"><span class="discover-type">${label}</span><span class="discover-type">KONNEKT DISCOVER</span></div>
-        <div class="discover-post-bottom"><p class="discover-artist">${escape(post.creator.name)} · ${escape(post.creator.location || "")}</p><h2>${escape(post.title)}</h2><p class="discover-post-description">${escape(post.description || "")}</p>
-        <div class="discover-links"><a href="${artworkLink(post)}">View project ↗</a><a href="${profileLink(post)}">Meet the creator ↗</a></div></div>
+        <div class="discover-post-bottom"><p class="discover-artist">${escape(byline(post))}</p><h2>${escape(post.title)}</h2><p class="discover-post-description">${escape(post.description || "")}</p>
+        <div class="discover-links">${discoveryLinks(post)}</div></div>
         <div class="discover-actions"><button class="discover-like" type="button" data-like-id="${escape(post.id)}" aria-label="${active ? "Unlike" : "Like"} ${escape(post.title)}" aria-pressed="${active}"><span class="heart" aria-hidden="true">${active ? "♥" : "♡"}</span><small>${active ? "Liked" : "Like"}</small></button><button class="discover-save" type="button" data-save-project="${escape(post.id)}" aria-pressed="${saved}" aria-label="${saved ? "Unsave" : "Save"} ${escape(post.title)}"><span aria-hidden="true">${saved ? "▣" : "▢"}</span><small>${saved ? "Saved" : "Save"}</small></button><button class="discover-share" type="button" data-share-project="${escape(post.id)}" aria-label="Share ${escape(post.title)}"><span aria-hidden="true">↗</span><small>Share</small></button></div></article>`;
     }).join("");
     document.querySelector("[data-discover-empty]").hidden = filtered.length > 0;
@@ -55,6 +160,12 @@
     render(current);
   }));
   const notify = message => { const region = document.querySelector("[data-discover-status]"); if (region) region.textContent = message; };
+  feed.addEventListener("click", event => {
+    const button = event.target.closest("[data-preview-video]");
+    if (!button) return;
+    const post = posts.find(item => item.id === button.dataset.previewVideo);
+    if (post) openPreview(post, button);
+  });
   feed.addEventListener("click", async event => {
     const saveButton = event.target.closest("[data-save-project]");
     if (saveButton) {
