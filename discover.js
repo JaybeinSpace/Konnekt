@@ -80,90 +80,6 @@
   };
 
 
-  // One muted, inline 30-second preview can run while a film card is in view.
-  // It starts only on the first substantial appearance during this visit.
-  // We remove the iframe when scrolling away rather than playing offscreen.
-  const autoPlayed = new Set();
-  let autoObserver = null;
-  let activeAutoArticle = null;
-  let autoStopTimer = null;
-  const allowAutoPreview = () => !(
-    window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ||
-    navigator.connection?.saveData
-  );
-  const stopAutoPreview = () => {
-    if (autoStopTimer !== null) {
-      window.clearTimeout(autoStopTimer);
-      autoStopTimer = null;
-    }
-    if (!activeAutoArticle) return;
-    activeAutoArticle.querySelector(".discover-auto-preview-player")?.remove();
-    activeAutoArticle.classList.remove("is-auto-previewing");
-    activeAutoArticle = null;
-  };
-  const sizeAutoPreview = () => {
-    if (!activeAutoArticle) return;
-    const media = activeAutoArticle.querySelector(".discover-post-media");
-    const frame = media?.querySelector(".discover-auto-preview-player");
-    if (!frame) return;
-    // Fill tall feed cards like a cinematic cover, cropping the video's sides.
-    const rect = media.getBoundingClientRect();
-    const width = Math.ceil(Math.max(rect.width, rect.height * 16 / 9));
-    frame.style.width = width + "px";
-    frame.style.height = Math.ceil(width * 9 / 16) + "px";
-  };
-  const startAutoPreview = article => {
-    if (view !== "feed" || document.hidden || !allowAutoPreview() ||
-        previewDialog?.open || activeAutoArticle) return;
-    const post = posts.find(item => item.id === article.dataset.postId);
-    const config = post && previewConfig(post);
-    if (!config || autoPlayed.has(post.id)) return;
-    const media = article.querySelector(".discover-post-media");
-    if (!media) return;
-    const frame = document.createElement("iframe");
-    frame.className = "discover-auto-preview-player";
-    frame.title = "Muted 30-second preview of " + post.title;
-    frame.loading = "eager";
-    frame.tabIndex = -1;
-    frame.setAttribute("aria-hidden", "true");
-    frame.allow = "autoplay; encrypted-media; picture-in-picture";
-    frame.referrerPolicy = "strict-origin-when-cross-origin";
-    frame.src = "https://www.youtube-nocookie.com/embed/" + config.id +
-      "?start=" + config.start + "&end=" + config.end +
-      "&autoplay=1&mute=1&playsinline=1&controls=0&fs=0";
-    media.append(frame);
-    activeAutoArticle = article;
-    autoPlayed.add(post.id);
-    article.classList.add("is-auto-previewing");
-    sizeAutoPreview();
-    // The YouTube end parameter limits content to 30 seconds; this also
-    // clears the embed at the end to avoid showing unrelated recommendations.
-    autoStopTimer = window.setTimeout(stopAutoPreview, 33000);
-  };
-  const observeAutoPreviews = () => {
-    autoObserver?.disconnect();
-    autoObserver = null;
-    if (view !== "feed" || !("IntersectionObserver" in window) || !allowAutoPreview()) return;
-    autoObserver = new IntersectionObserver(entries => {
-      if (document.hidden || previewDialog?.open) return;
-      if (activeAutoArticle && entries.some(entry =>
-          entry.target === activeAutoArticle && entry.intersectionRatio < 0.45)) {
-        stopAutoPreview();
-      }
-      if (activeAutoArticle) return;
-      const first = entries
-        .filter(entry => entry.isIntersecting && entry.intersectionRatio >= 0.6 &&
-          !autoPlayed.has(entry.target.dataset.postId))
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (first) startAutoPreview(first.target);
-    }, { threshold: [0, 0.45, 0.6, 0.85] });
-    feed.querySelectorAll(".discover-post").forEach(article => {
-      const post = posts.find(item => item.id === article.dataset.postId);
-      if (post && previewConfig(post)) autoObserver.observe(article);
-    });
-  };
-  window.addEventListener("resize", sizeAutoPreview);
-  window.addEventListener("pagehide", stopAutoPreview);
   const previewDialog = document.querySelector("[data-discover-preview]");
   const previewPlayer = previewDialog?.querySelector("[data-preview-player]");
   let previewTrigger = null;
@@ -177,7 +93,6 @@
   const openPreview = (post, trigger) => {
     const config = previewConfig(post);
     if (!previewDialog || !previewPlayer || !config) return;
-    stopAutoPreview();
     stopPreview();
     previewTrigger = trigger;
     previewDialog.querySelector("[data-preview-title]").textContent = post.title + " · 30-second preview";
@@ -206,10 +121,7 @@
     if (event.target === previewDialog) stopPreview();
   });
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      stopAutoPreview();
-      stopPreview();
-    }
+    if (document.hidden) stopPreview();
   });
   const params = new URLSearchParams(location.search);
   let view = params.get("view") === "grid" ? "grid" : "feed";
@@ -221,8 +133,6 @@
     const url = new URL(location.href); url.searchParams.set("view",view); url.searchParams.set("category",current); history.replaceState(null,"",url);
   };
   const render = filter => {
-    autoObserver?.disconnect();
-    stopAutoPreview();
     stopPreview();
     const filtered = posts.filter(post => filter === "all" || (filter === "motion" ? isMotion(post) : !isMotion(post)));
     feed.innerHTML = filtered.map(post => {
@@ -231,14 +141,13 @@
       const category = isMotion(post) ? "FILM & MOTION" : "ART & PHOTOGRAPHY";
       const label = isDemo(post) ? "DEMO · " + category : category;
       return `<article class="discover-post" data-post-id="${escape(post.id)}" data-demo="${isDemo(post)}">
-        <div class="discover-post-media"><img loading="lazy" src="${escape(post.image || post.thumbnail)}" alt="${escape(post.alt || post.title)}"><span class="discover-auto-preview-label" aria-hidden="true">▶ MUTED · 30 SEC PREVIEW</span></div>
+        <div class="discover-post-media"><img loading="lazy" src="${escape(post.image || post.thumbnail)}" alt="${escape(post.alt || post.title)}"></div>
         <div class="discover-post-top"><span class="discover-type">${label}</span><span class="discover-type">KONNEKT DISCOVER</span></div>
         <div class="discover-post-bottom"><p class="discover-artist">${escape(byline(post))}</p><h2>${escape(post.title)}</h2><p class="discover-post-description">${escape(post.description || "")}</p>
         <div class="discover-links">${discoveryLinks(post)}</div></div>
         <div class="discover-actions"><button class="discover-like" type="button" data-like-id="${escape(post.id)}" aria-label="${active ? "Unlike" : "Like"} ${escape(post.title)}" aria-pressed="${active}"><span class="heart" aria-hidden="true">${active ? "♥" : "♡"}</span><small>${active ? "Liked" : "Like"}</small></button><button class="discover-save" type="button" data-save-project="${escape(post.id)}" aria-pressed="${saved}" aria-label="${saved ? "Unsave" : "Save"} ${escape(post.title)}"><span aria-hidden="true">${saved ? "▣" : "▢"}</span><small>${saved ? "Saved" : "Save"}</small></button><button class="discover-share" type="button" data-share-project="${escape(post.id)}" aria-label="Share ${escape(post.title)}"><span aria-hidden="true">↗</span><small>Share</small></button></div></article>`;
     }).join("");
     document.querySelector("[data-discover-empty]").hidden = filtered.length > 0;
-    observeAutoPreviews();
   };
   document.querySelectorAll("[data-feed-filter]").forEach(button => button.addEventListener("click", () => {
     current = button.dataset.feedFilter;
