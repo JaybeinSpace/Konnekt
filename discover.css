@@ -163,37 +163,3 @@
   .discover-preview-header button { font-size: .8rem; padding: 8px; }
   .discover-preview-links { gap: 8px 16px; }
 }
-
-
-/* Muted autoplay on first substantial Feed appearance (never Grid).
-   Keep iframe noninteractive: viewers can use Preview 30s for sound/controls. */
-.discover-post-media .discover-auto-preview-player {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  display: block;
-  max-width: none;
-  border: 0;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-.discover-post.is-auto-previewing .discover-post-media > img { opacity: 0; }
-.discover-auto-preview-label {
-  display: none;
-  position: absolute;
-  top: 18px;
-  left: 18px;
-  padding: 9px 11px;
-  border-radius: 9px;
-  background: #07141ed9;
-  border: 1px solid #7ce3d488;
-  color: #e5fffa;
-  font: 700 .68rem/1.2 Inter, Arial, sans-serif;
-  letter-spacing: .1em;
-  pointer-events: none;
-}
-.discover-post.is-auto-previewing .discover-auto-preview-label { display: inline-block; }
-.discover-grid-view .discover-auto-preview-label { display: none !important; }
-@media(max-width:780px) {
-  .discover-auto-preview-label { top: 12px; left: 12px; font-size: .6rem; }
-}
